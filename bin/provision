@@ -46,7 +46,6 @@ require 'instance'
 require 'aws'
 
 Fog.mock! if options[:mock] == true
-Fog.credential = :neo 
 
 def create_ebs_volume(name, node, volume_size)
   service = AwsService.new.service

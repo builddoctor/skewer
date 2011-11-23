@@ -25,7 +25,6 @@ optparse = OptionParser.new do |opts|
 end
 
 optparse.parse!
-puts options.inspect
 
 unless options[:host] && options[:user] 
   raise "Usage: update --host <host> --user <user with sudo rights> --role <puppet role class>"
