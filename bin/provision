@@ -1,0 +1,98 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+options = {}
+
+optparse = OptionParser.new do |opts|
+  # generic options
+  opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode')") do |c|
+    options[:kind] = c
+  end
+  opts.on('-r', '--role NAME', "puppet role class to call") do |r|
+    options[:role] = r
+  end
+  opts.on('-m', '--mock') do |m|
+    options[:mock] = true
+  end
+  opts.on('--keep') do |k|
+    options[:keep] = true
+  end
+
+  # AWS options
+  opts.on('--volume SIZE') do |vol|
+    # EBS group
+    options[:volume] = vol
+  end
+  opts.on('-region NAME') do |region|
+    # AWS region
+    options[:region]  = region
+  end
+    # EC2 Security Group
+  opts.on('--group NAME') do |group|
+    options[:group] = group
+  end
+end
+
+optparse.parse!
+
+def usage
+  raise "Usage: #{__FILE__} --cloud <which cloud>  --role <puppet role class>"
+end
+#Now raise an exception if we have not found a host option
+usage unless ['ec2', 'linode'].include? options[:kind]
+  
+$: << 'lib'
+require 'instance'
+require 'aws'
+
+Fog.mock! if options[:mock] == true
+Fog.credential = :neo 
+
+def create_ebs_volume(name, node, volume_size)
+  service = AwsService.new.service
+  volume = service.volumes.new :device => "/dev/#{name}", 
+    :size => volume_size,
+    :availability_zone => node.availability_zone
+  volume.server = node
+  volume.save
+  
+
+end
+#def mount_ebs_volume(node, volume_id)
+#  puts "Mounting EBS volume #{volume_id} on #{node.id}"
+#  service = AwsService.new.service
+#  volume = service.volumes.find(volume_id).first
+#  volume.device = '/dev/sdj' # for jenkins
+#  volume.availability_zone = node.availability_zone
+#  volume.server = node
+##  volume.save
+#end
+
+def create_aws_node(options)
+#  group = AwsSecurityGroup.new('CI', 'Continuous Integration Hosts', [
+#    { :description => 'SSH', :range => 22..22, :options => {} }])
+  node = AwsNode.node('ami-71589518', nil, ['default', options[:group]]).node
+  create_ebs_volume('sdn', node, options[:volume]) if options[:volume]
+  node
+end
+
+
+node = nil
+case options[:kind]
+  when 'ec2' 
+    puts 'Launching an AWS node'
+    node = create_aws_node(options)
+  when 'linode'
+    @is_aws = false
+    compute = Fog::Compute.new(@linode_creds)
+    node = compute.servers[0]
+    puts 'Finding an existing linode node'
+  when 'local'
+    puts 'Faking an AWS node'
+    node = create_local_node
+  else
+    raise "I don't know that cloud"
+end
+
+# more functions to die
+build_node(node, options)

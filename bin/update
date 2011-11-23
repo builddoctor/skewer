@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+require 'optparse'
+$: << 'lib'
+$: <<  'lib/ersatz'
+require 'instance'
+require 'ersatz_node'
+require 'ssh_result'
+require 'puppet'
+
+options = {}
+
+optparse = OptionParser.new do |opts|
+  opts.on('-h', '--host KIND', "Hostname to update") do |c|
+    options[:host] = c
+  end
+  opts.on('-u', '--user KIND', "User to connect with") do |u|
+    options[:user] = u
+  end
+  opts.on('-r', '--role NAME', "puppet role class to call") do |r|
+    options[:role] = r
+  end
+  opts.on('-n', '--noop', "puppet role class to call") do |n|
+    options[:noop] = true
+  end
+end
+
+optparse.parse!
+puts options.inspect
+
+unless options[:host] && options[:user] 
+  raise "Usage: update --host <host> --user <user with sudo rights> --role <puppet role class>"
+end
+
+# ersazt node implements just enough fog 
+node = ErsatzNode.new(options[:host], options[:user])
+
+# ewww. These functions below must die and be replaced by some sensible arrangement of classes
+
+copy_source_code(node)
+install_gems(node)
+run_puppet(node, options)
