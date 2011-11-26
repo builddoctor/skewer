@@ -2,6 +2,7 @@
 require 'rubygems'
 
 require 'fog'
+require 'config'
 
 class AwsService
   attr_reader :service
@@ -10,21 +11,27 @@ class AwsService
       :provider   => 'AWS',
       :region     => zone
     })
+    SkewerConfig.set 'aws_service', @service
+  end
+
+  def self.service
+    self.new.service
   end
 end
 
 class AwsSecurityGroup
   attr_reader :group
   attr_reader :name
+  attr_reader :service
 
   def initialize(name, desc, ports)
-    service  = AwsService.new.service
-    groups = service.security_groups
+    @service ||= SkewerConfig.get 'aws_service'
+    groups = @service.security_groups
     group = groups.select {|g| g.name == name }[0]
    
     if group.nil? == true
-      group = service.create_security_group(name , desc)
-      group = service.security_groups.get(name)
+      group = @service.create_security_group(name , desc)
+      group = @service.security_groups.get(name)
     end
 
     if ports.length >= 1
@@ -42,6 +49,8 @@ class AwsSecurityGroup
     @group = group
     @name = name
   end
+
+  
 end
 
 class AwsNode
