@@ -5,7 +5,7 @@ class Source
   end
   
   def excludes
-    '--excludes ' + ['.git'].join(' ')
+    '--exclude ' + ['.git'].join(' ')
   end
 
   def rsync_command(node)
@@ -13,6 +13,10 @@ class Source
   end
 
   def rsync(node)
+    puts rsync_command(node)
+    print "Copying code to #{node.dns_name} ..."
+
     raise "Failed to rsync to #{node.dns_name} with #{node.username}" unless system self.rsync_command(node)
+    puts " Done."
   end
 end

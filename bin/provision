@@ -17,6 +17,9 @@ optparse = OptionParser.new do |opts|
   opts.on('--keep') do |k|
     options[:keep] = true
   end
+  opts.on('--key') do |k|
+    options[:key] = k
+  end
 
   # AWS options
   opts.on('--volume SIZE') do |vol|

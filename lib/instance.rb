@@ -13,42 +13,19 @@ def timestamp(message)
 end
 
 def copy_source_code(node)
-  excludes = ''
-  excludes << "--exclude=.git"
-  node.ssh 'mkdir -p infrastructure'
-  timestamp "About to rsync"
-  `rsync #{excludes} --delete -apze ssh . #{node.username}@#{node.dns_name}:infrastructure/.`
-  timestamp "Rsync done"
-end
-
-def copy_and_execute(node, file) 
-  if File.exists?(file)
-    `scp #{file} #{node.username}@#{node.dns_name}:/var/tmp/.`
-    node.ssh "sudo bash /var/tmp/#{File.basename(file)}"
-  end
-end
-
-def bootstrap_puppet_module(node, mod)  
-  timestamp "bootstrapping #{mod}"
-  copy_and_execute(node, "etc/puppet/modules/#{mod}/bootstrapper.sh")
-  timestamp "bootstrapped #{mod}"
-end
-
-def install_gems(node)
-  timestamp "installing rubygems"
-  puts node.ssh '. /etc/profile.d/rubygems.sh  && cd infrastructure && bundle install'
-  timestamp "done"
-
+  # methinks you belong in a bootstrapper class
+  require 'source'
+  Source.new('../infrastructure').rsync(node)
 end
 
 def bootstrap(node, modules)
+  require 'bootstrapper'
   timestamp 'bootstrapping'
-  timestamp 'setting the ssh hostkey'
-  `ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' foo@#{node.dns_name} >/dev/null 2>&1`
-  timestamp 'copying the code over'
-  copy_source_code(node)
-  modules.each {|m| bootstrap_puppet_module(node, m) }
-  install_gems(node)
+  bootstrapper = Bootstrapper.new(node)
+  bootstrapper.add_ssh_hostkey
+  bootstrapper.execute('rubygems.sh')
+  copy_source_code
+  bootstrapper.install_gems
   timestamp 'bootstrapped'
 end
 

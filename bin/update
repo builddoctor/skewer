@@ -6,6 +6,7 @@ require 'instance'
 require 'ersatz_node'
 require 'ssh_result'
 require 'puppet'
+require 'bootstrapper'
 
 options = {}
 
@@ -36,5 +37,5 @@ node = ErsatzNode.new(options[:host], options[:user])
 # ewww. These functions below must die and be replaced by some sensible arrangement of classes
 
 copy_source_code(node)
-install_gems(node)
+Bootstrapper.new(node).install_gems
 run_puppet(node, options)
