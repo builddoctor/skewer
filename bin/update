@@ -36,6 +36,7 @@ node = ErsatzNode.new(options[:host], options[:user])
 
 # ewww. These functions below must die and be replaced by some sensible arrangement of classes
 
-copy_source_code(node)
-Bootstrapper.new(node).install_gems
+bs = Bootstrapper.new(node)
+bs.sync_source
+bs.install_gems
 run_puppet(node, options)

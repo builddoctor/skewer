@@ -12,19 +12,13 @@ def timestamp(message)
   puts "#{message} at #{Time.now - @start_time}"
 end
 
-def copy_source_code(node)
-  # methinks you belong in a bootstrapper class
-  require 'source'
-  Source.new('../infrastructure').rsync(node)
-end
-
-def bootstrap(node, modules)
+def bootstrap(node, options)
   require 'bootstrapper'
   timestamp 'bootstrapping'
   bootstrapper = Bootstrapper.new(node)
   bootstrapper.add_ssh_hostkey
   bootstrapper.execute('rubygems.sh')
-  copy_source_code
+  bootstrapper.sync_source
   bootstrapper.install_gems
   timestamp 'bootstrapped'
 end
@@ -35,17 +29,6 @@ def create_local_node
     :endpoint => 'http://localhost:4567'
   })
   node = compute.servers.bootstrap()
-end
-
-def test_node(node)
-  # TODO: call cukes
-end
-
-def run_puppet(node, options)
-  timestamp 'gonna puppet'
-  result = Puppet.run(node, options)
-  raise "Puppet failed" unless result.status == 0 
-  timestamp "Puppet done"
 end
 
 def destroy_node(node, options)
@@ -59,8 +42,10 @@ def build_node(node, options)
     @username = '#{node.username}'
 
     timestamp "Node ready"
-    bootstrap(node, ['rubygems', options[:role]])
-    run_puppet(node, options)
+    bootstrap(node, options)
+    timestamp 'gonna puppet'
+    result = Puppet.run(node, options)
+    timestamp "Puppet done"
 
     puts "Node ready\n open http://#{@dns_name} or \n ssh -l ubuntu #{@dns_name}"
   rescue Exception => e
