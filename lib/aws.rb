@@ -54,23 +54,17 @@ class AwsSecurityGroup
 end
 
 class AwsNode
-  attr_reader :node
-#TODO: pull out options, and read from CLI or json config file
-  def initialize(aws_id, tier, group_names )
+  def initialize(aws_id, tier, group_names, options = {} )
     service = AwsService.new.service
-    @node = service.servers.bootstrap({
+    node_options  = {
     :image_id       => aws_id ,
     :flavor_id      => 'm1.large',
     :username       => 'ubuntu',
-    :key_name       => 'CI_FARM',
     :groups         => group_names
-  })
+  }
+  node_options[:key_name] = options[:key_name] if options[:key_name]
+  service.servers.bootstrap(node_options)
  
-  
-  end
-  
-  def self.node(aws_id, tier, group_name)
-    self.new(aws_id, tier, group_name)
   end
   
 end

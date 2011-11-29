@@ -4,7 +4,6 @@ require 'fog'
 
 require 'node'
 require 'aws'
-require 'puppet'
 
 @start_time = Time.now
 
@@ -21,14 +20,6 @@ def bootstrap(node, options)
   bootstrapper.sync_source
   bootstrapper.install_gems
   timestamp 'bootstrapped'
-end
-
-def create_local_node
-  compute = Fog::Compute.new({
-    :provider => 'AWS',
-    :endpoint => 'http://localhost:4567'
-  })
-  node = compute.servers.bootstrap()
 end
 
 def destroy_node(node, options)
