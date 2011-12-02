@@ -14,7 +14,6 @@ class ErsatzNode
   end
 
   def scp(file, dest)
-    puts "FOOOOOO"
     `scp #{file} #{@username}@#{@dns_name}:#{dest}`
   end
 

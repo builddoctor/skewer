@@ -6,7 +6,7 @@ options = {}
 optparse = OptionParser.new do |opts|
   # generic options
   opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode')") do |c|
-    options[:kind] = c
+    options[:kind] = c.to_sym
   end
   opts.on('-r', '--role NAME', "puppet role class to call") do |r|
     options[:role] = r
@@ -22,6 +22,9 @@ optparse = OptionParser.new do |opts|
   end
 
   # AWS options
+  opts.on('-i', '--image NAME') do |img|
+    options[:image] = img
+  end
   opts.on('--volume SIZE') do |vol|
     # EBS group
     options[:volume] = vol
@@ -42,11 +45,14 @@ def usage
   raise "Usage: #{__FILE__} --cloud <which cloud>  --role <puppet role class>"
 end
 #Now raise an exception if we have not found a host option
-usage unless ['ec2', 'linode'].include? options[:kind]
+unless options[:kind] && options[:image] && options[:role]
+puts options.inspect
+  usage
+end
   
 $: << 'lib'
 require 'instance'
-require 'aws'
+require 'skewer'
 
 Fog.mock! if options[:mock] == true
 
@@ -57,9 +63,12 @@ def create_ebs_volume(name, node, volume_size)
     :availability_zone => node.availability_zone
   volume.server = node
   volume.save
-  
-
 end
+
+skewer = Skewer.new(options)
+skewer.bootstrap
+skewer.go
+
 #def mount_ebs_volume(node, volume_id)
 #  puts "Mounting EBS volume #{volume_id} on #{node.id}"
 #  service = AwsService.new.service
@@ -70,31 +79,33 @@ end
 ##  volume.save
 #end
 
-def create_aws_node(options)
+#def create_aws_node(options)
+
 #  group = AwsSecurityGroup.new('CI', 'Continuous Integration Hosts', [
 #    { :description => 'SSH', :range => 22..22, :options => {} }])
-  node = AwsNode.node('ami-71589518', nil, ['default', options[:group]]).node
-  create_ebs_volume('sdn', node, options[:volume]) if options[:volume]
-  node
-end
+#  node = AwsNode.node('ami-71589518', nil, ['default', options[:group]]).node
+#  create_ebs_volume('sdn', node, options[:volume]) if options[:volume]
+#  node
+#end
 
 
-node = nil
-case options[:kind]
-  when 'ec2' 
-    puts 'Launching an AWS node'
-    node = create_aws_node(options)
-  when 'linode'
-    @is_aws = false
-    compute = Fog::Compute.new(@linode_creds)
-    node = compute.servers[0]
-    puts 'Finding an existing linode node'
-  when 'local'
-    puts 'Faking an AWS node'
-    node = create_local_node
-  else
-    raise "I don't know that cloud"
-end
+#node = nil
+#case options[:kind]
+#  when 'ec2' 
+#    puts 'Launching an AWS node'
+#    node = create_aws_node(options)
+#  when 'linode'
+#    @is_aws = false
+#    compute = Fog::Compute.new(@linode_creds)
+#    node = compute.servers[0]
+#    puts 'Finding an existing linode node'
+#  when 'local'
+#    puts 'Faking an AWS node'
+#    node = create_local_node
+#  else
+#    raise "I don't know that cloud"
+#end
 
 # more functions to die
+
 build_node(node, options)

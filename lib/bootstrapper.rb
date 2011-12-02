@@ -25,5 +25,12 @@ class Bootstrapper
     Source.new('../infrastructure').rsync(@node)
   end
 
+  def go 
+    add_ssh_hostkey
+    execute('rubygems.sh')
+    sync_source
+    install_gems
+  end
+
 
 end
