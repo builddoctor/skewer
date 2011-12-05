@@ -1,5 +1,7 @@
 require 'rake'
 require 'rspec/core/rake_task'
+require 'rake/clean'
+CLEAN.include('coverage')
 
 desc "Run all specs"
 RSpec::Core::RakeTask.new do |t|
