@@ -1,3 +1,5 @@
+require 'rspec'
+require 'skewer_config'
 require 'aws'
 describe AwsNode do 
   it "should have an optional SSH key" do 

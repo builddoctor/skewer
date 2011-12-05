@@ -1,4 +1,5 @@
-require 'config'
+require 'rspec'
+require 'skewer_config'
 describe SkewerConfig do 
   it "should only have one instance" do
     config1 = SkewerConfig.instance

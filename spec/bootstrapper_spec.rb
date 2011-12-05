@@ -6,7 +6,7 @@ describe Bootstrapper do
 
   it "should copy the rubygems profile.d script over" do
     node = mock('node')
-    node.should_receive(:scp).with('./lib/../assets/rubygems.sh', '/var/tmp/.')
+    node.should_receive(:scp).with(ENV['PWD'] + '/lib/../assets/rubygems.sh', '/var/tmp/.')
     node.should_receive(:ssh).with('sudo bash /var/tmp/rubygems.sh')
     Bootstrapper.new(node).execute('rubygems.sh')
   end

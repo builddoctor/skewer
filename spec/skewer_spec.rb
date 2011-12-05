@@ -1,8 +1,5 @@
 require 'skewer'
 describe "skewer" do 
-  it "should have a bootstrapper" do
-    Skewer.new({:kind => :ersatz}).bootstrapper.class.should == Bootstrapper 
-  end
 
   it "shouldn't barf if you instantiate it wthout options" do 
     lambda { Skewer.new({:kind => :nil }) }.should_not raise_exception

@@ -1,4 +1,4 @@
-require 'puppet'
+require 'lib/puppet'
 describe Puppet do
 
  before(:each) do

@@ -2,7 +2,7 @@
 require 'rubygems'
 
 require 'fog'
-require 'config'
+require 'skewer_config'
 
 class AwsService
   attr_reader :service
