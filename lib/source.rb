@@ -8,13 +8,22 @@ class Source
     '--exclude ' + ['.git'].join(' ')
   end
 
+  def create_destination(node)
+    begin
+      node.ssh('mkdir -p infrastructure')
+    rescue
+      raise "Couldn't SSH to #{node.dns_name} with #{node.username}"
+    end
+  end
+
   def rsync_command(node)
-    "rsync #{self.excludes} --delete -apze ssh #{@path}/. #{node.username}@#{node.dns_name}:infrastructure/."
+    "rsync #{self.excludes} --delete -arpze ssh #{@path}/. #{node.username}@#{node.dns_name}:infrastructure/."
   end
 
   def rsync(node)
     puts rsync_command(node)
     print "Copying code to #{node.dns_name} ..."
+    create_destination(node)
 
     raise "Failed to rsync to #{node.dns_name} with #{node.username}" unless system self.rsync_command(node)
     puts " Done."
