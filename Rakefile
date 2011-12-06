@@ -1,3 +1,5 @@
+require 'rubygems'
+
 require 'rake'
 require 'rspec/core/rake_task'
 require 'rake/clean'
@@ -12,4 +14,29 @@ RSpec::Core::RakeTask.new do |t|
   
 end
 
-task :default => :spec
+require 'vagrant'
+
+desc "fire up vagrant so we can test the plain ssh update script"
+task :bumsrush do 
+  env = Vagrant::Environment.new
+  env.cli("destroy")
+end
+
+task :vagrant do 
+  env = Vagrant::Environment.new
+  env.cli("up")
+end
+
+require 'cucumber'
+require 'cucumber/rake/task'
+
+Cucumber::Rake::Task.new(:features) do |t|
+  t.cucumber_opts = "features --format pretty"
+end
+
+
+
+
+task :default => [:spec, :features]
+task :features => :vagrant
+task :clean => :bumsrush
