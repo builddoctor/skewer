@@ -26,9 +26,14 @@ class Skewer
         require 'eucalyptus'
         node = create_local_node
       when :ersatz
-        puts 'Launching a pretened node'
-        require 'ersatz/ersatz_node'
+        puts 'Launching a pretend node'
+        require 'ersatz/ersatz_node.rb'
         node = ErsatzNode.new('localhost', ENV['USERNAME'])
+      when :vagrant
+        puts 'Launching a local vagrant node'
+        require 'ersatz/ersatz_node.rb'
+        node = ErsatzNode.new('default', 'vagrant')
+
       when :nil
         puts "launching a leetle one for testing"
         node = nil
@@ -62,4 +67,9 @@ class Skewer
    destroy
   end
 
+  def self.bootstrap_and_go(options)
+    s = self.new(options)
+    s.bootstrap
+    s.go
+  end
 end
