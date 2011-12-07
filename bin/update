@@ -39,4 +39,4 @@ node = ErsatzNode.new(options[:host], options[:user])
 bs = Bootstrapper.new(node)
 bs.sync_source
 bs.install_gems
-run_puppet(node, options)
+Puppet.run(node, options)
