@@ -7,4 +7,11 @@ describe SkewerConfig do
     config1.should == config2
   end
 
+  it "should have some default options" do 
+    config = SkewerConfig.instance
+    config.get(:puppet_repo).should == '../infrastructure'
+    config.get(:aws_region).should == 'us-east-1'
+    config.get(:flavour_id).should == 'm1.large'
+  end
+
 end
