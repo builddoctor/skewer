@@ -3,7 +3,6 @@ Feature: provisioning a node
   As a someone who wants to deploy something to the machine
   I want to run the provision command
 
-@aruba_timeout_seconds(3)
 Scenario: run the command without args
   When I run `./bin/provision`
   Then the exit status should not be 0
