@@ -1,4 +1,5 @@
 class ErsatzNode 
+  require 'ersatz/ssh_result.rb'
   attr_accessor :username, :dns_name
   def initialize(hostname, user)
     @dns_name = hostname
@@ -15,6 +16,13 @@ class ErsatzNode
 
   def scp(file, dest)
     `scp #{file} #{@username}@#{@dns_name}:#{dest}`
+  end
+
+  def destroy
+  end
+
+  def wait_for
+    
   end
 
 

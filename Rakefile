@@ -4,6 +4,8 @@ require 'rake'
 require 'rspec/core/rake_task'
 require 'rake/clean'
 CLEAN.include('coverage')
+CLEAN.include('/tmp/skewer_test_codez')
+
 
 desc "Run all specs"
 RSpec::Core::RakeTask.new do |t|

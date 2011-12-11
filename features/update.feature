@@ -9,6 +9,7 @@ Scenario: run the command without args
 
 @announce-stdout @announce-stderr
 Scenario: pass in a hostname user and role and 
+  Given I have access to the internet
   When I run `./bin/update --host default --user vagrant --role bar --noop`
   Then the exit status should be 0
 

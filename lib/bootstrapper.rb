@@ -1,6 +1,7 @@
 class Bootstrapper
-  def initialize(node)
+  def initialize(node,options)
     @node = node
+    @options = options
   end
 
   def add_ssh_hostkey
@@ -20,9 +21,12 @@ class Bootstrapper
     @node.ssh command
   end
 
-  def sync_source(source_dir = '../infrastructure') 
+  def sync_source() 
     require 'source'
-    Source.new('../infrastructure').rsync(@node)
+    config = SkewerConfig.instance
+    source_dir = config.get(:puppet_repo)
+    puts "Using Puppet Code from #{source_dir}"
+    Source.new(source_dir).rsync(@node)
   end
 
   def go 

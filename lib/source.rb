@@ -20,12 +20,25 @@ class Source
     "rsync #{self.excludes} --delete -arpze ssh #{@path}/. #{node.username}@#{node.dns_name}:infrastructure/."
   end
 
+  def mock_rsync(command)
+    puts "MOCK: #{command}"
+  end
+
+  def real_rsync(node, command)
+    raise "Failed to rsync to #{node.dns_name} with #{node.username}" unless system(command)
+  end
+
   def rsync(node)
     puts rsync_command(node)
     print "Copying code to #{node.dns_name} ..."
     create_destination(node)
+    command = self.rsync_command(node)
 
-    raise "Failed to rsync to #{node.dns_name} with #{node.username}" unless system self.rsync_command(node)
+    if node.class.to_s =~ /StubNode/
+      mock_rsync(command)
+    else
+      real_rsync(node, command)
+    end
     puts " Done."
   end
 end

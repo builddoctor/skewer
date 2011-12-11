@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 lsbdistcodename=$(grep DISTRIB_CODENAME /etc/lsb-release |cut -d'=' -f2)
-if [ "$lsbdistcodename" == "hardy" -o "$lsbdistcodename" == "lucid"]; then
+if [ "$lsbdistcodename" == "hardy" -o "$lsbdistcodename" == "lucid" ]; then
   
 echo "updating system config"
 cat <<-EOF >> '/etc/apt/sources.list.d/maverick.list'

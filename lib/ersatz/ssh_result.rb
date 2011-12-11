@@ -4,7 +4,7 @@ class ErsatzSSHResult
     @command = command
     @stdout = stdout
     @status = status
+    puts self.class
   end
-
 
 end

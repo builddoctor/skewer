@@ -3,6 +3,7 @@ class Skewer
   attr_reader :bootstrapper, :node
   def initialize(options)
     @options = options
+    @config = SkewerConfig.instance
   end
 
   def select_node(kind)
@@ -33,10 +34,10 @@ class Skewer
         puts 'Launching a local vagrant node'
         require 'ersatz/ersatz_node.rb'
         node = ErsatzNode.new('default', 'vagrant')
-
-      when :nil
-        puts "launching a leetle one for testing"
-        node = nil
+      when :stub
+        puts "launching stub one for testing"
+        require 'stub_node'
+        node = StubNode.new
       else
         raise "I don't know that cloud"
     end
@@ -49,20 +50,22 @@ class Skewer
 
   def bootstrap
     node = select_node(@options[:kind])
-    @bootstrapper = Bootstrapper.new(node)
+    @node = node
+    @bootstrapper = Bootstrapper.new(node, @options)
     @bootstrapper.go
   end
 
   def go 
+    require 'puppet'
     begin
       @node.wait_for { ready? }
-      @bootstrapper.go(node, @options)
+      @bootstrapper.go
       result = Puppet.run(node, @options)
 
       puts "Node ready\n open http://#{@node.dns_name} or \n ssh -l @node.username #{@node.dns_name}"
     rescue Exception => e
-      destroy
       puts e
+      destroy
     end
    destroy
   end
