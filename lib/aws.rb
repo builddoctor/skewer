@@ -6,12 +6,14 @@ require 'skewer_config'
 
 class AwsService
   attr_reader :service
-  def initialize(zone = 'us-east-1')
+  def initialize()
+    zone = SkewerConfig.get('aws_region')
     @service = Fog::Compute.new({
       :provider   => 'AWS',
       :region     => zone
     })
     SkewerConfig.set 'aws_service', @service
+    puts @service.inspect
   end
 
   def self.service
