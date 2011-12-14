@@ -11,7 +11,7 @@ describe SkewerConfig do
     config = SkewerConfig.instance
     config.get(:puppet_repo).should == '../infrastructure'
     config.get(:aws_region).should == 'us-east-1'
-    config.get(:flavour_id).should == 'm1.large'
+    config.get(:flavor_id).should == 'm1.large'
   end
 
   it "should parse json" do 

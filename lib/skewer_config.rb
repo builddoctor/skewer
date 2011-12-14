@@ -2,14 +2,15 @@ require 'singleton'
 
 
 class SkewerConfig
-  attr_accessor :aws_service, :puppet_repo, :aws_region, :flavor_id
+  attr_accessor :aws_service, :puppet_repo, :aws_region, :flavor_id, :aws_username, :flavor_id
   
   include Singleton
 
   def initialize
     @puppet_repo = '../infrastructure'
     @aws_region = 'us-east-1'
-    @flavour_id = 'm1.large'
+    @flavor_id = 'm1.large'
+    @aws_username = 'ubuntu'
     read_config_file
   end
 

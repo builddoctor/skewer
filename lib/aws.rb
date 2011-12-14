@@ -60,8 +60,8 @@ class AwsNode
     service = AwsService.new.service
     node_options  = {
     :image_id       => aws_id ,
-    :flavor_id      => 'm1.large',
-    :username       => 'ubuntu',
+    :flavor_id      => SkewerConfig.get('flavor_id'),
+    :username       => SkewerConfig.get('aws_username'),
     :groups         => group_names
   }
   node_options[:key_name] = options[:key_name] if options[:key_name]

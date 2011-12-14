@@ -17,6 +17,7 @@ class Bootstrapper
   end
 
   def install_gems
+    @node.scp 'assets/Gemfile', 'infrastructure' 
     command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
     @node.ssh command
   end
