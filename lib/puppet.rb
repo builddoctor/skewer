@@ -35,9 +35,6 @@ class Puppet
   def run(node, options)
     command = command_string(node.username, options)
     result = node.ssh(command)[0]
-    puts "Ran: puppet with: #{result.command}"
-    puts "And got status #{result.status}"
-    puts "And result #{result.stdout}"
     raise "Puppet failed.  Do you really want to carry on?" if result.status != 0 
     result
   end
