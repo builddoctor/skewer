@@ -1,0 +1,5 @@
+<% @nodes.each_pair do |k,v|%>
+node <%= k %> {
+  include <%= v %>
+}
+<% end %>
