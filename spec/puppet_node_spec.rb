@@ -18,6 +18,6 @@ describe PuppetNode do
     pn = PuppetNode.new(json)
     pn.to_s.should match /shoopidoop/
     pn.to_s.should match /noop/
-    p
   end
+
 end
