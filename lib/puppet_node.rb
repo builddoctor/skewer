@@ -4,7 +4,7 @@ class PuppetNode
     @nodes = { :default => :noop }
     config = SkewerConfig.instance
     @puppet_repo = config.get(:puppet_repo)
-    if jso
+    if json
       require 'json'
       JSON.parse(json).each_pair do |k,v|
         @nodes[k] = v
