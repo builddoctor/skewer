@@ -17,20 +17,22 @@ class Bootstrapper
   end
 
   def install_gems
-    @node.scp 'assets/Gemfile', 'infrastructure' 
+    @node.scp 'assets/Gemfile', 'infrastructure'
     command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
     @node.ssh command
   end
 
-  def sync_source() 
+  def sync_source()
     require 'source'
+    require 'puppet_node'
     config = SkewerConfig.instance
     source_dir = config.get(:puppet_repo)
     puts "Using Puppet Code from #{source_dir}"
+    PuppetNode.new.render
     Source.new(source_dir).rsync(@node)
   end
 
-  def go 
+  def go
     add_ssh_hostkey
     execute('rubygems.sh')
     sync_source
