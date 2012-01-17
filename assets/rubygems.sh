@@ -4,7 +4,7 @@ lsbdistcodename=$(grep DISTRIB_CODENAME /etc/lsb-release |cut -d'=' -f2)
 if [ "$lsbdistcodename" == "hardy" -o "$lsbdistcodename" == "lucid" ]; then
   
 echo "updating system config"
-cat <<-EOF >> '/etc/apt/sources.list.d/maverick.list'
+cat <<-EOF > '/etc/apt/sources.list.d/maverick.list'
   deb http://archive.ubuntu.com/ubuntu/ maverick universe
   deb http://archive.ubuntu.com/ubuntu/ maverick-updates universe
   deb http://security.ubuntu.com/ubuntu maverick-security universe
@@ -31,6 +31,6 @@ EOF
 chmod 0755 /etc/profile.d/rubygems.sh
 . /etc/profile.d/rubygems.sh
 aptitude update >/dev/null
-aptitude install -y ruby rubygems libopenssl-ruby ruby-dev build-essential libxml2-dev libxslt-dev >/dev/null
+aptitude install -y ruby rubygems libopenssl-ruby ruby-dev build-essential libxml2-dev libxslt-dev
 gem install bundler --no-rdoc --no-ri
 gem install json --no-rdoc --no-ri

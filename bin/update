@@ -37,6 +37,5 @@ node = ErsatzNode.new(options[:host], options[:user])
 # ewww. These functions below must die and be replaced by some sensible arrangement of classes
 
 bs = Bootstrapper.new(node,options)
-bs.sync_source
-bs.install_gems
+bs.go
 Puppet.run(node, options)
