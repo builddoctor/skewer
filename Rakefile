@@ -4,6 +4,7 @@ require 'rake'
 require 'rspec/core/rake_task'
 require 'rake/clean'
 CLEAN.include('coverage')
+CLEAN.include('target')
 CLEAN.include('/tmp/skewer_test_codez')
 
 
@@ -39,6 +40,6 @@ end
 
 
 
-task :default => [:spec, :features]
+task :default => [:clean, :spec, :features]
 task :features => :vagrant
 task :clean => :bumsrush

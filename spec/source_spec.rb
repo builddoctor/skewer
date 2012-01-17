@@ -35,6 +35,6 @@ describe Source do
     node.should_receive(:ssh)
     
     lambda { Source.new('/tmp').rsync(node) }.should raise_exception RuntimeError
- end
+  end
 
 end

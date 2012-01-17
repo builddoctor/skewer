@@ -9,27 +9,27 @@ describe Puppet do
   end
 
   it "should sudo when connecting as root" do
-    @puppet.command_string('goober', {}).should == "#{@sudo_prefix} --modulepath modules --node_terminus=exec --external_nodes=`pwd`/lib/extnode.rb"
+    @puppet.command_string('goober', {}).should == "#{@sudo_prefix} --modulepath modules"
   end
 
-  it "should pass a certname if you ask it " do
-    @puppet.command_string('goober', {:role => 'graunch'}).should == "#{@sudo_prefix} --certname graunch --modulepath modules --node_terminus=exec --external_nodes=`pwd`/lib/extnode.rb"
+  it "should not pass a certname if you give it a role" do
+    @puppet.command_string('goober', {:role => 'graunch'}).should == "#{@sudo_prefix} --modulepath modules"
   end
 
   it "should not sudo when connecting as root" do
-    @puppet.command_string('root', {}).should == "#{@prefix} --modulepath modules --node_terminus=exec --external_nodes=`pwd`/lib/extnode.rb"
+    @puppet.command_string('root', {}).should == "#{@prefix} --modulepath modules"
   end
 
   it "should pass noop when if you pass the option" do
-    @puppet.command_string('root', {:noop => true}).should == "#{@prefix} --modulepath modules --node_terminus=exec --external_nodes=`pwd`/lib/extnode.rb --noop"
+    @puppet.command_string('root', {:noop => true}).should == "#{@prefix} --modulepath modules --noop"
   end
 
   it "should have args for our custom modulepath" do
     @puppet.arguments.should match(/modulepath/)
   end
 
-  it "should have args for our external node configuration" do
-    @puppet.arguments.should match(/external_nodes/)
+  it "should not have args for external node configuration" do
+    @puppet.arguments.should_not match(/external_nodes/)
   end
 
   it "should blow up if something fails" do 

@@ -3,8 +3,6 @@ class Puppet
   def arguments
     [
       "--modulepath modules",
-      "--node_terminus=exec",
-      "--external_nodes=`pwd`/lib/extnode.rb"
     ].join(' ')
   end
 
@@ -22,9 +20,6 @@ class Puppet
     string << " #{self.bundle} exec"
     string << " puppet apply"
     string << " manifests/site.pp" 
-    if options[:role]
-      string << " --certname #{options[:role]}"
-    end
     string << " #{arguments}"
     if options[:noop] 
       string << " --noop"

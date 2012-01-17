@@ -10,6 +10,7 @@ Scenario: run the command without args
 @announce-stdout @announce-stderr
 Scenario: pass in a hostname user and role and no-op
   Given I have access to the internet
-  When I run `./bin/update --host default --user vagrant --role bar --noop`
+  And I have puppet code in "features/puppetcode"
+  When I run `./bin/update --host default --user vagrant --role my_role_class --noop`
   Then the exit status should be 0
 
