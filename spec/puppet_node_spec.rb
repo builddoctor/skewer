@@ -1,4 +1,5 @@
 require 'puppet_node'
+require 'skewer_config'
 describe PuppetNode do
   it "should have a default nodes block" do
     PuppetNode.new.to_s.should match /node default/
@@ -25,6 +26,16 @@ describe PuppetNode do
     config = SkewerConfig.instance
     pn = PuppetNode.new(json)
     pn.puppet_repo.should == config.get(:puppet_repo)
+  end
+
+  it "should allow you to pass in a role on the fly"  do
+    FileUtils.mkdir_p('target/manifests')
+    SkewerConfig.instance.set(:puppet_repo, 'target')
+    pn = PuppetNode.new
+    pn.nodes[:default] = :foobar
+    pn.render
+    File.read('target/manifests/nodes.pp').should match(/foobar/)
+
   end
 
 end

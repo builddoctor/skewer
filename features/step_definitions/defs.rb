@@ -21,6 +21,7 @@ end
 
 Given /^I have a configuration file$/ do
   File.open(@config_file, 'w+') { |f| f << "{\"puppet_repo\": \"#{@puppet_repo}\"}" }
+  puts "I JUST MADE A CONFIG FILE HERE: #{@config_file}"
 end
 
 Given /^I have puppet code in "([^"]*)"$/ do |dir|
