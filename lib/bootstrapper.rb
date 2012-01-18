@@ -29,9 +29,7 @@ class Bootstrapper
     source_dir = config.get(:puppet_repo)
     puts "Using Puppet Code from #{source_dir}"
     if @options[:role]
-      puppet_node = PuppetNode.new
-      puppet_node.nodes[:default] = @options[:role].to_sym
-      puppet_node.render
+      PuppetNode.new({:default => @options[:role].to_sym}).render
     end
     # TODO: if there's no role, it should look it up from an external source
     Source.new(source_dir).rsync(@node)

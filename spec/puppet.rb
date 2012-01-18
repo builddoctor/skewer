@@ -39,7 +39,6 @@ describe Puppet do
     result.stub!('command').and_return('sys-unconfig')
     result.stub!('stdout').and_return('mucho failo')
     node.should_receive(:username).and_return('danmadams')
-    #node.should_receive(:dns_name).and_return('shoopfoopdoopy.doop')
     node.should_receive(:ssh).and_return([result])
     lambda { @puppet.run(node, {})  }.should raise_exception RuntimeError
   end

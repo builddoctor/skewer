@@ -1,16 +1,14 @@
 class PuppetNode
   attr_accessor :nodes, :puppet_repo
-  def initialize(json = nil)
-    @nodes = { :default => :noop }
+  def initialize(nodes = nil)
+    if nodes
+      @nodes = nodes
+    else
+      @nodes = { :default => :noop }
+    end
     config = SkewerConfig.instance
     @puppet_repo = config.get(:puppet_repo)
-    if json
-      require 'json'
-      JSON.parse(json).each_pair do |k,v|
-        @nodes[k] = v
-      end
-    end
-  end
+end
 
   def to_s
     require 'erb'
