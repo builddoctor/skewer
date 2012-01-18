@@ -9,19 +9,19 @@ describe Puppet do
   end
 
   it "should sudo when connecting as root" do
-    @puppet.command_string('goober', {}).should == "#{@sudo_prefix} --modulepath modules"
+    @puppet.command_string('goober', {}).should == "#{@sudo_prefix} --modulepath modules --vardir /var/lib/puppet"
   end
 
   it "should not pass a certname if you give it a role" do
-    @puppet.command_string('goober', {:role => 'graunch'}).should == "#{@sudo_prefix} --modulepath modules"
+    @puppet.command_string('goober', {:role => 'graunch'}).should == "#{@sudo_prefix} --modulepath modules --vardir /var/lib/puppet"
   end
 
   it "should not sudo when connecting as root" do
-    @puppet.command_string('root', {}).should == "#{@prefix} --modulepath modules"
+    @puppet.command_string('root', {}).should == "#{@prefix} --modulepath modules --vardir /var/lib/puppet"
   end
 
   it "should pass noop when if you pass the option" do
-    @puppet.command_string('root', {:noop => true}).should == "#{@prefix} --modulepath modules --noop"
+    @puppet.command_string('root', {:noop => true}).should == "#{@prefix} --modulepath modules --vardir /var/lib/puppet --noop"
   end
 
   it "should have args for our custom modulepath" do

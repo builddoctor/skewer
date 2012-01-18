@@ -20,7 +20,7 @@ optparse = OptionParser.new do |opts|
   opts.on('-r', '--role NAME', "puppet role class to call") do |r|
     options[:role] = r
   end
-  opts.on('-n', '--noop', "puppet role class to call") do |n|
+  opts.on('-n', '--noop', "do a dry run first") do |n|
     options[:noop] = true
   end
 end

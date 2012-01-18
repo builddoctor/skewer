@@ -3,6 +3,7 @@ class Puppet
   def arguments
     [
       "--modulepath modules",
+      "--vardir /var/lib/puppet"
     ].join(' ')
   end
 
