@@ -3,7 +3,7 @@ source "http://rubygems.org"
 
 group :development do
  gem "rspec"
- gem "rcov"
+ gem "metric_fu"
  gem "aruba"
 end
 

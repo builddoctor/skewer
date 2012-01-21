@@ -3,4 +3,6 @@ target
 .DS_Store
 coverage
 .vagrant
+tmp
+target
 features/support/puppetcode/manifests/nodes.pp

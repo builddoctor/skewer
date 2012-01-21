@@ -3,9 +3,15 @@ require 'rubygems'
 require 'rake'
 require 'rspec/core/rake_task'
 require 'rake/clean'
+require 'metric_fu'
 CLEAN.include('coverage')
 CLEAN.include('target')
 CLEAN.include('/tmp/skewer_test_codez')
+ MetricFu::Configuration.run do |config|
+        #define which metrics you want to use
+        config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi]
+        #config.graphs   = [:flog, :flay, :stats]
+    end
 
 
 desc "Run all specs"
