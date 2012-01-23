@@ -33,7 +33,7 @@ class AwsSecurityGroup
    
     if group.nil? == true
       group = @service.create_security_group(name , desc)
-      group = @service.security_groups.get(name)
+      group = groups.get(name)
     end
 
     if ports.length >= 1
@@ -64,7 +64,8 @@ class AwsNode
     :username       => SkewerConfig.get('aws_username'),
     :groups         => group_names
   }
-  node_options[:key_name] = options[:key_name] if options[:key_name]
+  key_name = options[:key_name]
+  node_options[:key_name] = key_name if key_name
   service.servers.bootstrap(node_options)
  
   end

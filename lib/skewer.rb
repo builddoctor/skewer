@@ -8,13 +8,12 @@ class Skewer
 
   def select_node(kind)
     puts "Evaluating #{kind}"
-    node = ''
     case kind
       when :ec2 
         require 'aws'
         puts 'Launching an EC2 node'
-        puts @options.inspect
-        group = @options[:group] ? @options[:group] : 'default'
+        aws_group = @options[:group]
+        group = aws_group ? aws_group : 'default'
         node = AwsNode.new(@options[:image], nil, ['default'])
         #TODO: fix AwsNode, as it's evil
       when :linode
@@ -26,10 +25,10 @@ class Skewer
         puts 'Using the EC2 API'
         require 'eucalyptus'
         node = create_local_node
-      when :ersatz
-        puts 'Launching a pretend node'
-        require 'ersatz/ersatz_node.rb'
-        node = ErsatzNode.new('localhost', ENV['USERNAME'])
+      #when :ersatz
+      #  puts 'Launching a pretend node'
+      #  require 'ersatz/ersatz_node.rb'
+      #  node = ErsatzNode.new('localhost', ENV['USERNAME'])
       when :vagrant
         puts 'Launching a local vagrant node'
         require 'ersatz/ersatz_node.rb'
@@ -62,12 +61,14 @@ class Skewer
       @bootstrapper.go
       result = Puppet.run(node, @options)
 
-      puts "Node ready\n open http://#{@node.dns_name} or \n ssh -l @node.username #{@node.dns_name}"
-    rescue Exception => e
-      puts e
+      node_dns_name = @node.dns_name
+      puts "Node ready\n open http://#{node_dns_name} or \n ssh -l @node.username #{node_dns_name}"
+    rescue Exception => exception
+      puts exception
+
+    ensure
       destroy
     end
-   destroy
   end
 
   def self.bootstrap_and_go(options)

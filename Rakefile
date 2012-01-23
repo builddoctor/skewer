@@ -9,7 +9,7 @@ CLEAN.include('target')
 CLEAN.include('/tmp/skewer_test_codez')
  MetricFu::Configuration.run do |config|
         #define which metrics you want to use
-        config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi]
+        config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi, :rcov]
         #config.graphs   = [:flog, :flay, :stats]
     end
 

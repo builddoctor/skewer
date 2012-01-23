@@ -23,6 +23,7 @@ def create_aws_node(options)
   group = AwsSecurityGroup.new('CI', 'Continuous Integration Hosts', [
     { :description => 'SSH', :range => 22..22, :options => {} }])
   node = AwsNode.node('ami-71589518', nil, ['default', options[:group]]).node
-  create_ebs_volume('sdn', node, options[:volume]) if options[:volume]
+  volume = options[:volume]
+  create_ebs_volume('sdn', node, volume) if volume
   node
 end
