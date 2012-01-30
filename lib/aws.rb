@@ -29,7 +29,7 @@ class AwsSecurityGroup
   def initialize(name, desc, ports)
     @service ||= SkewerConfig.get 'aws_service'
     groups = @service.security_groups
-    group = groups.select {|g| g.name == name }[0]
+    group = groups.select {|group | group.name == name }[0]
    
     if group.nil? == true
       group = @service.create_security_group(name , desc)
