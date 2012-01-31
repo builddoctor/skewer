@@ -1,3 +1,4 @@
+# test stub for pretending to be a real node
 class StubNode
   attr_reader :dns_name, :username
   @dns_name = 'com.doodoo'
