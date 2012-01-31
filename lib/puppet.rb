@@ -1,3 +1,4 @@
+# responsible for executing puppet
 class Puppet
 
   def arguments
@@ -36,8 +37,8 @@ class Puppet
   end
 
   def self.run(node, options)
-    s =  self.new
-    s.run(node, options)
+    this =  self.new
+    this.run(node, options)
   end
 
 end

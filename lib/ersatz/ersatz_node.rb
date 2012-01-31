@@ -1,3 +1,4 @@
+# fakes a fog node
 class ErsatzNode 
   require 'ersatz/ssh_result.rb'
   attr_accessor :username, :dns_name

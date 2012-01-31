@@ -1,3 +1,4 @@
+# responsible for talking to remote machines
 class Node
   attr_reader :username
   def initialize
@@ -27,7 +28,7 @@ class Node
   def ssh(commands)
     results = @ssh.run(commands)
     if results.is_a?(Array)
-      results.each {|r| puts r.stdout } 
+      results.each {|result| puts result.stdout } 
     else
       puts results.stdout
     end

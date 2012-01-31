@@ -1,6 +1,6 @@
 require 'singleton'
 
-
+# responsible for all configuration, once I move all the options in
 class SkewerConfig
   attr_accessor :aws_service, :puppet_repo, :aws_region, :flavor_id, :aws_username, :flavor_id
   

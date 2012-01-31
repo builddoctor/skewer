@@ -1,3 +1,4 @@
+# fakes a fog SSH result
 class ErsatzSSHResult
   attr_accessor :command, :stdout, :status
   def initialize(command, stdout, status)

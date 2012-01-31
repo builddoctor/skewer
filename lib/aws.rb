@@ -4,6 +4,7 @@ require 'rubygems'
 require 'fog'
 require 'skewer_config'
 
+# responsible for making all the AWS objects
 class AwsService
   attr_reader :service
   def initialize()

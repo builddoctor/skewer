@@ -1,3 +1,4 @@
+# responsible for moving source to remote nodes
 class Source
   def initialize(path = nil)
     raise "I can't see the path #{path}" unless File.exists?(path)

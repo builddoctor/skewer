@@ -1,4 +1,5 @@
 require 'skewer_config'
+# puts all of puppet's dependencies on
 class Bootstrapper
   def initialize(node,options)
     @node = node

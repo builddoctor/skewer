@@ -1,3 +1,4 @@
+# responsible for creating a node definition
 class PuppetNode
   attr_accessor :nodes, :puppet_repo
   def initialize(nodes = nil)
@@ -19,9 +20,9 @@ end
 
   def render
     node_file_path = File.join(@puppet_repo, 'manifests','nodes.pp')
-    f = File.new(node_file_path, 'w+')
-    f << self.to_s
-    f.close
+    file = File.new(node_file_path, 'w+')
+    file << self.to_s
+    file.close
   end
 
 

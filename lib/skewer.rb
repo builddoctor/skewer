@@ -1,4 +1,5 @@
 require 'bootstrapper'
+# this is responsible for composing all the other components. or should be.
 class Skewer
   attr_reader :bootstrapper, :node
   def initialize(options)
@@ -65,15 +66,14 @@ class Skewer
       puts "Node ready\n open http://#{node_dns_name} or \n ssh -l @node.username #{node_dns_name}"
     rescue Exception => exception
       puts exception
-
     ensure
       destroy
     end
   end
 
   def self.bootstrap_and_go(options)
-    s = self.new(options)
-    s.bootstrap
-    s.go
+    skewer = self.new(options)
+    skewer.bootstrap
+    skewer.go
   end
 end
