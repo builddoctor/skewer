@@ -27,16 +27,16 @@ class SkewerConfig
   def parse(config)
     require 'json'
     configz = JSON.parse(config)
-    configz.each { |k,v| set(k,v) }
+    configz.each { |key,value| set(key,value) }
   end
 
   def set(attribute, value)
     self.instance_variable_set "@#{attribute}", value
   end
 
-  def self.set(a,v)
-    i = self.instance
-    i.set(a,v)
+  def self.set(key,value)
+    instance = self.instance
+    instance.set(key,value)
   end
 
   def get(attribute)
@@ -46,7 +46,7 @@ class SkewerConfig
     self.instance_variable_get "@" + attribute
   end
 
-  def self.get(k)
-    self.instance.get(k)
+  def self.get(key)
+    self.instance.get(key)
   end
 end
