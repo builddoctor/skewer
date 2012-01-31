@@ -51,7 +51,6 @@ puts options.inspect
 end
   
 $: << 'lib'
-require 'instance'
 require 'skewer'
 
 Fog.mock! if options[:mock] == true

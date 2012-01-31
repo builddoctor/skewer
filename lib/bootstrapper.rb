@@ -1,3 +1,4 @@
+require 'skewer_config'
 class Bootstrapper
   def initialize(node,options)
     @node = node

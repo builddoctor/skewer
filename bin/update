@@ -2,7 +2,7 @@
 require 'optparse'
 $: << 'lib'
 $: <<  'lib/ersatz'
-require 'instance'
+require 'skewer'
 require 'ersatz_node'
 require 'ssh_result'
 require 'puppet'
