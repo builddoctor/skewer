@@ -1,12 +1,8 @@
 # responsible for creating a node definition
 class PuppetNode
   attr_accessor :nodes, :puppet_repo
-  def initialize(nodes = nil)
-    if nodes
-      @nodes = nodes
-    else
-      @nodes = { :default => :noop }
-    end
+  def initialize(nodes = { :default =>:noop})
+    @nodes = nodes
     config = SkewerConfig.instance
     @puppet_repo = config.get(:puppet_repo)
 end
