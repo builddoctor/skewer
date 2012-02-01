@@ -59,7 +59,7 @@ end
 
 class AwsNode
   def initialize(aws_id, tier, group_names, options = {} )
-    service = AwsService.new.service
+    @service = AwsService.new.service
     node_options  = {
     :image_id       => aws_id ,
     :flavor_id      => SkewerConfig.get('flavor_id'),
@@ -68,7 +68,7 @@ class AwsNode
   }
   key_name = options[:key_name]
   node_options[:key_name] = key_name if key_name
-  service.servers.bootstrap(node_options)
+  @service.servers.bootstrap(node_options)
  
   end
   

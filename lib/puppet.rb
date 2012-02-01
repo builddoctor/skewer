@@ -13,20 +13,21 @@ class Puppet
   end
 
   def command_string(username, options)
-    string = "cd infrastructure"
+    @command_line = "cd infrastructure"
     if username == 'root'
-      string << " &&"
+      @command_line << " &&"
     else
-      string <<  " && sudo"
+      @command_line <<  " && sudo"
     end
-    string << " #{self.bundle} exec"
-    string << " puppet apply"
-    string << " manifests/site.pp" 
-    string << " #{arguments}"
+    @command_line << " #{self.bundle} exec"
+    @command_line << " puppet apply"
+    @command_line << " manifests/site.pp"
+    @command_line << " #{arguments}"
     if options[:noop] 
-      string << " --noop"
+      @command_line = " --noop"
+      @command_line << @command_line
     end
-    string
+    @command_line
   end
 
   def run(node, options)
