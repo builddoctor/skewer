@@ -4,6 +4,7 @@ require 'rake'
 require 'rspec/core/rake_task'
 require 'rake/clean'
 require 'metric_fu'
+
 CLEAN.include('coverage')
 CLEAN.include('target')
 CLEAN.include('/tmp/skewer_test_codez')
@@ -11,6 +12,8 @@ CLEAN.include('/tmp/skewer_test_codez')
         #define which metrics you want to use
         config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi, :rcov]
         #config.graphs   = [:flog, :flay, :stats]
+        config.rcov[:test_files] = ['spec/**/*_spec.rb']
+        config.rcov[:rcov_opts] << "-Ispec" # Needed to find spec_helper
     end
 
 
