@@ -29,9 +29,13 @@ optparse = OptionParser.new do |opts|
     # EBS group
     options[:volume] = vol
   end
-  opts.on('-region NAME') do |region|
+  opts.on('--region NAME') do |region|
     # AWS region
-    options[:region]  = region
+    options[:region] = region
+  end
+  opts.on('--key_name NAME') do |k|
+    # AWS SSH key
+    options[:key_name] = k
   end
     # EC2 Security Group
   opts.on('--group NAME') do |group|
@@ -42,7 +46,7 @@ end
 optparse.parse!
 
 def usage
-  raise "Usage: #{__FILE__} --cloud <which cloud>  --role <puppet role class>"
+  raise "Usage: #{__FILE__} --cloud <which cloud>  --image <AWS image> --role <puppet role class>"
 end
 
 unless options[:kind] && options[:image] && options[:role]
