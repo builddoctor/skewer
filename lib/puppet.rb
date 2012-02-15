@@ -24,8 +24,7 @@ class Puppet
     @command_line << " manifests/site.pp"
     @command_line << " #{arguments}"
     if options[:noop] 
-      @command_line = " --noop"
-      @command_line << @command_line
+      @command_line << " --noop"
     end
     @command_line
   end
