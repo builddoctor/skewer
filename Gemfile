@@ -6,8 +6,11 @@ group :development do
  gem "metric_fu"
  gem "aruba"
  gem "vagrant", '0.9.0'
+ gem "jeweler"
 end
-
-gem "fog"
+group :runtime do
+  gem "fog"
+  gem "json"
+end
  
 
