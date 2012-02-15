@@ -1,4 +1,5 @@
 require 'bootstrapper'
+require 'fog'
 # this is responsible for composing all the other components. or should be.
 class Skewer
   attr_reader :bootstrapper, :node
@@ -25,7 +26,7 @@ class Skewer
       when :eucalyptus
         puts 'Using the EC2 API'
         require 'eucalyptus'
-        node = create_local_node
+        node = Eucalyptus.new
       #when :ersatz
       #  puts 'Launching a pretend node'
       #  require 'ersatz/ersatz_node.rb'
