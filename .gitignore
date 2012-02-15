@@ -6,3 +6,4 @@ coverage
 tmp
 target
 features/support/puppetcode/manifests/nodes.pp
+.idea
