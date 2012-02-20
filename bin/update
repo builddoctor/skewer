@@ -32,10 +32,10 @@ unless options[:host] && options[:user]
 end
 
 # ersazt node implements just enough fog 
-node = ErsatzNode.new(options[:host], options[:user])
+node = Skewer::ErsatzNode.new(options[:host], options[:user])
 
 # ewww. These functions below must die and be replaced by some sensible arrangement of classes
 
-bs = Bootstrapper.new(node,options)
+bs = Skewer::Bootstrapper.new(node,options)
 bs.go
-Puppet.run(node, options)
+Skewer::Puppet.run(node, options)

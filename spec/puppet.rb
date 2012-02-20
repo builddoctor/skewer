@@ -1,8 +1,9 @@
 require 'lib/puppet'
-describe Puppet do
 
- before(:each) do
-    @puppet = Puppet.new
+describe Skewer::Puppet do
+
+  before(:each) do
+    @puppet = Skewer::Puppet.new
     @root = File.expand_path File.join(File.dirname(__FILE__), "..")
     @prefix = "cd infrastructure && /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp"
     @sudo_prefix = "cd infrastructure && sudo /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp"
@@ -42,6 +43,4 @@ describe Puppet do
     node.should_receive(:ssh).and_return([result])
     lambda { @puppet.run(node, {})  }.should raise_exception RuntimeError
   end
-
 end
-

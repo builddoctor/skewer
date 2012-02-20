@@ -1,5 +1,7 @@
 require 'rubygems'
 
+require 'bundler'
+
 require 'cucumber'
 require 'cucumber/rake/task'
 require 'metric_fu'
@@ -9,6 +11,8 @@ require 'rspec/core/rake_task'
 require 'vagrant'
 
 CLEAN.include ['coverage', 'target', '/tmp/skewer_test_codez']
+
+Bundler::GemHelper.install_tasks
 
 MetricFu::Configuration.run do |config|
   #define which metrics you want to use

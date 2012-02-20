@@ -59,4 +59,4 @@ require 'skewer'
 
 Fog.mock! if options[:mock] == true
 
-Skewer.bootstrap_and_go(options)
+Skewer::Skewer.bootstrap_and_go(options)
