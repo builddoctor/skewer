@@ -6,16 +6,15 @@ Gem::Specification.new do |s|
   s.name        = "skewer"
   s.version     = Skewer::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
-  s.homepage    = ""
+  s.authors     = ["Julian Simpson", "Kushal Pisavadia"]
+  s.email       = ["medic@build-doctor.com"]
+  s.homepage    = "https://github.com/builddoctor/skewer"
   s.summary     = "skewer-#{s.version}"
-  s.description = %q{TODO: Write a gem description}
+  s.description = "Skewer is a tool that helps you run Puppet code on arbitrary machines"
 
   s.rubyforge_project = "skewer"
 
   s.add_runtime_dependency 'fog', '~> 1.1.2'
-  #s.add_runtime_dependency 'json'
 
   s.add_development_dependency 'jeweler'
   s.add_development_dependency 'rspec'
