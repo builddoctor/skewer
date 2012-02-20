@@ -1,5 +1,5 @@
 require 'puppet_node'
-require 'skewer_config'
+require 'config'
 
 describe Skewer::PuppetNode do
   it "should have a default nodes block" do

@@ -1,5 +1,5 @@
 require 'rspec'
-require 'skewer_config'
+require 'config'
 
 describe Skewer::Config do
   it "should only have one instance" do

@@ -2,7 +2,7 @@
 require 'rubygems'
 
 require 'fog'
-require 'skewer_config'
+require 'config'
 
 module Skewer
   # responsible for making the AWS service

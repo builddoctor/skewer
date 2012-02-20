@@ -1,4 +1,4 @@
-require 'skewer_config'
+require 'config'
 
 module Skewer
   # puts all of puppet's dependencies on
