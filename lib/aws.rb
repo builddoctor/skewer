@@ -44,7 +44,6 @@ module Skewer
           description = port[:description]
           range = port[:range]
           options = port[:options]
-          
           group.revoke_port_range(range)
           group.authorize_port_range(range, {:name => description })
           # TODO: get the port range options in there

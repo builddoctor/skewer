@@ -1,6 +1,6 @@
 require 'aws'
 
-describe Skewer::AwsSecurityGroup do 
+describe Skewer::AwsSecurityGroup do
   Fog.mock!
   it "should use an existing AWS service if it exists" do
     service = Skewer::AwsService.service

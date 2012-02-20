@@ -1,7 +1,7 @@
 require 'bootstrapper'
 require 'source'
 
-describe Skewer::Bootstrapper do 
+describe Skewer::Bootstrapper do
   it "should barf if the file doesn't exist" do
     lambda {
       Skewer::Bootstrapper.new(nil, {}).execute('oberon.sh')

@@ -1,18 +1,20 @@
+require 'ersatz/ssh_result.rb'
+
 module Skewer
   # fakes a fog node
-  class ErsatzNode 
-    require 'ersatz/ssh_result.rb'
+  class ErsatzNode
     attr_accessor :username, :dns_name
+
     def initialize(hostname, user)
       @dns_name = hostname
       @username = user
     end
 
     def ssh(command)
-      full_ssh_command = "ssh  -l #{@username} #{@dns_name} '#{command}'"
+      full_ssh_command = "ssh -l #{@username} #{@dns_name} '#{command}'"
       puts full_ssh_command
       stdout = `#{full_ssh_command}`
-      result = ErsatzSSHResult.new( command, stdout,  $?.exitstatus)
+      result = ErsatzSSHResult.new(command, stdout, $?.exitstatus)
       [result]
     end
 

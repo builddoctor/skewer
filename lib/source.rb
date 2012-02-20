@@ -5,7 +5,7 @@ module Skewer
       raise "I can't see the path #{path}" unless File.exists?(path)
       @path = path.sub(/\/$/, '')
     end
-    
+
     def excludes
       '--exclude ' + ['.git'].join(' ')
     end

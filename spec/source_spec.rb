@@ -1,7 +1,7 @@
 require 'source'
 
-describe Skewer::Source do 
-  it "should have a source directory that exists" do 
+describe Skewer::Source do
+  it "should have a source directory that exists" do
     lambda {
       Skewer::Source.new('/tmp')
     }.should_not raise_exception RuntimeError
@@ -11,7 +11,7 @@ describe Skewer::Source do
     }.should raise_exception RuntimeError
   end
 
-  it "should exclude git from the upload list" do 
+  it "should exclude git from the upload list" do
     Skewer::Source.new('/tmp').excludes.should include '.git'
   end
 
@@ -37,7 +37,7 @@ describe Skewer::Source do
     node.stub!(:dns_name).and_return('com.foo.foo')
     node.stub!(:username).and_return('jimmy')
     node.should_receive(:ssh)
-    
+
     lambda {
       Skewer::Source.new('/tmp').rsync(node)
     }.should raise_exception RuntimeError

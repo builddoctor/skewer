@@ -1,7 +1,8 @@
 require 'rspec'
 require 'skewer_config'
 require 'aws'
-describe Skewer::AwsNode do 
+
+describe Skewer::AwsNode do
   it "should have an optional SSH key" do 
     lambda {
       Fog.mock!

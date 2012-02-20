@@ -4,7 +4,7 @@ module Skewer
   # responsible for all configuration, once I move all the options in
   class Config
     attr_accessor :aws_service, :puppet_repo, :aws_region, :flavor_id, :aws_username, :flavor_id
-    
+
     include Singleton
 
     def initialize

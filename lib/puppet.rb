@@ -23,7 +23,7 @@ module Skewer
       @command_line << " puppet apply"
       @command_line << " manifests/site.pp"
       @command_line << " #{arguments}"
-      if options[:noop] 
+      if options[:noop]
         @command_line << " --noop"
       end
       @command_line
@@ -32,7 +32,7 @@ module Skewer
     def run(node, options)
       command = command_string(node.username, options)
       result = node.ssh(command)[0]
-      raise "Puppet failed.  Do you really want to carry on?" if result.status != 0 
+      raise "Puppet failed. Do you really want to carry on?" if result.status != 0
       result
     end
 
