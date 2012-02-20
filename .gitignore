@@ -1,9 +1,36 @@
-**/*.swp
-target
-.DS_Store
-coverage
+# Skewer
 .vagrant
+features/support/puppetcode/manifests/nodes.pp
+
+# Gem-related
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+
+# Vim
+.*.sw[a-z]
+*.un~
+Session.vim
+
+# OS X
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Misc
+coverage
 tmp
 target
-features/support/puppetcode/manifests/nodes.pp
 .idea
