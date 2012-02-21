@@ -5,7 +5,7 @@ options = {}
 
 optparse = OptionParser.new do |opts|
   # generic options
-  opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode')") do |c|
+  opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode', 'rackspace')") do |c|
     options[:kind] = c.to_sym
   end
   opts.on('-r', '--role NAME', "puppet role class to call") do |r|

@@ -1,5 +1,7 @@
-require 'bootstrapper'
+require 'rubygems'
 require 'fog'
+
+require 'bootstrapper'
 
 module Skewer
   # this is responsible for composing all the other components. or should be.
@@ -20,6 +22,8 @@ module Skewer
         group = aws_group ? aws_group : 'default'
         node = AwsNode.new(@options[:image], nil, ['default'])
         #TODO: fix AwsNode, as it's evil
+      when :rackspace
+        raise "not implemented"
       when :linode
         #compute = Fog::Compute.new(@linode_creds)
         #node = compute.servers[0]
