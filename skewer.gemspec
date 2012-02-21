@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.version     = Skewer::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Julian Simpson", "Kushal Pisavadia"]
-  s.email       = ["medic@build-doctor.com"]
-  s.homepage    = "https://github.com/builddoctor/skewer"
+  s.email       = ["julian@build-doctor.com"]
+  s.homepage    = "http://www.build-doctor.com/skewer"
   s.summary     = "skewer-#{s.version}"
-  s.description = "Skewer is a tool that helps you run Puppet code on arbitrary machines"
+  s.description = "Runs masterless puppet code on cloud machines"
 
   s.rubyforge_project = "skewer"
 
