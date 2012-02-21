@@ -1,5 +1,4 @@
 require 'rspec'
-require 'config'
 require 'aws'
 
 describe Skewer::AwsNode do
