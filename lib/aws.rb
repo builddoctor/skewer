@@ -18,39 +18,32 @@ module Skewer
       puts @service.inspect
     end
 
-    def self.service
-      self.new.service
+  def ensure_port_ranges(group, ports)
+    ports.each do |port|
+
+      description = port[:description]
+      range = port[:range]
+      options = port[:options]
+
+      group.revoke_port_range(range)
+      group.authorize_port_range(range, {:name => description})
+      # TODO: get the port range options in there
     end
   end
 
-  # responsible for making security groups
-  class AwsSecurityGroup
-    attr_reader :group
-    attr_reader :name
-    attr_reader :service
+  def initialize(name, desc, ports)
+    @service ||= SkewerConfig.get 'aws_service'
+    groups = @service.security_groups
+    group = groups.select {|group | group.name == name }[0]
+   
+    if group.nil? == true
+      group = @service.create_security_group(name , desc)
+      group = groups.get(name)
+    end
+  end
 
-    def initialize(name, desc, ports)
-      @service ||= Config.get 'aws_service'
-      groups = @service.security_groups
-      group = groups.select {|group | group.name == name }[0]
-      
-      if group.nil? == true
-        group = @service.create_security_group(name , desc)
-        group = groups.get(name)
-      end
-
-      if ports.length >= 1
-        ports.each do |port|
-          description = port[:description]
-          range = port[:range]
-          options = port[:options]
-          group.revoke_port_range(range)
-          group.authorize_port_range(range, {:name => description })
-          # TODO: get the port range options in there
-        end
-      end
-      @group = group
-      @name = name
+    if ports.length >= 1
+      ensure_port_ranges(group, ports)
     end
   end
 
