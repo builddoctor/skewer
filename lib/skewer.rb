@@ -23,7 +23,9 @@ module Skewer
         node = AwsNode.new(@options[:image], nil, ['default'])
         #TODO: fix AwsNode, as it's evil
       when :rackspace
-        raise "not implemented"
+        require 'rackspace'
+        puts 'Launching a Rackspace node'
+        node = RackspaceNode.new
       when :linode
         #compute = Fog::Compute.new(@linode_creds)
         #node = compute.servers[0]
