@@ -9,9 +9,8 @@ module Skewer
   class RackspaceNode
     attr_reader :dns_name
 
-    # By default, boot a gentoo server (flavor 1=256,
-    # image 3=gentoo 2008.0).
-    def initialize
+    # By default, boot an Ubuntu 10.04 LTS (lucid) server.
+    def initialize(flavor = 1, image = 49, name = 'my_server')
       connection = Fog::Compute.new(
         :provider => 'rackspace',
         :rackspace_api_key  => '',
@@ -19,9 +18,9 @@ module Skewer
       )
 
       options = {
-        :flavor_id  => 1,
-        :image_id   => 3,
-        :name       => 'my_server',
+        :flavor_id  => flavor,
+        :image_id   => image,
+        :name       => name,
         :public_key => ''
       }
       

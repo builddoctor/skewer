@@ -25,7 +25,7 @@ module Skewer
       when :rackspace
         require 'rackspace'
         puts 'Launching a Rackspace node'
-        node = RackspaceNode.new
+        node = RackspaceNode.new(nil, @options[:image], 'default')
       when :linode
         #compute = Fog::Compute.new(@linode_creds)
         #node = compute.servers[0]
