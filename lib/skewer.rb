@@ -17,11 +17,13 @@ module Skewer
       case kind
       when :ec2 
         require 'aws/security_group'
+        require 'aws/node'
+        require 'aws/service'
         puts 'Launching an EC2 node'
         aws_group = @options[:group]
         group = aws_group ? aws_group : 'default'
-        node = AwsNode.new(@options[:image], nil, ['default'])
-        #TODO: fix AwsNode, as it's evil
+        node = AwsNode.new(@options[:image], ['default']).node
+
       when :rackspace
         require 'rackspace'
         puts 'Launching a Rackspace node'
