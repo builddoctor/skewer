@@ -17,6 +17,13 @@ module Skewer
       Config.set 'aws_service', @service
       puts @service.inspect
     end
+    def self.service
+      self.new.service
+    end
+  end
+
+  class AwsSecurityGroup
+    attr_reader :service, :group
 
   def ensure_port_ranges(group, ports)
     ports.each do |port|
@@ -32,7 +39,7 @@ module Skewer
   end
 
   def initialize(name, desc, ports)
-    @service ||= SkewerConfig.get 'aws_service'
+    @service ||= Config.get 'aws_service'
     groups = @service.security_groups
     group = groups.select {|group | group.name == name }[0]
    
@@ -40,12 +47,14 @@ module Skewer
       group = @service.create_security_group(name , desc)
       group = groups.get(name)
     end
-  end
+    @group = group
+
 
     if ports.length >= 1
       ensure_port_ranges(group, ports)
     end
   end
+end
 
   class AwsNode
     def initialize(aws_id, tier, group_names, options = {} )
@@ -60,5 +69,6 @@ module Skewer
       node_options[:key_name] = key_name if key_name
       @service.servers.bootstrap(node_options)
     end
-  end
+    end
 end
+
