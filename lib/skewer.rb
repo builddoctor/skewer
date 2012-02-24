@@ -16,7 +16,7 @@ module Skewer
       puts "Evaluating #{kind}"
       case kind
       when :ec2 
-        require 'aws'
+        require 'aws/aws_security_group'
         puts 'Launching an EC2 node'
         aws_group = @options[:group]
         group = aws_group ? aws_group : 'default'
