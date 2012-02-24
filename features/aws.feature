@@ -6,6 +6,9 @@ Feature: provisioning a node on AWS
 @announce-stdout
 @announce-stderr
 @wip
+
+  # This depends on access to an SSHkey.
+  # Probably easiest to create a new key, use it, and delete it.
 Scenario: config in local file
   Given I have puppet code in "/tmp/skewer_test_code"
   And I have a configuration file

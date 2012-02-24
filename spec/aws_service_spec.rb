@@ -9,6 +9,6 @@ describe Skewer::AwsService do
 
   it "should register itself for reuse" do
     service = Skewer::AwsService.service
-    Skewer::Config.get('aws_service').should == service
+    Skewer::SkewerConfig.get('aws_service').should == service
   end
 end

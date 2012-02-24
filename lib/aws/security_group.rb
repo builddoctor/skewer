@@ -16,7 +16,7 @@ module Skewer
     end
 
     def initialize(name, desc, ports)
-      @service ||= Config.get 'aws_service'
+      @service ||= SkewerConfig.get 'aws_service'
       groups = @service.security_groups
       group = groups.select { |group| group.name == name }[0]
 

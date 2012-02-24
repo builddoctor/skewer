@@ -25,10 +25,24 @@ module Skewer
       @node.ssh command
     end
 
+    def add_key_to_agent(executor = Kernel, homedir = ENV['HOME'])
+       config = SkewerConfig.instance
+
+      key_name = config.get('key_name')
+
+
+      key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
+      puts "****Looking for #{key_path}"
+      if File.exists?(key_path)
+        puts "Adding #{key_path}"
+        executor.system("ssh-add #{key_path}")
+      end
+    end
+
     def sync_source()
       require 'source'
       require 'puppet_node'
-      config = Config.instance
+      config = SkewerConfig.instance
       source_dir = config.get(:puppet_repo)
       puts "Using Puppet Code from #{source_dir}"
       role = @options[:role]
@@ -42,6 +56,7 @@ module Skewer
     def go
       add_ssh_hostkey
       execute('rubygems.sh')
+      add_key_to_agent
       sync_source
       install_gems
     end

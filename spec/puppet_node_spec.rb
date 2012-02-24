@@ -16,14 +16,14 @@ describe Skewer::PuppetNode do
 
   it "should know about the puppet directory" do
     nodes = {"shoopdoop" => "foopidoop"}
-    config = Skewer::Config.instance
+    config = Skewer::SkewerConfig.instance
     pn = Skewer::PuppetNode.new(nodes)
     pn.puppet_repo.should == config.get(:puppet_repo)
   end
 
   it "should allow you to pass in a role on the fly"  do
     FileUtils.mkdir_p('target/manifests')
-    Skewer::Config.instance.set(:puppet_repo, 'target')
+    Skewer::SkewerConfig.instance.set(:puppet_repo, 'target')
     pn = Skewer::PuppetNode.new({:default => :foobar})
     pn.render
     File.read('target/manifests/nodes.pp').should match(/foobar/)

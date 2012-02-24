@@ -9,7 +9,7 @@ module Skewer
     attr_reader :bootstrapper, :node
     def initialize(options)
       @options = options
-      @config = Config.instance
+      @config = SkewerConfig.instance
     end
 
     def select_node(kind)

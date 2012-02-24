@@ -5,7 +5,7 @@ module Skewer
 
     def initialize(nodes = { :default =>:noop})
       @nodes = nodes
-      config = Config.instance
+      config = SkewerConfig.instance
       @puppet_repo = config.get(:puppet_repo)
     end
 
