@@ -1,4 +1,4 @@
-require 'aws/aws_service'
+require 'aws/service'
 require 'fog'
 
 describe Skewer::AwsService do

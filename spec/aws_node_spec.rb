@@ -1,5 +1,5 @@
 require 'rspec'
-require 'aws/aws_node'
+require 'aws/node'
 
 describe Skewer::AwsNode do
   it "should have an optional SSH key" do 

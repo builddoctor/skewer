@@ -1,5 +1,5 @@
 
-require 'aws/aws_security_group'
+require 'aws/security_group'
 require 'fog'
 
 describe Skewer::AwsSecurityGroup do
