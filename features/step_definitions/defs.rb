@@ -25,12 +25,24 @@ Given /^I have a configuration file$/ do
 end
 
 Given /^I have puppet code in "([^"]*)"$/ do |dir|
-  FileUtils.mkdir_p(File.join(dir, 'manifests'))
+
+  puppet_code_source = File.join(File.dirname(__FILE__), '../support/puppetcode')
+  puts "Copying #{puppet_code_source} to #{dir}"
+  FileUtils.cp_r(puppet_code_source, dir) unless File.exists?(dir)
   @puppet_repo = dir
 end
 
+
+require 'resolv-replace'
+require 'ping'
+
+def internet_connection?
+  Ping.pingecho "google.com", 1, 80
+end
+
+
 Given /^I have access to the internet$/ do
-  system('ping -c 2 google.com').should == true
+  internet_connection?.should == true
 end
 
 Then /^the file "([^"]*)" should exist$/ do |file|

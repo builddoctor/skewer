@@ -10,7 +10,7 @@ require 'rake/clean'
 require 'rspec/core/rake_task'
 require 'vagrant'
 
-CLEAN.include ['coverage', 'target', '/tmp/skewer_test_codez']
+CLEAN.include ['coverage', 'target', '/tmp/skewer_test_code', '/tmp/more_skewer_test_code']
 
 Bundler::GemHelper.install_tasks
 
@@ -38,7 +38,7 @@ task :vagrant do
 end
 
 Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format pretty"
+  t.cucumber_opts = "features --format pretty --tags=~@wip"
 end
 
 task :default => [:clean, :spec, :features]
