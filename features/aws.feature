@@ -1,6 +1,6 @@
 Feature: provisioning a node on AWS
   In order to run my puppet code on a new AWS machine
-  As a someone who wants to deploy something to the machine
+  As someone who wants to deploy something to the machine
   I want to run the provision command
 
 @announce-stdout
