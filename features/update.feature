@@ -11,7 +11,10 @@ Scenario: run the command without args
 Scenario: pass in a hostname user and role and no-op
   Given I have access to the internet
   And I have puppet code in "/tmp/skewer_test_code"
-  And I have a configuration file
+    And a file named ".skewer.json" with:
+  """
+  {"puppet_repo":"/tmp/skewer_test_code"}
+  """
   When I run `./bin/update --host default --user vagrant --role my_role_class --noop`
   Then the exit status should be 0
   And the stdout should contain "this is a dirty great role class that actually does nothing"

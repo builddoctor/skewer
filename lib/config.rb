@@ -14,17 +14,21 @@ module Skewer
       @flavor_id = 'm1.large'
       @aws_username = 'ubuntu'
 
-      read_config_file
+      read_config_files
     end
 
-    def read_config_file
-      config_file =  File.join(ENV['HOME'], '.skewer.json')
+    def read_config_file(config_file)
       if File.exists?(config_file)
         puts "reading #{config_file}"
         config = File.read(config_file)
         parse(config)
         puts self.inspect
       end
+    end
+
+    def read_config_files
+      read_config_file(File.join(ENV['HOME'], '.skewer.json'))
+      read_config_file('.skewer.json')
     end
 
     def parse(config)

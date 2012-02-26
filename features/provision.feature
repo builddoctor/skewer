@@ -18,7 +18,10 @@ Scenario: pass in a cloud image and role
 @announce-stderr
 Scenario: config in local file
   Given I have puppet code in "/tmp/skewer_test_code"
-  And I have a configuration file
+  And a file named ".skewer.json" with:
+  """
+  {"puppet_repo":"/tmp/skewer_test_code"}
+  """
   When I run `./bin/provision --cloud stub --role foobar --image ami-deadbeef`
   Then the stdout should contain "Using Puppet Code from /tmp/skewer_test_code"
 
@@ -26,6 +29,9 @@ Scenario: config in local file
 @announce-stderr
 Scenario: generated node file
    Given I have puppet code in "/tmp/more_skewer_test_code"
-   And I have a configuration file
+   And a file named ".skewer.json" with:
+  """
+  {"puppet_repo":"/tmp/skewer_test_code"}
+  """
    When I run `./bin/provision --cloud stub --role foobar --image ami-deadbeef`
    Then the file "/tmp/more_skewer_test_code/manifests/nodes.pp" should exist
