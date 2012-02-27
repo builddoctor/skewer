@@ -1,6 +1,7 @@
 # Skewer
 .vagrant
 .gitignore
+.skewer.json
 features/support/puppetcode/manifests/nodes.pp
 
 # Gem-related
