@@ -31,3 +31,13 @@ end
 Then /^the file "([^"]*)" should exist$/ do |file|
   File.exists?(file).should == true
 end
+
+Then /^the file "([^"]*)" (.*) match "([^"]*)"$/ do |file, condition, expr|
+  file_contents = File.read(file)
+  if condition == 'should'
+    file_contents.should match expr
+  else
+    file_contents.should_not match expr
+  end
+end
+
