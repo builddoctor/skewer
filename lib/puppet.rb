@@ -32,6 +32,7 @@ module Skewer
     def run(node, options)
       command = command_string(node.username, options)
       result = node.ssh(command)[0]
+      puts result.inspect
       raise "Puppet failed. Do you really want to carry on?" if result.status != 0
       result
     end

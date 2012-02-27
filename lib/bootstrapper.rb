@@ -16,21 +16,25 @@ module Skewer
       file = File.join(File.dirname(__FILE__), '..', 'assets', file_name)
       raise "#{file} does not exist" unless File.exists? file
       @node.scp file, '/var/tmp/.'
-      @node.ssh "sudo bash /var/tmp/#{file_name}"
+      result = @node.ssh "sudo bash /var/tmp/#{file_name}"
+      puts result[0].stdout
+      puts result[0].stderr
+      puts result.inspect
+      # what if it fails?
     end
 
     def install_gems
+      puts "Installing Gems"
       @node.scp 'assets/Gemfile', 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
-      @node.ssh command
+      puts @node.ssh(command)[0].stdout
+      puts @node.ssh(command)[0].stderr
+      # what if it fails?
     end
 
     def add_key_to_agent(executor = Kernel, homedir = ENV['HOME'])
-       config = SkewerConfig.instance
-
+      config = SkewerConfig.instance
       key_name = config.get('key_name')
-
-
       key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
       puts "****Looking for #{key_path}"
       if File.exists?(key_path)
