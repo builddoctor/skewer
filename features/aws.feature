@@ -10,7 +10,7 @@ Scenario: Roll out AWS node and configure it
   Given I have puppet code in "/tmp/skewer_test_code"
   And a file named ".skewer.json" with:
 """
-{"puppet_repo": "/tmp/skewer_test_code", "key_name":  "$AWS_KEY"}
+{"puppet_repo": "/tmp/skewer_test_code", "key_name":  "testytesty"}
 """
   When I run `./bin/provision --cloud ec2 --role foobar --image ami-5c9b4935`
   Then the stdout should contain "Using Puppet Code from /tmp/skewer_test_code"
