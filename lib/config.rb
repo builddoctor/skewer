@@ -56,5 +56,12 @@ module Skewer
     def self.get(key)
       self.instance.get(key)
     end
+
+    def slurp_options(options)
+      options.each_pair do |key, value|
+        self.set(key, value)
+      end
+
+    end
   end
 end

@@ -33,4 +33,14 @@ describe Skewer::SkewerConfig do
     config.set(:test_key, 'test_value')
     config.get(:test_key).should == 'test_value'
   end
+
+  it "should be able to swallow options" do
+     config = Skewer::SkewerConfig.instance
+     options = {'rodent' => 'bunnyrabbit', 'canine' => 'dingo' }
+     config.slurp_options(options)
+     config.get('rodent').should == 'bunnyrabbit'
+     config.get('canine').should == 'dingo'
+     config.get('aws_region').should == 'us-east-1'
+
+  end
 end
