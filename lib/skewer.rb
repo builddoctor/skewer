@@ -65,7 +65,6 @@ module Skewer
       node = select_node(@options[:kind])
       @node = node
       @bootstrapper = Bootstrapper.new(node, @options)
-      @bootstrapper.go
     end
 
     def go 
