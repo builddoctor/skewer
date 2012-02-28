@@ -23,7 +23,6 @@ module Skewer
         aws_group = @options[:group]
         group = aws_group ? aws_group : 'default'
         node = AwsNode.new(@options[:image], ['default']).node
-
       when :rackspace
         require 'rackspace'
         puts 'Launching a Rackspace node'
@@ -73,8 +72,12 @@ module Skewer
         @bootstrapper.go
         result = Puppet.run(node, @options)
 
-        node_dns_name = @node.dns_name
-        puts "Node ready\n open http://#{node_dns_name} or \n ssh -l @node.username #{node_dns_name}"
+        if node.respond_to? :public_ip_address
+          location = node.public_ip_address
+        else
+          location = node.dns_name
+        end
+        puts "Node ready\n open http://#{location} or \n ssh -l #{@node.username} #{location}"
       rescue Exception => exception
         puts exception
       ensure

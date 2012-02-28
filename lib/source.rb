@@ -14,12 +14,22 @@ module Skewer
       begin
         node.ssh('mkdir -p infrastructure')
       rescue
-        raise "Couldn't SSH to #{node.dns_name} with #{node.username}"
+        if node.respond_to? :public_ip_address
+          location = node.public_ip_address
+        else
+          location = node.dns_name
+        end
+        raise "Couldn't SSH to #{location} with #{node.username}"
       end
     end
 
     def rsync_command(node)
-      "rsync #{self.excludes} --delete -arpze ssh #{@path}/. #{node.username}@#{node.dns_name}:infrastructure/."
+      if node.respond_to? :public_ip_address
+        location = node.public_ip_address
+      else
+        location = node.dns_name
+      end
+      "rsync #{self.excludes} --delete -arpze ssh #{@path}/. #{node.username}@#{location}:infrastructure/."
     end
 
     def mock_rsync(command)
@@ -27,12 +37,22 @@ module Skewer
     end
 
     def real_rsync(node, command)
-      raise "Failed to rsync to #{node.dns_name} with #{node.username}" unless system(command)
+      if node.respond_to? :public_ip_address
+        location = node.public_ip_address
+      else
+        location = node.dns_name
+      end
+      raise "Failed to rsync to #{location} with #{node.username}" unless system(command)
     end
 
     def rsync(node)
       puts rsync_command(node)
-      print "Copying code to #{node.dns_name} ..."
+      if node.respond_to? :public_ip_address
+        location = node.public_ip_address
+      else
+        location = node.dns_name
+      end
+      print "Copying code to #{location} ..."
       create_destination(node)
       command = self.rsync_command(node)
 

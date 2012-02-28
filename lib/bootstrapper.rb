@@ -9,7 +9,12 @@ module Skewer
     end
 
     def add_ssh_hostkey
-      system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{@node.dns_name} >/dev/null 2>&1"
+      if @node.respond_to? :public_ip_address
+        location = @node.public_ip_address
+      else
+        location = @node.dns_name
+      end
+      system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{location} >/dev/null 2>&1"
     end
 
     def execute(file_name)

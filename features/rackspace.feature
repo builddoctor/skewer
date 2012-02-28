@@ -5,7 +5,6 @@ Feature: provisioning a node on Rackspace
 
 @announce-stdout
 @announce-stderr
-@wip
 Scenario: config in local file
   Given I have puppet code in "/tmp/skewer_test_code"
   And a file named ".skewer.json" with:
@@ -16,6 +15,7 @@ Scenario: config in local file
   "image_id":"112"
 }
 """
-  When I run `./bin/provision --cloud rackspace --role foobar --image 58`
-  Then the stdout should contain "Launching a Rackspace node"
+  When I run `./bin/provision --cloud rackspace --role foobar --image 112`
+  Then the stdout should contain "Evaluating rackspace"
+  And the stdout should contain "Launching a Rackspace node"
   And the stdout should contain "Using Puppet Code from /tmp/skewer_test_code"
