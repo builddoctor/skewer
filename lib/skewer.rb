@@ -2,14 +2,17 @@ require 'rubygems'
 require 'fog'
 
 require 'bootstrapper'
+require 'util'
 
 module Skewer
   # this is responsible for composing all the other components. or should be.
   class Skewer
     attr_reader :bootstrapper, :node
+
     def initialize(options)
       @options = options
       @config = SkewerConfig.instance
+      @util = Util.new
     end
 
     def select_node(kind)
@@ -72,11 +75,7 @@ module Skewer
         @bootstrapper.go
         result = Puppet.run(node, @options)
 
-        if node.respond_to? :public_ip_address
-          location = node.public_ip_address
-        else
-          location = node.dns_name
-        end
+        location = @util.get_location(node)
         puts "Node ready\n open http://#{location} or \n ssh -l #{@node.username} #{location}"
       rescue Exception => exception
         puts exception

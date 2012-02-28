@@ -1,4 +1,5 @@
 require 'config'
+require 'util'
 
 module Skewer
   # puts all of puppet's dependencies on
@@ -6,14 +7,11 @@ module Skewer
     def initialize(node,options)
       @node = node
       @options = options
+      @util = Util.new
     end
 
     def add_ssh_hostkey
-      if @node.respond_to? :public_ip_address
-        location = @node.public_ip_address
-      else
-        location = @node.dns_name
-      end
+      location = @util.get_location(@node)
       system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{location} >/dev/null 2>&1"
     end
 

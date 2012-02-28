@@ -1,7 +1,10 @@
+require 'util'
+
 module Skewer
   # responsible for moving source to remote nodes
   class Source
     def initialize(path = nil)
+      @util = Util.new
       raise "I can't see the path #{path}" unless File.exists?(path)
       @path = path.sub(/\/$/, '')
     end
@@ -14,21 +17,13 @@ module Skewer
       begin
         node.ssh('mkdir -p infrastructure')
       rescue
-        if node.respond_to? :public_ip_address
-          location = node.public_ip_address
-        else
-          location = node.dns_name
-        end
+        location = @util.get_location(node)
         raise "Couldn't SSH to #{location} with #{node.username}"
       end
     end
 
     def rsync_command(node)
-      if node.respond_to? :public_ip_address
-        location = node.public_ip_address
-      else
-        location = node.dns_name
-      end
+      location = @util.get_location(node)
       "rsync #{self.excludes} --delete -arpze ssh #{@path}/. #{node.username}@#{location}:infrastructure/."
     end
 
@@ -37,21 +32,13 @@ module Skewer
     end
 
     def real_rsync(node, command)
-      if node.respond_to? :public_ip_address
-        location = node.public_ip_address
-      else
-        location = node.dns_name
-      end
+      location = @util.get_location(node)
       raise "Failed to rsync to #{location} with #{node.username}" unless system(command)
     end
 
     def rsync(node)
       puts rsync_command(node)
-      if node.respond_to? :public_ip_address
-        location = node.public_ip_address
-      else
-        location = node.dns_name
-      end
+      location = @util.get_location(node)
       print "Copying code to #{location} ..."
       create_destination(node)
       command = self.rsync_command(node)
