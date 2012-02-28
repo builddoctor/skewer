@@ -18,6 +18,11 @@ module Skewer
 
       # Get our SSH key to attach it to the server.
       path = File.expand_path '~/.ssh/id_rsa.pub'
+      if File.exist?(path) == false
+        path = File.expand_path '~/.ssh/id_dsa.pub'
+        raise "Couldn't find a public key" if File.exist?(path) == false
+      end
+
       file = File.open path
       key = file.read
 
