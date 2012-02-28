@@ -34,6 +34,6 @@ EOF
 chmod 0755 /etc/profile.d/rubygems.sh
 . /etc/profile.d/rubygems.sh
 aptitude update >/dev/null
-aptitude install -y ruby rubygems libopenssl-ruby ruby-dev build-essential libxml2-dev libxslt-dev
+aptitude install -y rsync ruby rubygems libopenssl-ruby ruby-dev build-essential libxml2-dev libxslt-dev
 gem install bundler --no-rdoc --no-ri
 gem install json --no-rdoc --no-ri
