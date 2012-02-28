@@ -12,6 +12,7 @@ module Skewer
     def initialize(options)
       @options = options
       @config = SkewerConfig.instance
+      @config.slurp_options(options)
       @util = Util.new
     end
 

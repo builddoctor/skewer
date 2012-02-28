@@ -11,14 +11,14 @@ optparse = OptionParser.new do |opts|
   opts.on('-r', '--role NAME', "puppet role class to call") do |r|
     options[:role] = r
   end
+  opts.on('--puppetcode') do |pc|
+    options[:puppetcode] = pc
+  end
   opts.on('-m', '--mock') do |m|
     options[:mock] = true
   end
   opts.on('--keep') do |k|
     options[:keep] = true
-  end
-  opts.on('--key') do |k|
-    options[:key] = k
   end
 
   # AWS options
@@ -33,7 +33,7 @@ optparse = OptionParser.new do |opts|
     # AWS region
     options[:region] = region
   end
-  opts.on('--key_name NAME') do |k|
+  opts.on('--key', '--key_name NAME') do |k|
     # AWS SSH key
     options[:key_name] = k
   end
@@ -50,7 +50,6 @@ def usage
 end
 
 unless options[:kind] && options[:image] && options[:role]
-puts options.inspect
   usage
 end
   

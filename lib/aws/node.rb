@@ -10,11 +10,12 @@ module Skewer
           :groups => group_names
           #:key_name => SkewerConfig.get('key_name')
       }
+
       if options[:key_name]
         node_options[:key_name] = options[:key_name]
       end
 
-      if SkewerConfig.get('key_name')
+      if SkewerConfig.instance.get('key_name')
          node_options[:key_name] = SkewerConfig.get('key_name')
 
       end
