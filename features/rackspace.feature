@@ -18,4 +18,3 @@ Scenario: config in local file
   When I run `./bin/provision --cloud rackspace --role foobar --image 112`
   Then the stdout should contain "Evaluating rackspace"
   And the stdout should contain "Launching a Rackspace node"
-  And the stdout should contain "Using Puppet Code from /tmp/skewer_test_code"
