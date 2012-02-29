@@ -18,6 +18,7 @@ module Skewer
 
     def select_node(kind)
       puts "Evaluating #{kind}"
+      image = @options[:image]
       case kind
       when :ec2 
         require 'aws/security_group'
@@ -26,11 +27,11 @@ module Skewer
         puts 'Launching an EC2 node'
         aws_group = @options[:group]
         group = aws_group ? aws_group : 'default'
-        node = AwsNode.new(@options[:image], ['default']).node
+        node = AwsNode.new(image, ['default']).node
       when :rackspace
         require 'rackspace'
         puts 'Launching a Rackspace node'
-        node = RackspaceNode.new(1, @options[:image], 'default').node
+        node = RackspaceNode.new(1, image, 'default').node
       when :linode
         #compute = Fog::Compute.new(@linode_creds)
         #node = compute.servers[0]
