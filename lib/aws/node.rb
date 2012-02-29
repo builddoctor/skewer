@@ -18,7 +18,6 @@ module Skewer
 
       if SkewerConfig.instance.get('key_name')
          node_options[:key_name] = SkewerConfig.get('key_name')
-
       end
 
       @node = @service.servers.bootstrap(node_options)
