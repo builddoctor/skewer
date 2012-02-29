@@ -4,6 +4,7 @@ require 'rubygems'
 require 'fog'
 
 module Skewer
+  # Build out a Rackspace node using Fog.
   class RackspaceNode
     attr_reader :node
 

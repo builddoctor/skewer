@@ -1,4 +1,5 @@
 module Skewer
+  # Security group permissions for our AWS service.
   class AwsSecurityGroup
     attr_reader :service, :group
 

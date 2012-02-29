@@ -1,4 +1,6 @@
 module Skewer
+  # The AWS service which is used to interface through to the AWS
+  # cloud using Fog.
   class AwsService
     attr_reader :service
 

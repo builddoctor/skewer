@@ -1,4 +1,5 @@
 module Skewer
+  # Build out an AWS node using Fog.
   class AwsNode
     attr_reader :node
     def initialize(aws_id, group_names, options = {})
