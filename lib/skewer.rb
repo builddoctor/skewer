@@ -27,24 +27,17 @@ module Skewer
         puts 'Launching an EC2 node'
         aws_group = @options[:group]
         group = aws_group ? aws_group : 'default'
-        node = AwsNode.new(image, ['default']).node
+        node = AwsNode.new(image, [group]).node
       when :rackspace
         require 'rackspace'
         puts 'Launching a Rackspace node'
         node = RackspaceNode.new(1, image, 'default').node
       when :linode
-        #compute = Fog::Compute.new(@linode_creds)
-        #node = compute.servers[0]
-        #puts 'Finding an existing linode node'
         raise "not implemented"
       when :eucalyptus
         puts 'Using the EC2 API'
         require 'eucalyptus'
         node = Eucalyptus.new
-      #when :ersatz
-        #puts 'Launching a pretend node'
-        #require 'ersatz/ersatz_node.rb'
-        #node = ErsatzNode.new('localhost', ENV['USERNAME'])
       when :vagrant
         puts 'Launching a local vagrant node'
         require 'ersatz/ersatz_node.rb'
