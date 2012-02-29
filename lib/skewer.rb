@@ -72,12 +72,13 @@ module Skewer
     def go 
       require 'puppet'
       begin
-        @node.wait_for { ready? }
+        node = @node
+        node.wait_for { ready? }
         @bootstrapper.go
         result = Puppet.run(node, @options)
 
         location = @util.get_location(node)
-        puts "Node ready\n open http://#{location} or \n ssh -l #{@node.username} #{location}"
+        puts "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
         puts exception
       ensure
