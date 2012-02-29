@@ -13,18 +13,13 @@ module Skewer
         :provider => 'Rackspace',
         :rackspace_api_key  => Fog.credentials[:rackspace_api_key],
         :rackspace_username => Fog.credentials[:rackspace_username],
-        :rackspace_auth_url => "lon.auth.api.rackspacecloud.com"
-      )
+        :rackspace_auth_url => "lon.auth.api.rackspacecloud.com")
 
       # Get our SSH key to attach it to the server.
       path = File.expand_path '~/.ssh/id_rsa.pub'
-      if File.exist?(path) == false
-        path = File.expand_path '~/.ssh/id_dsa.pub'
-        raise "Couldn't find a public key" if File.exist?(path) == false
-      end
-
-      file = File.open path
-      key = file.read
+      path = File.expand_path '~/.ssh/id_dsa.pub' if not File.exist? path
+      raise "Couldn't find a public key" if not File.exist? path
+      key = File.open(path, 'rb').read
 
       options = {
         :flavor_id  => flavor,
@@ -32,7 +27,6 @@ module Skewer
         :name       => name,
         :public_key => key
       }
-
       @node = connection.servers.bootstrap(options)
     end
   end
