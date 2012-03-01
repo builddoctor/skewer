@@ -57,4 +57,60 @@ describe Skewer::Bootstrapper do
 
 
   end
+
+  it "should always run if there is no lock file" do
+    node  = stub('node')
+    node.should_receive(:dns_name).at_least(1).times.and_return('foo.bar.com')
+
+    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper.destroy_lock_file
+
+    bootstrapper.should_i_run?.should == true
+    File.unlink(bootstrapper.lock_file)
+    bootstrapper.should_i_run?.should == true
+
+  end
+
+  it "should let me know if it has just run" do
+    node  = stub('node')
+    node.should_receive(:dns_name).at_least(1).times.and_return('foo.bar.com')
+
+    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper.destroy_lock_file
+
+    bootstrapper.should_i_run?.should == true
+    bootstrapper.should_i_run?.should == false
+    bootstrapper.should_i_run?.should == false
+  end
+
+  it "should not bother bootstrapping again if it has bootstrapped recently" do
+    node  = stub('node')
+    node.should_receive(:scp).at_least(1).times
+    node.should_receive(:ssh).at_least(1).times
+    node.should_receive(:dns_name).at_least(1).times.and_return('foo.bar.com')
+    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper.destroy_lock_file
+    bootstrapper.mock = true
+    bootstrapper.go
+    sleep 1
+    bootstrapper.go
+  end
+
+  it "should allow mocking out of the source step" do
+    node  = stub('node')
+    node.should_not_receive(:username)
+    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper.mock = true
+    bootstrapper.sync_source
+  end
+
+  it "should actually run the source step" do
+    node  = stub('node')
+    node.should_receive(:username).at_least(3).times
+    node.should_receive(:ssh)
+    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    lambda {
+      bootstrapper.sync_source
+    }.should  raise_exception RuntimeError
+  end
 end

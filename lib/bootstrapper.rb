@@ -4,10 +4,13 @@ require 'util'
 module Skewer
   # puts all of puppet's dependencies on
   class Bootstrapper
+    MAX_CACHE = 3600
+    attr_writer :mock
     def initialize(node,options)
       @node = node
       @options = options
       @util = Util.new
+      @mock = false
     end
 
     def add_ssh_hostkey
@@ -56,15 +59,61 @@ module Skewer
         PuppetNode.new({:default => role.to_sym}).render
       end
       # TODO: if there's no role, it should look it up from an external source
-      Source.new(source_dir).rsync(@node)
+      if @mock
+        puts "Mock: would normally rsync now"
+      else
+        Source.new(source_dir).rsync(@node)
+      end
+
+    end
+
+    def lock_file
+      puts "DEBUG:"
+      puts Util.new.get_location(@node)
+      puts "DEBUG"
+      File.join('/tmp', 'skewer-' + Util.new.get_location(@node))
+    end
+
+    def lock_file_expired?(lock_file)
+      now = Time.now
+      lock_file_time = File.stat(lock_file).mtime
+      puts now
+      puts lock_file_time
+      age = now - lock_file_time
+      puts age
+      age > MAX_CACHE
+    end
+
+    def destroy_lock_file()
+      FileUtils.rm_f(self.lock_file)
+    end
+
+    def should_i_run?
+      lock_file = lock_file()
+      puts lock_file
+      if File.exists?(lock_file)
+        if lock_file_expired?(lock_file)
+          destroy_lock_file
+          return true
+        else
+          return false
+        end
+      else
+        FileUtils.touch(lock_file)
+        return true
+      end
     end
 
     def go
-      add_ssh_hostkey
-      execute('rubygems.sh')
-      add_key_to_agent
+      i_should_run = should_i_run?
+      if i_should_run
+        add_ssh_hostkey
+        execute('rubygems.sh')
+        add_key_to_agent
+
+      end
       sync_source
-      install_gems
+      install_gems if i_should_run
     end
   end
 end

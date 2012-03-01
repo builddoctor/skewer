@@ -8,15 +8,20 @@ optparse = OptionParser.new do |opts|
   opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode', 'rackspace')") do |c|
     options[:kind] = c.to_sym
   end
+
   opts.on('-r', '--role NAME', "puppet role class to call") do |r|
     options[:role] = r
   end
-  opts.on('--puppetcode') do |pc|
-    options[:puppetcode] = pc
+
+  opts.on('-pc', '--puppetcode') do |pc|
+    options[:puppet_repo] = pc
+    puts "puppetcode is: " + pc
   end
+
   opts.on('-m', '--mock') do |m|
     options[:mock] = true
   end
+
   opts.on('--keep') do |k|
     options[:keep] = true
   end
