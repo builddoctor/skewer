@@ -46,6 +46,9 @@ module Skewer
         puts "launching stubbed node for testing"
         require 'stub_node'
         node = StubNode.new
+      when :ersatz
+        require 'ersatz/ersatz_node.rb'
+        node = ErsatzNode.new(@config.get('host'), @config.get('user'))
       else
         raise "I don't know that cloud"
       end

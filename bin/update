@@ -23,6 +23,11 @@ optparse = OptionParser.new do |opts|
   opts.on('-n', '--noop', "do a dry run first") do |n|
     options[:noop] = true
   end
+  opts.on('-pc', '--puppetcode') do |pc|
+    options[:puppet_repo] = pc
+    puts "puppetcode is: " + pc
+  end
+  options[:kind] = :ersatz
 end
 
 optparse.parse!
@@ -31,11 +36,6 @@ unless options[:host] && options[:user]
   raise "Usage: update --host <host> --user <user with sudo rights> --role <puppet role class>"
 end
 
-# ersazt node implements just enough fog 
-node = Skewer::ErsatzNode.new(options[:host], options[:user])
+Fog.mock! if options[:mock] == true
 
-# ewww. These functions below must die and be replaced by some sensible arrangement of classes
-
-bs = Skewer::Bootstrapper.new(node,options)
-bs.go
-Skewer::Puppet.run(node, options)
+Skewer::Skewer.bootstrap_and_go(options)

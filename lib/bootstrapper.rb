@@ -104,14 +104,15 @@ module Skewer
       end
     end
 
+    def prepare_node
+      add_ssh_hostkey
+      execute('rubygems.sh')
+      add_key_to_agent
+    end
+
     def go
       i_should_run = should_i_run?
-      if i_should_run
-        add_ssh_hostkey
-        execute('rubygems.sh')
-        add_key_to_agent
-
-      end
+      prepare_node() if i_should_run
       sync_source
       install_gems if i_should_run
     end
