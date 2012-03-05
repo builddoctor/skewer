@@ -1,4 +1,5 @@
 module Skewer
+  require 'puppet_runtime_error'
   # responsible for executing puppet
   class Puppet
     def arguments
@@ -22,6 +23,7 @@ module Skewer
       @command_line << " #{self.bundle} exec"
       @command_line << " puppet apply"
       @command_line << " manifests/site.pp"
+      @command_line << " --color false"
       @command_line << " #{arguments}"
       if options[:noop]
         @command_line << " --noop"
@@ -32,8 +34,13 @@ module Skewer
     def run(node, options)
       command = command_string(node.username, options)
       result = node.ssh(command)[0]
-      puts result.inspect
-      raise "Puppet failed. Do you really want to carry on?" if result.status != 0
+      if result.status != 0
+        puts result.stdout
+        puts result.stderr
+        raise PuppetRuntimeError, "Puppet failed"
+      else
+        puts "Puppet run succeeded"
+      end
       result
     end
 

@@ -5,8 +5,8 @@ describe Skewer::Puppet do
   before(:each) do
     @puppet = Skewer::Puppet.new
     @root = File.expand_path File.join(File.dirname(__FILE__), "..")
-    @prefix = "cd infrastructure && /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp"
-    @sudo_prefix = "cd infrastructure && sudo /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp"
+    @prefix = "cd infrastructure && /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp --color false"
+    @sudo_prefix = "cd infrastructure && sudo /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp --color false"
   end
 
   it "should sudo when connecting as root" do
@@ -38,9 +38,10 @@ describe Skewer::Puppet do
     result = stub('result')
     result.stub!('status').and_return(1)
     result.stub!('command').and_return('sys-unconfig')
-    result.stub!('stdout').and_return('mucho failo')
+    result.stub!('stdout').and_return('failure on stdout')
+    result.stub!('stderr').and_return('failure on stderr')
     node.should_receive(:username).and_return('danmadams')
     node.should_receive(:ssh).and_return([result])
-    lambda { @puppet.run(node, {})  }.should raise_exception RuntimeError
+    lambda { @puppet.run(node, {})  }.should raise_exception Skewer::PuppetRuntimeError
   end
 end

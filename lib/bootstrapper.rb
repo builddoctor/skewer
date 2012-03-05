@@ -23,7 +23,7 @@ module Skewer
       raise "#{file} does not exist" unless File.exists? file
       @node.scp file, '/var/tmp/.'
       result = @node.ssh "sudo bash /var/tmp/#{file_name}"
-      puts result.inspect
+      #puts result.inspect
       # what if it fails?
       return result
     end
@@ -33,7 +33,7 @@ module Skewer
       @node.scp 'assets/Gemfile', 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
       result = @node.ssh(command)
-      puts result.inspect
+      #puts result.inspect
       return result
     end
 
@@ -41,9 +41,8 @@ module Skewer
       config = SkewerConfig.instance
       key_name = config.get('key_name')
       key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
-      puts "****Looking for #{key_path}"
+     puts "****Looking for #{key_path}"
       if File.exists?(key_path)
-        puts "Adding #{key_path}"
         executor.system("ssh-add #{key_path}")
       end
     end
@@ -68,19 +67,13 @@ module Skewer
     end
 
     def lock_file
-      puts "DEBUG:"
-      puts Util.new.get_location(@node)
-      puts "DEBUG"
       File.join('/tmp', 'skewer-' + Util.new.get_location(@node))
     end
 
     def lock_file_expired?(lock_file)
       now = Time.now
       lock_file_time = File.stat(lock_file).mtime
-      puts now
-      puts lock_file_time
       age = now - lock_file_time
-      puts age
       age > MAX_CACHE
     end
 
@@ -90,7 +83,6 @@ module Skewer
 
     def should_i_run?
       lock_file = lock_file()
-      puts lock_file
       if File.exists?(lock_file)
         if lock_file_expired?(lock_file)
           destroy_lock_file

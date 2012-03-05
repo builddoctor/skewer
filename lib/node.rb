@@ -1,5 +1,6 @@
 module Skewer
   # responsible for talking to remote machines
+
   class Node
     attr_reader :username
 

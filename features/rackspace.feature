@@ -16,5 +16,5 @@ Scenario: config in local file
 }
 """
   When I run `./bin/provision --cloud rackspace --role foobar --image 112`
-  Then the stdout should contain "Evaluating rackspace"
+  Then the stdout should contain "Evaluating cloud rackspace"
   And the stdout should contain "Launching a Rackspace node"

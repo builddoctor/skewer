@@ -3,6 +3,7 @@ require 'fog'
 
 require 'bootstrapper'
 require 'util'
+require 'logger'
 
 module Skewer
   # this is responsible for composing all the other components. or should be.
@@ -14,36 +15,38 @@ module Skewer
       @config = SkewerConfig.instance
       @config.slurp_options(options)
       @util = Util.new
+      @logger = Logger.new(STDOUT)
+      @config.set(:logger, @logger)
     end
 
     def select_node(kind)
-      puts "Evaluating #{kind}"
+      @logger.debug "Evaluating cloud #{kind}"
       image = @options[:image]
       case kind
       when :ec2 
         require 'aws/security_group'
         require 'aws/node'
         require 'aws/service'
-        puts 'Launching an EC2 node'
+        @logger.debug 'Launching an EC2 node'
         aws_group = @options[:group]
         group = aws_group ? aws_group : 'default'
         node = AwsNode.new(image, [group]).node
       when :rackspace
         require 'rackspace'
-        puts 'Launching a Rackspace node'
+        @logger.debug 'Launching a Rackspace node'
         node = RackspaceNode.new(1, image, 'default').node
       when :linode
         raise "not implemented"
       when :eucalyptus
-        puts 'Using the EC2 API'
+        @logger.debug 'Using the EC2 API'
         require 'eucalyptus'
         node = Eucalyptus.new
       when :vagrant
-        puts 'Launching a local vagrant node'
+        @logger.debug 'Launching a local vagrant node'
         require 'ersatz/ersatz_node.rb'
         node = ErsatzNode.new('default', 'vagrant')
       when :stub
-        puts "launching stubbed node for testing"
+        @logger.debug "Launching stubbed node for testing"
         require 'stub_node'
         node = StubNode.new
       when :ersatz
@@ -74,7 +77,7 @@ module Skewer
         result = Puppet.run(node, @options)
 
         location = @util.get_location(node)
-        puts "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
+        @logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
         puts exception
       ensure

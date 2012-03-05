@@ -11,7 +11,7 @@ module Skewer
                                       :region => zone
                                   })
       SkewerConfig.set 'aws_service', @service
-      puts @service.inspect
+
     end
 
     def self.service

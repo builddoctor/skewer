@@ -39,7 +39,7 @@ module Skewer
     def rsync(node)
       puts rsync_command(node)
       location = @util.get_location(node)
-      print "Copying code to #{location} ..."
+      puts "Copying code to #{location} ..."
       create_destination(node)
       command = self.rsync_command(node)
 
