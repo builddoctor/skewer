@@ -85,10 +85,15 @@ module Skewer
       end
     end
 
+    def hooks
+      Hooks.run
+    end
+
     def self.bootstrap_and_go(options)
       skewer = self.new(options)
       skewer.bootstrap
       skewer.go
+      #skewer.hooks
     end
   end
 end
