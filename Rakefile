@@ -44,7 +44,12 @@ end
 desc "Run all specs with rcov"
 RSpec::Core::RakeTask.new("spec:coverage") do |t|
   t.rcov = true
-  t.pattern = 'spec/*_spec.rb'
+
+  # The matcher *spec*.rb is used to invoke spec_helper.rb.
+  # This makes sure that the RSpec tests get run from within rcov.
+  # See spec/spec_helper.rb for more info.
+  t.pattern = 'spec/*spec*.rb'
+
   t.rcov_opts = %w{--include lib -Ispec --exclude gems\/,spec\/,features\/}
   t.rspec_opts = ["-c"]
 end
