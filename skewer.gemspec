@@ -16,10 +16,11 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'fog', '~> 1.1.2'
 
-  s.add_development_dependency 'jeweler'
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'metric_fu'
   s.add_development_dependency 'aruba'
+  s.add_development_dependency 'jeweler'
+  s.add_development_dependency 'metric_fu'
+  s.add_development_dependency 'rcov', '~> 1.0.0'
+  s.add_development_dependency 'rspec'
   s.add_development_dependency 'vagrant', '~> 0.9.0'
 
   s.files         = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }

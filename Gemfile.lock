@@ -8,7 +8,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     Saikuro (1.1.0)
-    activesupport (3.2.1)
+    activesupport (3.2.2)
       i18n (~> 0.6)
       multi_json (~> 1.0)
     archive-tar-minitar (0.5.2)
@@ -59,7 +59,7 @@ GEM
     gherkin (2.9.0)
       json (>= 1.4.6)
     git (1.2.5)
-    hirb (0.6.0)
+    hirb (0.6.1)
     i18n (0.6.0)
     jeweler (1.8.3)
       bundler (~> 1.0)
@@ -89,7 +89,7 @@ GEM
     net-ssh (2.2.2)
     nokogiri (1.5.0)
     progressbar (0.10.0)
-    rails_best_practices (1.8.0)
+    rails_best_practices (1.9.0)
       activesupport
       colored
       erubis
@@ -140,6 +140,7 @@ DEPENDENCIES
   aruba
   jeweler
   metric_fu
+  rcov (~> 1.0.0)
   rspec
   skewer!
   vagrant (~> 0.9.0)
