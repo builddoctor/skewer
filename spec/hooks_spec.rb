@@ -4,8 +4,16 @@ require 'hooks'
 describe "Hooks" do
 
   it "should quietly go off and execute something" do
-    kernel = stub('kernel')
-    kernel.should_receive(:exec).with(["ls", "foobar.build-doctor.com"])
-    Skewer::Hooks.new("ls", 'foobar.build-doctor.com', kernel).run.should == nil
+
+    hooks = Skewer::Hooks.new( 'foobar.build-doctor.com')
+    hooks.command = 'echo doodoo'
+    hooks.run.should == true
+  end
+
+  it "should not bother if there are no hooks" do
+
+
+    hooks = Skewer::Hooks.new( 'foobar.build-doctor.com')
+    hooks.run.should == false
   end
 end

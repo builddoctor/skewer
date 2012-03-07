@@ -36,7 +36,6 @@ module Skewer
       result = node.ssh(command)[0]
       if result.status != 0
         puts result.stdout
-        puts result.stderr
         raise PuppetRuntimeError, "Puppet failed"
       else
         puts "Puppet run succeeded"

@@ -28,6 +28,10 @@ optparse = OptionParser.new do |opts|
     options[:keep] = true
   end
 
+  opts.on('-hk', '--hook') do |hook|
+    options[:hook] = hook
+  end
+
   # AWS options
   opts.on('-i', '--image NAME') do |img|
     options[:image] = img

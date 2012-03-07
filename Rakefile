@@ -10,7 +10,7 @@ require 'rake/clean'
 require 'rspec/core/rake_task'
 require 'vagrant'
 
-CLEAN.include ['coverage', 'target', '/tmp/skewer_test_code', '/tmp/more_skewer_test_code', '.skewer.json']
+CLEAN.include ['coverage', 'target', '/tmp/skewer_test_code', '/tmp/more_skewer_test_code', '.skewer.json', '/tmp/skewer*']
 
 Bundler::GemHelper.install_tasks
 

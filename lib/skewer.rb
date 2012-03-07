@@ -4,6 +4,7 @@ require 'fog'
 require 'bootstrapper'
 require 'util'
 require 'logger'
+require 'hooks'
 
 module Skewer
   # this is responsible for composing all the other components. or should be.
@@ -74,9 +75,9 @@ module Skewer
         node = @node
         node.wait_for { ready? }
         @bootstrapper.go
-        result = Puppet.run(node, @options)
-
+        Puppet.run(node, @options)
         location = @util.get_location(node)
+        Hooks.new(location).run
         @logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
         puts exception
@@ -85,15 +86,12 @@ module Skewer
       end
     end
 
-    def hooks
-      Hooks.run
-    end
 
     def self.bootstrap_and_go(options)
       skewer = self.new(options)
       skewer.bootstrap
       skewer.go
-      #skewer.hooks
+
     end
   end
 end
