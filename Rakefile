@@ -16,7 +16,7 @@ Bundler::GemHelper.install_tasks
 
 MetricFu::Configuration.run do |config|
   #define which metrics you want to use
-  config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi, :rcov]
+  config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi]
   #config.graphs   = [:flog, :flay, :stats]
 end
 
@@ -39,6 +39,14 @@ end
 
 Cucumber::Rake::Task.new(:features) do |t|
   t.cucumber_opts = "features --format pretty --tags=~@wip"
+end
+
+desc "Run all specs with rcov"
+RSpec::Core::RakeTask.new("spec:coverage") do |t|
+  t.rcov = true
+  t.pattern = 'spec/*_spec.rb'
+  t.rcov_opts = %w{--include lib -Ispec --exclude gems\/,spec\/,features\/}
+  t.rspec_opts = ["-c"]
 end
 
 task :default => [:clean, :spec, :features]
