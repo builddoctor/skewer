@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+$: << File.join(File.dirname(__FILE__), '..', 'lib')
+require 'skewer'
+require 'optparse'
+
+options = {}
+
+first_arg = ARGV.shift
+
+if first_arg == 'provision'
+  # Provisioning.
+  optparse = OptionParser.new do |opts|
+    # generic options
+    opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode', 'rackspace')") do |c|
+      options[:kind] = c.to_sym
+    end
+
+    opts.on('-r', '--role NAME', "puppet role class to call") do |r|
+      options[:role] = r
+    end
+
+    opts.on('-pc', '--puppetcode') do |pc|
+      options[:puppet_repo] = pc
+      puts "puppetcode is: " + pc
+    end
+
+    opts.on('-m', '--mock') do |m|
+      options[:mock] = true
+    end
+
+    opts.on('--keep') do |k|
+      options[:keep] = true
+    end
+
+    opts.on('-hk', '--hook') do |hook|
+      options[:hook] = hook
+    end
+
+    # AWS options
+    opts.on('-i', '--image NAME') do |img|
+      options[:image] = img
+    end
+    opts.on('--volume SIZE') do |vol|
+      # EBS group
+      options[:volume] = vol
+    end
+    opts.on('--region NAME') do |region|
+      # AWS region
+      options[:region] = region
+    end
+    opts.on('--key', '--key_name NAME') do |k|
+      # AWS SSH key
+      options[:key_name] = k
+    end
+    # EC2 Security Group
+    opts.on('--group NAME') do |group|
+      options[:group] = group
+    end
+  end
+elsif first_arg == 'update'
+  # Updating.
+  optparse = OptionParser.new do |opts|
+    opts.on('-h', '--host KIND', "Hostname to update") do |c|
+      options[:host] = c
+    end
+    opts.on('-u', '--user KIND', "User to connect with") do |u|
+      options[:user] = u
+    end
+    opts.on('-r', '--role NAME', "puppet role class to call") do |r|
+      options[:role] = r
+    end
+    opts.on('-n', '--noop', "do a dry run first") do |n|
+      options[:noop] = true
+    end
+    opts.on('-pc', '--puppetcode') do |pc|
+      options[:puppet_repo] = pc
+      puts "puppetcode is: " + pc
+    end
+    options[:kind] = :ersatz
+  end
+else
+  raise "Usage: #{__FILE__} [update|provision] ..."
+end
+
+optparse.parse!
+
+if first_arg == 'provision'
+  unless options[:kind] && options[:image] && options[:role] or 
+      raise "Usage: #{__FILE__} provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>"
+  end
+elsif first_arg == 'update'
+  unless options[:host] && options[:user] 
+    raise "Usage: #{__FILE__} update --host <host> --user <user with sudo rights> --role <puppet role class>"
+  end
+end
+
+Fog.mock! if options[:mock] == true
+
+Skewer::Skewer.bootstrap_and_go(options)

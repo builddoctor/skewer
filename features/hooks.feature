@@ -10,6 +10,6 @@ Scenario: accept hook on CLI
   echo $1 > /tmp/skewer_hook_result
   """
   And I run "chmod +x /tmp/skewer_hook"
-  When I run `./bin/provision --cloud stub --image foo --role bar --hook /tmp/skewer_hook`
+  When I run `./bin/skewer provision --cloud stub --image foo --role bar --hook /tmp/skewer_hook`
   Then the file "/tmp/skewer_hook_result" should exist
 

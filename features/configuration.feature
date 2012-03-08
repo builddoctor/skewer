@@ -8,7 +8,7 @@ Scenario: read config from project directory
   """
   {"puppet_repo":"/foo/bar/baz"}
   """
-  When I run `./bin/provision --cloud stub --image foo --role bar`
+  When I run `./bin/skewer provision --cloud stub --image foo --role bar`
   Then the stdout should contain "Using Puppet Code from /foo/bar/baz"
 
 Scenario: read config from home directory

@@ -15,6 +15,6 @@ Scenario: config in local file
   "image_id":"112"
 }
 """
-  When I run `./bin/provision --cloud rackspace --role foobar --image 112`
+  When I run `./bin/skewer provision --cloud rackspace --role foobar --image 112`
   Then the stdout should contain "Evaluating cloud rackspace"
   And the stdout should contain "Launching a Rackspace node"
