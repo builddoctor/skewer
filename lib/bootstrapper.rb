@@ -30,7 +30,8 @@ module Skewer
 
     def install_gems
       puts "Installing Gems"
-      @node.scp 'assets/Gemfile', 'infrastructure'
+      assets = File.join(File.dirname(__FILE__), '..', 'assets')
+      @node.scp File.join(assets, 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
       result = @node.ssh(command)
       #puts result.inspect
