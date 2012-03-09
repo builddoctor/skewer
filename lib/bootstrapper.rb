@@ -25,6 +25,7 @@ module Skewer
       raise "#{file} does not exist" unless File.exists? file
       @node.scp file, '/var/tmp/.'
       result = @node.ssh "sudo bash /var/tmp/#{file_name}"
+      puts result.inspect
       return result
     end
 
