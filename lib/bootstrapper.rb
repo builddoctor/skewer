@@ -1,5 +1,6 @@
 require 'config'
 require 'util'
+require 'logger'
 
 module Skewer
   # puts all of puppet's dependencies on
@@ -10,6 +11,7 @@ module Skewer
       @node = node
       @options = options
       @util = Util.new
+      @logger = Logger.new(STDOUT)
       @mock = false
     end
 
@@ -23,18 +25,15 @@ module Skewer
       raise "#{file} does not exist" unless File.exists? file
       @node.scp file, '/var/tmp/.'
       result = @node.ssh "sudo bash /var/tmp/#{file_name}"
-      #puts result.inspect
-      # what if it fails?
       return result
     end
 
     def install_gems
-      puts "Installing Gems"
+      @logger.debug "Installing Gems"
       assets = File.join(File.dirname(__FILE__), '..', 'assets')
       @node.scp File.join(assets, 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
       result = @node.ssh(command)
-      #puts result.inspect
       return result
     end
 
@@ -42,7 +41,7 @@ module Skewer
       config = SkewerConfig.instance
       key_name = config.get('key_name')
       key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
-     puts "****Looking for #{key_path}"
+      @logger.debug "****Looking for #{key_path}"
       if File.exists?(key_path)
         executor.system("ssh-add #{key_path}")
       end
@@ -53,14 +52,14 @@ module Skewer
       require 'puppet_node'
       config = SkewerConfig.instance
       source_dir = config.get(:puppet_repo)
-      puts "Using Puppet Code from #{source_dir}"
+      @logger.debug "Using Puppet Code from #{source_dir}"
       role = @options[:role]
       if role
         PuppetNode.new({:default => role.to_sym}).render
       end
       # TODO: if there's no role, it should look it up from an external source
       if @mock
-        puts "Mock: would normally rsync now"
+        @logger.debug "Mock: would normally rsync now"
       else
         Source.new(source_dir).rsync(@node)
       end

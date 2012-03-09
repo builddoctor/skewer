@@ -80,18 +80,16 @@ module Skewer
         Hooks.new(location).run
         @logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
-        puts exception
+        @logger.debug exception
       ensure
         destroy
       end
     end
 
-
     def self.bootstrap_and_go(options)
       skewer = self.new(options)
       skewer.bootstrap
       skewer.go
-
     end
   end
 end

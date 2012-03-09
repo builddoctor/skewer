@@ -1,3 +1,5 @@
+require 'logger'
+
 module Skewer
   # fakes a fog SSH result
   class ErsatzSSHResult
@@ -6,7 +8,8 @@ module Skewer
       @command = command
       @stdout = stdout
       @status = status
-      puts self.stdout
+      @logger = Logger.new(STDOUT)
+      @logger.debug self.stdout
     end
   end
 end

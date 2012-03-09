@@ -1,4 +1,5 @@
 require 'ersatz/ssh_result.rb'
+require 'logger'
 
 module Skewer
   # fakes a fog node
@@ -8,11 +9,12 @@ module Skewer
     def initialize(hostname, user)
       @dns_name = hostname
       @username = user
+      @logger = Logger.new(STDOUT)
     end
 
     def ssh(command)
       full_ssh_command = "ssh -l #{@username} #{@dns_name} '#{command}'"
-      puts full_ssh_command
+      @logger.debug full_ssh_command
       stdout = `#{full_ssh_command}`
       result = ErsatzSSHResult.new(command, stdout, $?.exitstatus)
       [result]

@@ -1,4 +1,5 @@
 require 'singleton'
+require 'logger'
 
 module Skewer
   # responsible for all configuration, once I move all the options in
@@ -8,21 +9,20 @@ module Skewer
     include Singleton
 
     def initialize
-
       @puppet_repo = '../infrastructure'
       @aws_region = 'us-east-1'
       @flavor_id = 'm1.large'
       @aws_username = 'ubuntu'
-
+      @logger = Logger.new(STDOUT)
       read_config_files
     end
 
     def read_config_file(config_file)
       if File.exists?(config_file)
-        puts "reading #{config_file}"
+        @logger.debug "reading #{config_file}"
         config = File.read(config_file)
         parse(config)
-        puts self.inspect
+        @logger.debug self.inspect
       end
     end
 
@@ -61,7 +61,6 @@ module Skewer
       options.each_pair do |key, value|
         self.set(key, value)
       end
-
     end
   end
 end

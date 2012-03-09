@@ -1,3 +1,5 @@
+require 'logger'
+
 module Skewer
   # responsible for talking to remote machines
 
@@ -15,6 +17,8 @@ module Skewer
         {:password => @password}
       )
       install_pubkey(@ssh, @pubkey)
+
+      @logger = Logger.new(STDOUT)
     end
 
     def install_pubkey(ssh, key)
@@ -35,9 +39,9 @@ module Skewer
     def ssh(commands)
       results = @ssh.run(commands)
       if results.is_a?(Array)
-        results.each {|result| puts result.stdout }
+        results.each {|result| @logger.debug result.stdout }
       else
-        puts results.stdout
+        @logger.debug results.stdout
       end
     end
   end
