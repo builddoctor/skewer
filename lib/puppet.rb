@@ -1,11 +1,9 @@
-require 'logging'
+require 'skewer'
 
 module Skewer
   require 'puppet_runtime_error'
   # responsible for executing puppet
   class Puppet
-    include Logging
-
     def arguments
       [
        "--modulepath modules",
@@ -39,10 +37,10 @@ module Skewer
       command = command_string(node.username, options)
       result = node.ssh(command)[0]
       if result.status != 0
-        logger.debug result.stdout
+        Skewer.logger.debug result.stdout
         raise PuppetRuntimeError, "Puppet failed"
       else
-        logger.debug "Puppet run succeeded"
+        Skewer.logger.debug "Puppet run succeeded"
       end
       result
     end

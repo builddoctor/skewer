@@ -2,7 +2,6 @@ module Skewer
   require 'config'
 
   class Hooks
-    include Logging
     attr_writer :command
 
     def initialize(host_name)
@@ -13,7 +12,7 @@ module Skewer
     def run
       return_code = false
       unless @command.nil?
-        logger.debug "Running hooks ..."
+        Skewer.logger.debug "Running hooks ..."
         `#{@command}  #{@host_name}`
         return_code = $? == 0 ? true : false
       end

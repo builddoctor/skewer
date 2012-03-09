@@ -1,7 +1,6 @@
 module Skewer
   # test stub for pretending to be a real node
   class StubNode
-    include Logging
     attr_reader :dns_name, :username, :public_ip_address
 
     def initialize
@@ -12,13 +11,13 @@ module Skewer
     end
 
     def announce(return_type)
-      logger.debug "#{self.class} will return #{return_type}" if @debug
+      Skewer.logger.debug "#{self.class} will return #{return_type}" if @debug
       return return_type
     end
 
     def method_missing(name, *args)
       require 'ersatz/ssh_result.rb'
-      logger.debug "#{self.class}.#{name} called with #{args.join(',')}" if @debug
+      Skewer.logger.debug "#{self.class}.#{name} called with #{args.join(',')}" if @debug
       return announce([ErsatzSSHResult.new('foo', 'success', 0)]) if name == :ssh
       return announce true
     end

@@ -1,7 +1,6 @@
 module Skewer
   # responsible for talking to remote machines
   class Node
-    include Logging
     attr_reader :username
 
     def initialize
@@ -35,9 +34,9 @@ module Skewer
     def ssh(commands)
       results = @ssh.run(commands)
       if results.is_a?(Array)
-        results.each {|result| logger.debug result.stdout }
+        results.each {|result| Skewer.logger.debug result.stdout }
       else
-        logger.debug results.stdout
+        Skewer.logger.debug results.stdout
       end
     end
   end

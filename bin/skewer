@@ -2,8 +2,8 @@
 $: << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'rubygems'
 require 'bundler'
-require 'skewer'
 require 'optparse'
+require 'cli'
 
 options = {}
 
@@ -98,4 +98,4 @@ end
 
 Fog.mock! if options[:mock] == true
 
-Skewer::Skewer.bootstrap_and_go(options)
+Skewer::CLI.bootstrap_and_go(options)
