@@ -4,7 +4,7 @@ describe Skewer::CLI::Parser do
   it "should barf if given no params" do
     lambda {
       parser = Skewer::CLI::Parser.new
-    }.should raise_exception(RuntimeError, "Skewer::CLI::Parser requires a type and options hash.")
+    }.should raise_exception(RuntimeError, "Usage: skewer provision|update [options]")
   end
 
   it "should only accept 'provision' and 'update' as types" do
