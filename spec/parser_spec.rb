@@ -8,12 +8,12 @@ describe Skewer::CLI::Parser do
   end
 
   it "should only accept 'provision' and 'update' as types" do
-    # Negative case.
     lambda {
       parser = Skewer::CLI::Parser.new('test', {:bloom => 'filter'})
-    }.should raise_exception(RuntimeError, "The only types accepted are 'provision' and 'update'\nUsage: skewer provision|update")
+    }.should raise_exception(RuntimeError, "Usage: skewer provision|update [options]")
+  end
 
-    # Positive case (builds object).
+  it "should build out the object if given correct input" do
     parser = Skewer::CLI::Parser.new('provision', {:kind => true, :image => true, :role => true})
     parser.nil?.should == false
 
