@@ -1,17 +1,17 @@
 require 'config'
 require 'util'
-require 'logger'
 
 module Skewer
   # puts all of puppet's dependencies on
   class Bootstrapper
+    include Logging
     MAX_CACHE = 3600
     attr_writer :mock
+
     def initialize(node,options)
       @node = node
       @options = options
       @util = Util.new
-      @logger = Logger.new(STDOUT)
       @mock = false
     end
 
@@ -29,7 +29,7 @@ module Skewer
     end
 
     def install_gems
-      @logger.debug "Installing Gems"
+      logger.debug "Installing Gems"
       assets = File.join(File.dirname(__FILE__), '..', 'assets')
       @node.scp File.join(assets, 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
@@ -41,7 +41,7 @@ module Skewer
       config = SkewerConfig.instance
       key_name = config.get('key_name')
       key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
-      @logger.debug "****Looking for #{key_path}"
+      logger.debug "****Looking for #{key_path}"
       if File.exists?(key_path)
         executor.system("ssh-add #{key_path}")
       end
@@ -52,14 +52,14 @@ module Skewer
       require 'puppet_node'
       config = SkewerConfig.instance
       source_dir = config.get(:puppet_repo)
-      @logger.debug "Using Puppet Code from #{source_dir}"
+      logger.debug "Using Puppet Code from #{source_dir}"
       role = @options[:role]
       if role
         PuppetNode.new({:default => role.to_sym}).render
       end
       # TODO: if there's no role, it should look it up from an external source
       if @mock
-        @logger.debug "Mock: would normally rsync now"
+        logger.debug "Mock: would normally rsync now"
       else
         Source.new(source_dir).rsync(@node)
       end

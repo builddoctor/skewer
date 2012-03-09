@@ -1,28 +1,26 @@
 require 'singleton'
-require 'logger'
+require 'logging'
 
 module Skewer
   # responsible for all configuration, once I move all the options in
   class SkewerConfig
+    include Singleton, Logging
     attr_accessor :aws_service, :puppet_repo, :aws_region, :flavor_id, :aws_username, :flavor_id
-
-    include Singleton
 
     def initialize
       @puppet_repo = '../infrastructure'
       @aws_region = 'us-east-1'
       @flavor_id = 'm1.large'
       @aws_username = 'ubuntu'
-      @logger = Logger.new(STDOUT)
       read_config_files
     end
 
     def read_config_file(config_file)
       if File.exists?(config_file)
-        @logger.debug "reading #{config_file}"
+        logger.debug "reading #{config_file}"
         config = File.read(config_file)
         parse(config)
-        @logger.debug self.inspect
+        logger.debug self.inspect
       end
     end
 

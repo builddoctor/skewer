@@ -1,14 +1,14 @@
 require 'util'
-require 'logger'
 
 module Skewer
   # responsible for moving source to remote nodes
   class Source
+    include Logging
+
     def initialize(path = nil)
       @util = Util.new
       raise "I can't see the path #{path}" unless File.exists?(path)
       @path = path.sub(/\/$/, '')
-      @logger = Logger.new(STDOUT)
     end
 
     def excludes
@@ -30,7 +30,7 @@ module Skewer
     end
 
     def mock_rsync(command)
-      @logger.debug "MOCK: #{command}"
+      logger.debug "MOCK: #{command}"
     end
 
     def real_rsync(node, command)
@@ -39,9 +39,9 @@ module Skewer
     end
 
     def rsync(node)
-      @logger.debug rsync_command(node)
+      logger.debug rsync_command(node)
       location = @util.get_location(node)
-      @logger.debug "Copying code to #{location} ..."
+      logger.debug "Copying code to #{location} ..."
       create_destination(node)
       command = self.rsync_command(node)
 
@@ -50,7 +50,7 @@ module Skewer
       else
         real_rsync(node, command)
       end
-      @logger.debug " Done."
+      logger.debug " Done."
     end
   end
 end

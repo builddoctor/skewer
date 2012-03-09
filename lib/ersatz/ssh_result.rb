@@ -1,15 +1,14 @@
-require 'logger'
-
 module Skewer
   # fakes a fog SSH result
   class ErsatzSSHResult
+    include Logging
     attr_accessor :command, :stdout, :status
+
     def initialize(command, stdout, status)
       @command = command
       @stdout = stdout
       @status = status
-      @logger = Logger.new(STDOUT)
-      @logger.debug self.stdout
+      logger.debug self.stdout
     end
   end
 end
