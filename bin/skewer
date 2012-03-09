@@ -87,8 +87,8 @@ end
 optparse.parse!
 
 if first_arg == 'provision'
-  unless options[:kind] && options[:image] && options[:role] or 
-      raise "Usage: #{__FILE__} provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>"
+  unless options[:kind] && options[:image] && options[:role]
+    raise "Usage: #{__FILE__} provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>"
   end
 elsif first_arg == 'update'
   unless options[:host] && options[:user] 
