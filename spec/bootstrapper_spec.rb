@@ -18,7 +18,7 @@ describe Skewer::Bootstrapper do
 
   it "should install rubygems on the remote machine" do 
     node = mock('node')
-    node.should_receive(:scp).with("./lib/../assets/Gemfile", "infrastructure")
+    node.should_receive(:scp).with(File.expand_path("./lib/../assets/Gemfile"), "infrastructure")
     node.should_receive(:ssh).with('. /etc/profile.d/rubygems.sh && cd infrastructure && bundle install')
     Skewer::Bootstrapper.new(node, {}).install_gems
   end

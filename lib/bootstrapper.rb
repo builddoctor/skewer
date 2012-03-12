@@ -1,5 +1,6 @@
 require 'config'
 require 'util'
+require 'skewer'
 
 module Skewer
   # puts all of puppet's dependencies on
@@ -31,7 +32,7 @@ module Skewer
     def install_gems
       Skewer.logger.debug "Installing Gems"
       assets = File.join(File.dirname(__FILE__), '..', 'assets')
-      @node.scp File.join(assets, 'Gemfile'), 'infrastructure'
+      @node.scp File.join(File.expand_path(assets), 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
       result = @node.ssh(command)
       return result
