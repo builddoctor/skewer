@@ -24,7 +24,11 @@ module Skewer
 
       def usage
         out = <<EOF
-Usage: skewer provision|update [options]
+Usage: skewer COMMAND [options]
+
+The available skewer commands are:
+   provision  spawn a new VM via a cloud system and provision it with puppet code
+   update     update the puppet code on a machine that you've already provisioned
 EOF
         out.strip
       end
