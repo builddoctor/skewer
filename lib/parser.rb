@@ -1,4 +1,5 @@
 require 'fog'
+require 'cli'
 
 module Skewer
   class CLI
@@ -6,20 +7,20 @@ module Skewer
     class Parser
       def initialize(type = nil, options = {})
         # base case tests that we have input that we accept.
-        raise usage if type.nil? and options.empty?
-        raise usage if type != 'provision' and type != 'update'
+        abort(usage) if type.nil? and options.empty?
+        abort(usage) if type != 'provision' and type != 'update'
         if type == 'provision'
           unless options[:kind] && options[:image] && options[:role] && !options[:help]
-            raise provision_usage
+            abort(provision_usage)
           end
         elsif type == 'update'
           unless options[:host] && options[:user] && !options[:help]
-            raise update_usage
+            abort(update_usage)
           end
         end
 
         Fog.mock! if options[:mock] == true
-        # TODO: Pass this on to Skewer::CLI.bootstrap_and_go(options)
+        Skewer::CLI.bootstrap_and_go(options)
       end
 
       def usage
