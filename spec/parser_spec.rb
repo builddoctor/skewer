@@ -26,11 +26,13 @@ describe Skewer::CLI::Parser do
   end
 
   it "should build out the object if given correct input" do
-    parser = Skewer::CLI::Parser.new('provision', {:kind => true, :image => true, :role => true})
-    parser.nil?.should == false
+    lambda {
+      parser = Skewer::CLI::Parser.new('provision', {:kind => true, :image => true, :role => true})
+    }.should raise_exception(RuntimeError, "I don't know that cloud")
 
-    parser = Skewer::CLI::Parser.new('update', {:host => true, :user => true})
-    parser.nil?.should == false
+    lambda {
+      parser = Skewer::CLI::Parser.new('update', {:host => true, :user => true})
+    }.should raise_exception(RuntimeError, "I don't know that cloud")
   end
 
   it "should raise a usage exception if using 'provision' without correct options" do
