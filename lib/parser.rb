@@ -10,11 +10,11 @@ module Skewer
         raise usage if type != 'provision' and type != 'update'
         if type == 'provision'
           unless options[:kind] && options[:image] && options[:role]
-            raise "Usage: skewer provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>"
+            raise provision_usage
           end
         elsif type == 'update'
           unless options[:host] && options[:user] 
-            raise "Usage: skewer update --host <host> --user <user with sudo rights> --role <puppet role class>"
+            raise update_usage
           end
         end
 
@@ -23,7 +23,24 @@ module Skewer
       end
 
       def usage
-        "Usage: skewer provision|update [options]"
+        out = <<EOF
+Usage: skewer provision|update [options]
+EOF
+        out.strip
+      end
+
+      def provision_usage
+        out = <<EOF
+Usage: skewer provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>
+EOF
+        out.strip
+      end
+
+      def update_usage
+        out = <<EOF
+Usage: skewer update --host <host> --user <user with sudo rights> --role <puppet role class>
+EOF
+        out.strip
       end
     end
   end
