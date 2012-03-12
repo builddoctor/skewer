@@ -9,11 +9,11 @@ module Skewer
         raise usage if type.nil? and options.empty?
         raise usage if type != 'provision' and type != 'update'
         if type == 'provision'
-          unless options[:kind] && options[:image] && options[:role]
+          unless options[:kind] && options[:image] && options[:role] && !options[:help]
             raise provision_usage
           end
         elsif type == 'update'
-          unless options[:host] && options[:user] 
+          unless options[:host] && options[:user] && !options[:help]
             raise update_usage
           end
         end

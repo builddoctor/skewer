@@ -9,6 +9,9 @@ The available skewer commands are:
 EOF
 USAGE.strip!
 
+UPDATE_USAGE = "Usage: skewer update --host <host> --user <user with sudo rights> --role <puppet role class>"
+PROVISION_USAGE = "Usage: skewer provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>"
+
 describe Skewer::CLI::Parser do
   it "should barf if given no params" do
     lambda {
@@ -33,12 +36,30 @@ describe Skewer::CLI::Parser do
   it "should raise a usage exception if using 'provision' without correct options" do
     lambda {
       parser = Skewer::CLI::Parser.new('provision', {:bloom => 'filter'})
-    }.should raise_exception(RuntimeError, "Usage: skewer provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>")
+    }.should raise_exception(RuntimeError, PROVISION_USAGE)
   end
 
   it "should raise a usage exception if using 'update' without correct options" do
     lambda {
       parser = Skewer::CLI::Parser.new('update', {:bloom => 'filter'})
-    }.should raise_exception(RuntimeError, "Usage: skewer update --host <host> --user <user with sudo rights> --role <puppet role class>")
+    }.should raise_exception(RuntimeError, UPDATE_USAGE)
+  end
+
+  it "should show the main usage message if provided the help option" do
+    lambda {
+      parser = Skewer::CLI::Parser.new(false, {:help => true})
+    }. should raise_exception(RuntimeError, USAGE)
+  end
+
+  it "should show the provision usage message if provided 'provision' with the help option" do
+    lambda {
+      parser = Skewer::CLI::Parser.new('provision', {:kind => true, :image => true, :role => true, :help => true})
+    }.should raise_exception(RuntimeError, PROVISION_USAGE)
+  end
+
+  it "should show the update usage message if provided 'update' with the help option" do
+    lambda {
+      parser = Skewer::CLI::Parser.new('update', {:host => true, :user => true, :help => true})
+    }.should raise_exception(RuntimeError, UPDATE_USAGE)
   end
 end
