@@ -29,4 +29,22 @@ describe Skewer::CLI do
       Skewer::CLI.new({:kind => :nil}).select_node(:ec2)
     }.should raise_exception Fog::Errors::MockNotImplemented
   end
+
+  it "should be able to parse the options as they're given" do
+    config = Skewer::SkewerConfig.instance
+    config.get(:region).should == nil
+    cli = Skewer::CLI.new({:kind => :nil, :region => 'eu-west-1'})
+    config.get(:region).should == 'eu-west-1'
+  end
+
+  it "should be able to pass the region through to the AWS service" do
+    config = Skewer::SkewerConfig.instance
+    config.set(:region, nil)
+    config.get(:region).should == nil
+    cli = Skewer::CLI.new({:kind => :nil, :region => 'eu-west-1'})
+    config.get(:region).should == 'eu-west-1'
+    lambda {
+      cli.select_node(:ec2)
+    }.should raise_exception Fog::Errors::MockNotImplemented
+  end
 end
