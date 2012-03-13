@@ -1,3 +1,5 @@
+require 'skewer'
+
 module Skewer
   # fakes a fog SSH result
   class ErsatzSSHResult
