@@ -57,6 +57,10 @@ module Skewer
     def slurp_options(options)
       options.each_pair do |key, value|
         self.set(key, value)
+        if key == :region
+          @aws_region = value
+          self.set('aws_region', value)
+        end
       end
     end
   end

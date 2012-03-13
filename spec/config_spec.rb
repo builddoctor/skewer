@@ -48,4 +48,11 @@ describe Skewer::SkewerConfig do
     config.set(:region, 'unknown region')
     config.get(:region).should == 'unknown region'
   end
+
+  it "should have the region available as an attribute" do
+    config = Skewer::SkewerConfig.instance
+    config.aws_region.should == 'us-east-1'
+    config.slurp_options({:region => 'eu-west-1'})
+    config.aws_region.should == 'eu-west-1'
+  end
 end
