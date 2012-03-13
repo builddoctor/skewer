@@ -15,5 +15,8 @@ describe Skewer do
     Skewer.logger = String.new
     Skewer.logger.nil?.should == false
     Skewer.logger.class.should == String
+
+    # Return the logger back to being Logger.
+    Skewer.logger = Logger.new(STDOUT)
   end
 end
