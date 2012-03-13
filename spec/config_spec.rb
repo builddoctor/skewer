@@ -41,6 +41,11 @@ describe Skewer::SkewerConfig do
      config.get('rodent').should == 'bunnyrabbit'
      config.get('canine').should == 'dingo'
      config.get('aws_region').should == 'us-east-1'
+  end
 
+  it "should take the AWS region as a parameter" do
+    config = Skewer::SkewerConfig.instance
+    config.set(:region, 'unknown region')
+    config.get(:region).should == 'unknown region'
   end
 end
