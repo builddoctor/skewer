@@ -1,4 +1,3 @@
-
 require 'aws/security_group'
 require 'fog'
 
@@ -18,6 +17,4 @@ describe Skewer::AwsSecurityGroup do
     default_group = Skewer::AwsService.service.security_groups.select {|group| group.name == 'default'}[0]
     default_group.ip_permissions.select {|dg| dg['fromPort'] == 22 && dg['toPort'] == 22 }.length.should == 1
   end
-
-
 end
