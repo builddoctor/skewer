@@ -1,6 +1,11 @@
 require 'cli'
 
 describe Skewer::CLI do
+  before(:each) do
+    config = Skewer::SkewerConfig.instance
+    config.reset
+  end
+
   Fog.mock!
   it "shouldn't barf if you instantiate it wthout options" do
     lambda {
@@ -32,7 +37,7 @@ describe Skewer::CLI do
 
   it "should be able to parse the options as they're given" do
     config = Skewer::SkewerConfig.instance
-    config.get(:region).should == nil
+    config.get(:region).should == 'us-east-1'
     cli = Skewer::CLI.new({:kind => :nil, :region => 'eu-west-1'})
     config.get(:region).should == 'eu-west-1'
   end
