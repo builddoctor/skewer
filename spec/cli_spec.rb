@@ -44,8 +44,7 @@ describe Skewer::CLI do
 
   it "should be able to pass the region through to the AWS service" do
     config = Skewer::SkewerConfig.instance
-    config.set(:region, nil)
-    config.get(:region).should == nil
+    config.get(:region).should == 'us-east-1'
     cli = Skewer::CLI.new({:kind => :nil, :region => 'eu-west-1'})
     config.get(:region).should == 'eu-west-1'
     lambda {
