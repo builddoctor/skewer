@@ -2,6 +2,11 @@ require 'rspec'
 require 'config'
 
 describe Skewer::SkewerConfig do
+  before(:each) do
+    config = Skewer::SkewerConfig.instance
+    config.reset
+  end
+
   it "should only have one instance" do
     config1 = Skewer::SkewerConfig.instance
     config2 = Skewer::SkewerConfig.instance
@@ -49,7 +54,7 @@ describe Skewer::SkewerConfig do
     config.get(:region).should == 'unknown region'
   end
 
-  it "should have the region available as an attribute" do
+  it "should have the region available as an attribute when slurped" do
     config = Skewer::SkewerConfig.instance
     config.aws_region.should == 'us-east-1'
     config.slurp_options({:region => 'eu-west-1'})

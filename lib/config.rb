@@ -7,11 +7,15 @@ module Skewer
     attr_accessor :aws_service, :puppet_repo, :aws_region, :flavor_id, :aws_username, :flavor_id
 
     def initialize
+      reset
+      read_config_files
+    end
+
+    def reset
       @puppet_repo = '../infrastructure'
       @aws_region = 'us-east-1'
       @flavor_id = 'm1.large'
       @aws_username = 'ubuntu'
-      read_config_files
     end
 
     def read_config_file(config_file)
