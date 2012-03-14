@@ -30,3 +30,12 @@ Scenario: Roll out AWS node with a specific region
 """
   When I run `./bin/skewer provision --cloud ec2 --role foobar --image ami-f6340182 --region eu-west-1`
   Then the stdout should contain "Puppet run succeeded"
+
+Scenario: Roll out AWS node with a specific size
+  Given I have puppet code in "/tmp/skewer_test_code"
+  And a file named ".skewer.json" with:
+"""
+{"puppet_repo": "/tmp/skewer_test_code", "key_name":  "testytesty"}
+"""
+  When I run `./bin/skewer provision --cloud ec2 --role foobar --image ami-5c9b4935 --flavor m1.small`
+  Then the stdout should contain "Puppet run succeeded"

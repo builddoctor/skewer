@@ -51,4 +51,14 @@ describe Skewer::CLI do
       cli.select_node(:ec2)
     }.should raise_exception Fog::Errors::MockNotImplemented
   end
+
+  it "should be able to pass the flavor_id through to the AWS service" do
+    config = Skewer::SkewerConfig.instance
+    config.get(:flavor_id).should == 'm1.large'
+    cli = Skewer::CLI.new({:kind => :nil, :flavor_id => 'm1.small'})
+    config.get(:flavor_id).should == 'm1.small'
+    lambda {
+      cli.select_node(:ec2)
+    }.should raise_exception Fog::Errors::MockNotImplemented
+  end
 end

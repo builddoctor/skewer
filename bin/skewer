@@ -54,9 +54,13 @@ optparse = OptionParser.new do |opts|
     # AWS SSH key
     options[:key_name] = k
   end
-  # EC2 Security Group
   opts.on('--group NAME') do |group|
+    # EC2 Security Group
     options[:group] = group
+  end
+  opts.on('--flavor FLAVOR') do |flavor|
+    # AWS instance size
+    options[:flavor_id] = flavor
   end
 
   #
