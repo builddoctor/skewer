@@ -4,7 +4,7 @@ module Skewer
   # responsible for all configuration, once I move all the options in
   class SkewerConfig
     include Singleton
-    attr_accessor :aws_service, :puppet_repo, :aws_region, :flavor_id, :aws_username, :flavor_id
+    attr_accessor :aws_service, :puppet_repo, :region, :flavor_id, :aws_username, :flavor_id
 
     def initialize
       reset
@@ -13,7 +13,7 @@ module Skewer
 
     def reset
       @puppet_repo = '../infrastructure'
-      @aws_region = 'us-east-1'
+      @region = 'us-east-1'
       @flavor_id = 'm1.large'
       @aws_username = 'ubuntu'
     end
@@ -61,10 +61,6 @@ module Skewer
     def slurp_options(options)
       options.each_pair do |key, value|
         self.set(key, value)
-        if key == :region
-          @aws_region = value
-          self.set('aws_region', value)
-        end
       end
     end
   end

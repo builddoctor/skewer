@@ -5,10 +5,10 @@ module Skewer
     attr_reader :service
 
     def initialize
-      zone = SkewerConfig.get('aws_region')
+      region = SkewerConfig.get('region')
       @service = Fog::Compute.new({
         :provider => 'AWS',
-        :region => zone
+        :region => region
       })
       SkewerConfig.set 'aws_service', @service
     end

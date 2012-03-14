@@ -14,7 +14,7 @@ describe Skewer::AwsService do
   end
 
   it "should take zone param from SkewerConfig, and raise exception if not supported" do
-    Skewer::SkewerConfig.set 'aws_region', 'unknown region'
+    Skewer::SkewerConfig.set 'region', 'unknown region'
 
     lambda {
       service = Skewer::AwsService.service
@@ -23,7 +23,7 @@ describe Skewer::AwsService do
 
   it "should take zone param from SkewerConfig" do
     Fog.mock!
-    Skewer::SkewerConfig.set 'aws_region', 'eu-west-1'
+    Skewer::SkewerConfig.set 'region', 'eu-west-1'
     service = Skewer::AwsService.service
     service.nil?.should == false
     service.class.should == Fog::Compute::AWS::Mock

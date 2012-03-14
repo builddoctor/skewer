@@ -16,7 +16,7 @@ describe Skewer::SkewerConfig do
   it "should have some default options" do
     config = Skewer::SkewerConfig.instance
     config.get(:puppet_repo).should == '../infrastructure'
-    config.get(:aws_region).should == 'us-east-1'
+    config.get(:region).should == 'us-east-1'
     config.get(:flavor_id).should == 'm1.large'
   end
 
@@ -45,10 +45,10 @@ describe Skewer::SkewerConfig do
      config.slurp_options(options)
      config.get('rodent').should == 'bunnyrabbit'
      config.get('canine').should == 'dingo'
-     config.get('aws_region').should == 'us-east-1'
+     config.get('region').should == 'us-east-1'
   end
 
-  it "should take the AWS region as a parameter" do
+  it "should take the region as a parameter" do
     config = Skewer::SkewerConfig.instance
     config.set(:region, 'unknown region')
     config.get(:region).should == 'unknown region'
@@ -56,8 +56,13 @@ describe Skewer::SkewerConfig do
 
   it "should have the region available as an attribute when slurped" do
     config = Skewer::SkewerConfig.instance
-    config.aws_region.should == 'us-east-1'
+    config.region.should == 'us-east-1'
     config.slurp_options({:region => 'eu-west-1'})
-    config.aws_region.should == 'eu-west-1'
+    config.region.should == 'eu-west-1'
+  end
+
+  it "should have a region accessor" do
+    config = Skewer::SkewerConfig.instance
+    config.region.should == 'us-east-1'
   end
 end

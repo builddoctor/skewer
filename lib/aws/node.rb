@@ -1,3 +1,6 @@
+require 'skewer'
+require 'aws/service'
+
 module Skewer
   # Build out an AWS node using Fog.
   class AwsNode
