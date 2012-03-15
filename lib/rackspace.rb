@@ -20,7 +20,7 @@ module Skewer
       key = File.open(path, 'rb').read
 
       options = {
-        :flavor_id  => flavor,
+        :flavor_id  => flavor || 1,
         :image_id   => image,
         :name       => name,
         :public_key => key
