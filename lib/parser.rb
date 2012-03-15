@@ -1,5 +1,6 @@
 require 'fog'
 require 'cli'
+require 'aws/node'
 
 module Skewer
   class CLI
@@ -7,8 +8,25 @@ module Skewer
     class Parser
       def initialize(type = nil, options = {})
         # base case tests that we have input that we accept.
+        Fog.mock! if options[:mock] == true
+        validate_options(options, type)
+
+
+        if type == 'delete'
+
+          node = AwsNode.find_by_name(options[:host])
+          node.destroy
+          Skewer::Logger.info("#{options[:host]} deleted.")
+        else
+          Skewer::CLI.bootstrap_and_go(options)
+        end
+
+
+      end
+
+      def validate_options(options, type)
         abort(usage) if type.nil? and options.empty?
-        abort(usage) if type != 'provision' and type != 'update'
+        abort(usage) unless ['provision', 'update', 'delete'].include? type
         if type == 'provision'
           unless options[:kind] && options[:image] && options[:role] && !options[:help]
             abort(provision_usage)
@@ -17,10 +35,11 @@ module Skewer
           unless options[:host] && options[:user] && !options[:help]
             abort(update_usage)
           end
+        elsif type == 'delete'
+          unless options[:kind] && options[:host]
+            abort('delete fail')
+          end
         end
-
-        Fog.mock! if options[:mock] == true
-        Skewer::CLI.bootstrap_and_go(options)
       end
 
       def usage
