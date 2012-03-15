@@ -21,39 +21,40 @@ module Skewer
 
     def select_node(kind)
       Skewer.logger.debug "Evaluating cloud #{kind}"
+      puts "DEBUG: #{kind.class}"
       image = @options[:image]
       case kind
-      when :ec2 
-        require 'aws/security_group'
-        require 'aws/node'
-        require 'aws/service'
-        Skewer.logger.debug 'Launching an EC2 node'
-        aws_group = @options[:group]
-        group = aws_group ? aws_group : 'default'
-        node = AwsNode.new(image, [group]).node
-      when :rackspace
-        require 'rackspace/node'
-        Skewer.logger.debug 'Launching a Rackspace node'
-        node = Rackspace::Node.new(@options[:flavor_id], image, 'default').node
-      when :linode
-        raise "not implemented"
-      when :eucalyptus
-        Skewer.logger.debug 'Using the EC2 API'
-        require 'eucalyptus'
-        node = Eucalyptus.new
-      when :vagrant
-        Skewer.logger.debug 'Launching a local vagrant node'
-        require 'ersatz/ersatz_node.rb'
-        node = ErsatzNode.new('default', 'vagrant')
-      when :stub
-        Skewer.logger.debug "Launching stubbed node for testing"
-        require 'stub_node'
-        node = StubNode.new
-      when :ersatz
-        require 'ersatz/ersatz_node.rb'
-        node = ErsatzNode.new(@config.get('host'), @config.get('user'))
-      else
-        raise "I don't know that cloud"
+        when :ec2
+          require 'aws/security_group'
+          require 'aws/node'
+          require 'aws/service'
+          Skewer.logger.debug 'Launching an EC2 node'
+          aws_group = @options[:group]
+          group = aws_group ? aws_group : 'default'
+          node = AwsNode.new(image, [group]).node
+        when :rackspace
+          require 'rackspace/node'
+          Skewer.logger.debug 'Launching a Rackspace node'
+          node = Rackspace::Node.new(@options[:flavor_id], image, 'default').node
+        when :linode
+          raise "not implemented"
+        when :eucalyptus
+          Skewer.logger.debug 'Using the EC2 API'
+          require 'eucalyptus'
+          node = Eucalyptus.new
+        when :vagrant
+          Skewer.logger.debug 'Launching a local vagrant node'
+          require 'ersatz/ersatz_node.rb'
+          node = ErsatzNode.new('default', 'vagrant')
+        when :stub
+          Skewer.logger.debug "Launching stubbed node for testing"
+          require 'stub_node'
+          node = StubNode.new
+        when :ersatz
+          require 'ersatz/ersatz_node.rb'
+          node = ErsatzNode.new(@config.get('host'), @config.get('user'))
+        else
+          raise "I don't know that cloud"
       end
       node
     end
@@ -68,7 +69,7 @@ module Skewer
       @bootstrapper = Bootstrapper.new(node, @options)
     end
 
-    def go 
+    def go
       require 'puppet'
       begin
         node = @node

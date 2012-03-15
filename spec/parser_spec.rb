@@ -25,13 +25,15 @@ describe Skewer::CLI::Parser do
     }.should raise_exception(SystemExit, USAGE)
   end
 
-  it "should build out the object if given correct input" do
+  it "should barf if it doesnt know how to provision something odd" do
     lambda {
-      parser = Skewer::CLI::Parser.new('provision', {:kind => true, :image => true, :role => true})
+      parser = Skewer::CLI::Parser.new('provision', {:kind => "FOOBAR", :image => true, :role => true})
     }.should raise_exception(RuntimeError, "I don't know that cloud")
 
+  end
+  it "should barf if it doesn't know how to update something odd" do
     lambda {
-      parser = Skewer::CLI::Parser.new('update', {:host => true, :user => true})
+      parser = Skewer::CLI::Parser.new('update', {:host => "googoo", :user => "shoopidoop"})
     }.should raise_exception(RuntimeError, "I don't know that cloud")
   end
 
