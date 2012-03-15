@@ -34,7 +34,7 @@ module Skewer
       when :rackspace
         require 'rackspace'
         Skewer.logger.debug 'Launching a Rackspace node'
-        node = RackspaceNode.new(@options[:flavor_id], image, 'default').node
+        node = Rackspace::Node.new(@options[:flavor_id], image, 'default').node
       when :linode
         raise "not implemented"
       when :eucalyptus

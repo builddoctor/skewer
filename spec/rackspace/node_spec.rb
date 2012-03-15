@@ -1,11 +1,11 @@
 require 'rspec'
-require 'rackspace'
+require 'rackspace/node'
 
-describe Skewer::RackspaceNode do
+describe Skewer::Rackspace::Node do
   it "should build out a basic rackspace node" do
     lambda {
       Fog.mock!
-      Skewer::RackspaceNode.new
+      Skewer::Rackspace::Node.new
     }.should raise_exception Fog::Errors::MockNotImplemented
   end
 end
