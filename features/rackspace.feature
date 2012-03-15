@@ -25,3 +25,10 @@ Feature: provisioning a node on Rackspace
     Given I run `./bin/skewer provision --cloud rackspace --role foobar --image 112 --flavor 3`
     Then the stdout should contain "Evaluating cloud rackspace"
     And the stdout should contain "Launching a Rackspace node"
+
+  @announce-stdout
+  @announce-stderr
+  Scenario: Build a machine with a symbolic image ID
+    Given I run `./bin/skewer provision --cloud rackspace --role foobar --image ubuntu1104 --flavor 2`
+    Then the stdout should contain "Evaluating cloud rackspace"
+    And the stdout should contain "Launching a Rackspace node"
