@@ -36,4 +36,20 @@ describe Skewer::Rackspace::Images do
       rs_images.include?(v).should == true
     }
   end
+
+  it "should provide a default image ID if bad input provided" do
+    @images.get_id(nil).should == 112
+    @images.get_id(false).should == 112
+    @images.get_id(true).should == 112
+  end
+
+  it "should raise an exception if a bad name is provided" do
+    lambda {
+      @images.get_id('bleep de bloop')
+    }.should raise_exception(RuntimeError)
+  end
+
+  it "should return the ID if the correct name is provided" do
+    @images.get_id('ubuntu1104').should == 115
+  end
 end

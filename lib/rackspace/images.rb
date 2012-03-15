@@ -10,6 +10,13 @@ module Skewer
           'ubuntu1110' => { :id => 119, :name => "Ubuntu 11.10"},
         }
       end
+
+      # If provided a name for an image, give back the ID.
+      def get_id(name)
+        return @supported['ubuntu1004'][:id] if name.nil? or name.class != String
+        raise "An image with that name doesn't exist" if @supported.has_key?(name) == false
+        @supported[name][:id]
+      end
     end
   end
 end
