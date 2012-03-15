@@ -66,5 +66,15 @@ describe Skewer::AwsNode do
     #node.delete.should == true
   end
 
+  it "should have a static find_service method" do
+    options = {}
+    service = stub('aws_service')
+
+    options[:service] = service
+
+    Skewer::AwsNode.find_service(options).should == service
+
+  end
+
 
 end

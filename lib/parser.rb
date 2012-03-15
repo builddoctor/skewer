@@ -13,15 +13,21 @@ module Skewer
 
 
         if type == 'delete'
-
-          node = AwsNode.find_by_name(options[:host])
-          node.destroy
-          Skewer::Logger.info("#{options[:host]} deleted.")
+          destroy_node(options)
         else
           Skewer::CLI.bootstrap_and_go(options)
         end
 
+      end
 
+      def destroy_node(options)
+        node = AwsNode.find_by_name(options[:host])
+        if node
+          node.destroy
+          Skewer.logger.info("#{options[:host]} deleted.")
+        else
+          Skewer.logger.info("#{options[:host]} not found.")
+        end
       end
 
       def validate_options(options, type)

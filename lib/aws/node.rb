@@ -11,7 +11,7 @@ module Skewer
       if options[:aws_node]
         @node = options[:aws_node]
       else
-        find_service(options)
+        @service = self.class.find_service(options)
         node_options = {
             :image_id => aws_id,
             :flavor_id => SkewerConfig.get('flavor_id'),
@@ -32,15 +32,15 @@ module Skewer
       end
     end
 
-    def find_service(options)
-      @service = options[:service] ? options[:service] : AwsService.new.service
+    def self.find_service(options)
+      options[:service] ? options[:service] : AwsService.new.service
     end
 
     def destroy
       @node.destroy
     end
 
-    def self.find_by_name(dns_name, service = find_service)
+    def self.find_by_name(dns_name, service = self.find_service({}))
       node = service.servers.select { |server| server.dns_name == dns_name }[0]
       if node.respond_to?(:dns_name)
         return self.new(nil, nil, {:aws_node => node})
