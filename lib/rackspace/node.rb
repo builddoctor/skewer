@@ -1,4 +1,5 @@
 require 'fog'
+require 'rackspace/images'
 
 module Skewer
   module Rackspace
@@ -21,9 +22,10 @@ module Skewer
         raise "Couldn't find a public key" if not File.exist? path
         key = File.open(path, 'rb').read
 
+        images = Rackspace::Images.new
         options = {
-          :flavor_id  => flavor || 1,
-          :image_id   => image,
+          :flavor_id  => flavor,
+          :image_id   => images.get_id(image),
           :name       => name,
           :public_key => key
         }

@@ -52,4 +52,8 @@ describe Skewer::Rackspace::Images do
   it "should return the ID if the correct name is provided" do
     @images.get_id('ubuntu1104').should == 115
   end
+
+  it "should pass back an integer if given an integer" do
+    @images.get_id(2324234).should == 2324234
+  end
 end

@@ -13,8 +13,11 @@ module Skewer
 
       # If provided a name for an image, give back the ID.
       def get_id(name)
-        return @supported['ubuntu1004'][:id] if name.nil? or name.class != String
-        raise "An image with that name doesn't exist" if @supported.has_key?(name) == false
+        return @supported['ubuntu1004'][:id] if name.nil?
+        name = Integer(name) rescue name
+        return name if name.class == Fixnum
+        return @supported['ubuntu1004'][:id] if name.class != String
+        raise "An image with the name '#{name}' doesn't exist" if @supported.has_key?(name) == false
         @supported[name][:id]
       end
     end
