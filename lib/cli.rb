@@ -71,6 +71,7 @@ module Skewer
 
     def go
       require 'puppet'
+      require 'cuke'
       begin
         node = @node
         node.wait_for { ready? }
@@ -79,6 +80,7 @@ module Skewer
         location = @util.get_location(node)
         Hooks.new(location).run
         Skewer.logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
+        Cuke.new(@config.get(:cuke_dir)).run if @config.get(:cuke_dir)
       rescue Exception => exception
         Skewer.logger.debug exception
       ensure

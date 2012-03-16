@@ -84,6 +84,10 @@ optparse = OptionParser.new do |opts|
     puts "puppetcode is: " + pc
   end
 
+  opts.on('--features DIRECTORY') do |dir|
+    options[:cuke_dir] = dir
+  end
+  
   # TODO: Fix this, and update the above for --host/-h
   opts.on('-q', '--help') do |help|
     options[:help] = true
