@@ -29,4 +29,18 @@ describe Skewer::Cuke do
     cuke.nil?.should == false
     cuke.class.should == Skewer::Cuke
   end
+
+  it "should successfully run cucumber within the provided directory" do
+    cuke = Skewer::Cuke.new('./target')
+    result = cuke.run
+    result = result.match(/failure/)[0] rescue false
+    result.should == false
+  end
+
+  it "should throw an exception if cucumber finds a failing feature" do
+    cuke = Skewer::Cuke.new('./spec/support/features')
+    lambda {
+      cuke.run
+    }.should raise_exception(Skewer::Cuke::CukeError)
+  end
 end
