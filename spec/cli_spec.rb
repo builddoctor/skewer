@@ -61,4 +61,11 @@ describe Skewer::CLI do
       cli.select_node(:ec2)
     }.should raise_exception Fog::Errors::MockNotImplemented
   end
+
+  it "should be able to provide a cuke directory" do
+    config = Skewer::SkewerConfig.instance
+    config.get(:cuke_dir).should == nil
+    cli = Skewer::CLI.new({:kind => :nil, :cuke_dir => 'spec'})
+    config.get(:cuke_dir).should == 'spec'
+  end
 end
