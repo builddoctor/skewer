@@ -1,6 +1,7 @@
 require 'fog'
 require 'cli'
 require 'aws/node'
+require "rackspace/node"
 
 module Skewer
   class CLI
@@ -11,17 +12,25 @@ module Skewer
         Fog.mock! if options[:mock] == true
         validate_options(options, type)
 
-
         if type == 'delete'
-          destroy_node(options)
+          node = ''
+          case options[:kind]
+            when :ec2
+              node = AwsNode.find_by_name(options[:host])
+            when :rackspace
+              node = RackspaceNode.find_by_ip(options { :host })
+          end
+          destroy_node(node, options)
+
+
         else
           Skewer::CLI.bootstrap_and_go(options)
         end
 
       end
 
-      def destroy_node(options)
-        node = AwsNode.find_by_name(options[:host])
+      def destroy_node(node, options)
+
         if node
           node.destroy
           Skewer.logger.info("#{options[:host]} deleted.")
