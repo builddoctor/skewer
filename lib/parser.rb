@@ -21,16 +21,12 @@ module Skewer
               node = RackspaceNode.find_by_ip(options { :host })
           end
           destroy_node(node, options)
-
-
         else
           Skewer::CLI.bootstrap_and_go(options)
         end
-
       end
 
       def destroy_node(node, options)
-
         if node
           node.destroy
           Skewer.logger.info("#{options[:host]} deleted.")
