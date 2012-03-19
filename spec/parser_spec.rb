@@ -11,6 +11,7 @@ USAGE.strip!
 
 UPDATE_USAGE = "Usage: skewer update --host <host> --user <user with sudo rights> --role <puppet role class>"
 PROVISION_USAGE = "Usage: skewer provision --cloud <which cloud>  --image <AWS image> --role <puppet role class>"
+DELETE_USAGE = "Usage: skewer delete --cloud <which cloud> --host <host>"
 
 describe Skewer::CLI::Parser do
   it "should barf if given no params" do
@@ -71,5 +72,21 @@ describe Skewer::CLI::Parser do
     lambda {
       parser = Skewer::CLI::Parser.new('provision', {:kind => :ec2})
     }.should raise_exception(SystemExit, "A key (--key KEY) must be provided if using EC2")
+  end
+
+  it "should show the delete usage if provided 'delete' with the help option" do
+    lambda {
+      parser = Skewer::CLI::Parser.new('delete', {:host => true, :kind => true, :help => true})
+    }.should raise_exception(SystemExit, DELETE_USAGE)
+  end
+
+  it "should show the delete usage if not given the correct inputs" do
+    lambda {
+      parser = Skewer::CLI::Parser.new('delete', {:host => true})
+    }.should raise_exception(SystemExit, DELETE_USAGE)
+
+    lambda {
+      parser = Skewer::CLI::Parser.new('delete', {:kind => true})
+    }.should raise_exception(SystemExit, DELETE_USAGE)
   end
 end

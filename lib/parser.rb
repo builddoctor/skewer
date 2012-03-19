@@ -48,8 +48,8 @@ module Skewer
             abort(update_usage)
           end
         elsif type == 'delete'
-          unless options[:kind] && options[:host]
-            abort('delete fail')
+          unless options[:kind] && options[:host] && !options[:help]
+            abort(delete_usage)
           end
         end
       end
@@ -75,6 +75,13 @@ EOF
       def update_usage
         out = <<EOF
 Usage: skewer update --host <host> --user <user with sudo rights> --role <puppet role class>
+EOF
+        out.strip
+      end
+
+      def delete_usage
+        out = <<EOF
+Usage: skewer delete --cloud <which cloud> --host <host>
 EOF
         out.strip
       end
