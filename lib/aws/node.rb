@@ -42,13 +42,11 @@ module Skewer
 
     def self.find_by_name(dns_name, service = self.find_service({}))
       node = service.servers.select { |server| server.dns_name == dns_name }[0]
-      if node.respond_to?(:dns_name)
+      if !node.nil?
         return self.new(nil, nil, {:aws_node => node})
       else
         return false
       end
-
     end
-
   end
 end

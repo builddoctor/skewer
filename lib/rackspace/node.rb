@@ -9,25 +9,22 @@ module Skewer
 
       # By default, boot an Ubuntu 10.04 LTS (lucid) server.
       def initialize(flavor = 1, image = 112, name = 'my_server', instance = nil)
-
         connection = self.class.find_service
 
         # Get our SSH key to attach it to the server.
         if instance
-           @node = instance
+          @node = instance
         else
           @node = build(connection, flavor, image, name)
         end
-
       end
 
       def self.find_service
         Fog::Compute.new(
-            :provider => 'Rackspace',
-            :rackspace_api_key => Fog.credentials[:rackspace_api_key],
-            :rackspace_username => Fog.credentials[:rackspace_username],
-            :rackspace_auth_url => "lon.auth.api.rackspacecloud.com"
-        )
+          :provider => 'Rackspace',
+          :rackspace_api_key => Fog.credentials[:rackspace_api_key],
+          :rackspace_username => Fog.credentials[:rackspace_username],
+          :rackspace_auth_url => "lon.auth.api.rackspacecloud.com")
       end
 
       def build(connection, flavor, image, name)
@@ -46,14 +43,15 @@ module Skewer
         connection.servers.bootstrap(options)
       end
 
-      def delete
-        @node.delete
+      def destroy
+        @node.destroy if !@node.nil?
       end
 
-      def self.find_by_ip(ip_address, service = self.find_service)
-        node = service.servers.select {|server| server.public_ip_address == ip_address }
-        if node
-          return self.new(nil, nil, nil, node)
+      def self.find_by_ip(ip_address)
+        service = self.find_service()
+        node = service.servers.select { |server| server.public_ip_address == ip_address }
+        if node.size > 0
+          return self.new(nil, nil, nil, node[0])
         else
           return false
         end

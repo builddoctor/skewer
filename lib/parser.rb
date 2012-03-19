@@ -18,7 +18,7 @@ module Skewer
             when :ec2
               node = AwsNode.find_by_name(options[:host])
             when :rackspace
-              node = RackspaceNode.find_by_ip(options { :host })
+              node = Rackspace::Node.find_by_ip(options[:host])
           end
           destroy_node(node, options)
         else
@@ -31,7 +31,7 @@ module Skewer
           node.destroy
           Skewer.logger.info("#{options[:host]} deleted.")
         else
-          Skewer.logger.info("#{options[:host]} not found.")
+          abort("#{options[:host]} not found.")
         end
       end
 
