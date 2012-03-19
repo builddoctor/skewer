@@ -6,6 +6,7 @@ Usage: skewer COMMAND [options]
 The available skewer commands are:
    provision  spawn a new VM via a cloud system and provision it with puppet code
    update     update the puppet code on a machine that you've already provisioned
+   delete     deletes the given host from the provided cloud provider
 EOF
 USAGE.strip!
 
