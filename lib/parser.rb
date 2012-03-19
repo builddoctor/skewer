@@ -38,6 +38,7 @@ module Skewer
       def validate_options(options, type)
         abort(usage) if type.nil? and options.empty?
         abort(usage) unless ['provision', 'update', 'delete'].include? type
+        abort("A key (--key KEY) must be provided if using EC2") if options[:kind] == :ec2 && !options[:key_name]
         if type == 'provision'
           unless options[:kind] && options[:image] && options[:role] && !options[:help]
             abort(provision_usage)

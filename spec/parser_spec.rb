@@ -66,4 +66,10 @@ describe Skewer::CLI::Parser do
       parser = Skewer::CLI::Parser.new('update', {:host => true, :user => true, :help => true})
     }.should raise_exception(SystemExit, UPDATE_USAGE)
   end
+
+  it "should require --key if cloud is AWS" do
+    lambda {
+      parser = Skewer::CLI::Parser.new('provision', {:kind => :ec2})
+    }.should raise_exception(SystemExit, "A key (--key KEY) must be provided if using EC2")
+  end
 end
