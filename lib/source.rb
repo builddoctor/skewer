@@ -10,7 +10,7 @@ module Skewer
     end
 
     def excludes
-      '--exclude ' + ['.git'].join(' ')
+      '--exclude Gemfile --exclude Gemfile.lock --exclude ' + ['.git'].join(' ')
     end
 
     def create_destination(node)

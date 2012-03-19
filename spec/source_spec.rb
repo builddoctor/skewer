@@ -29,7 +29,7 @@ describe Skewer::Source do
     node.should_receive(:dns_name).and_return('foo.foo.com')
     node.should_receive(:username).and_return('jimmy')
     source = Skewer::Source.new('/tmp/')
-    source.rsync_command(node).should == 'rsync --exclude .git --delete -arpze ssh /tmp/. jimmy@foo.foo.com:infrastructure/.'
+    source.rsync_command(node).should == 'rsync --exclude Gemfile --exclude Gemfile.lock --exclude .git --delete -arpze ssh /tmp/. jimmy@foo.foo.com:infrastructure/.'
   end
 
   it "should blow up if it can't connect to the remote node" do
