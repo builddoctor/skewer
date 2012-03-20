@@ -47,8 +47,7 @@ module Skewer
         @node.destroy if !@node.nil?
       end
 
-      def self.find_by_ip(ip_address)
-        service = self.find_service()
+      def self.find_by_ip(ip_address, service = self.find_service())
         node = service.servers.select { |server| server.public_ip_address == ip_address }
         if node.size > 0
           return self.new(nil, nil, nil, node[0])
