@@ -16,8 +16,7 @@ Scenario: run the command with bad input
   And the exit status should not be 0
 
 @wip @announce-stdout @announce-stderr
-Scenario: create a new AWS server and delete it
-  Given I create a new AWS server
-  When I delete the new AWS server I created
-  Then the output should say that the AWS server was deleted
-  And the exit status should be 0
+Scenario: create a new Rackspace server and delete it
+  Given I create a new Rackspace server
+  When I delete the new Rackspace server I created
+  Then the output should say that the Rackspace server was deleted
