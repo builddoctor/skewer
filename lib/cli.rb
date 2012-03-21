@@ -30,7 +30,7 @@ module Skewer
           Skewer.logger.debug 'Launching an EC2 node'
           aws_group = @options[:group]
           group = aws_group ? aws_group : 'default'
-          node = AwsNode.new(image, [group]).node
+          node = AWS::Node.new(image, [group]).node
         when :rackspace
           require 'rackspace/node'
           Skewer.logger.debug 'Launching a Rackspace node'

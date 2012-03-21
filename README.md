@@ -5,11 +5,12 @@ machines. Skewer can:
 
   1. Spawn a new virtual machine via a cloud system
   2. Provision it with puppet code
-  3. Update the puppet code on a machine that you've provisioned
-  already
-  4. Update it
+  3. Update the puppet code on a machine that you've provisioned already
+  4. Delete it
 
-Skewer exists because sometimes, a Puppetmaster server isn't needed. If you run a small number of nodes, or simply want to bootstrap cloud nodes, you might like this tool.
+Skewer exists because sometimes, a Puppetmaster server isn't needed.
+If you run a small number of nodes, or simply want to bootstrap 
+cloud nodes, you might like this tool.
 
 ## Design Goals
 
@@ -36,8 +37,9 @@ rack-mounted hardware).
 
 ## Usage
 
-`./bin/provision` will provision a new node, and `./bin/update` will allow
-you to roll out new changes.
+`skewer provision` will provision a new node, and `skewer update` will allow
+you to roll out new changes. Using `skewer delete` you can delete a node 
+already in one of the supported cloud providers.
 
 To provision, you'll need to have:
 
@@ -51,7 +53,7 @@ To update, you'll need a hostname and a username. We assume that you have access
 Supported clouds:
 
   - AWS (Sorry to be so predictable)
-
+  - Rackspace
 
 Supported operating systems:
 
@@ -72,4 +74,4 @@ To run the cucumber features, you'll need vagrant and virtualbox
 installed. You'll also need to hack the ssh config in order to allow
 the cucumber features to hit the vagrant box:
 
-    vagrant ssh_config >> ~/.ssh/config 
+    vagrant ssh_config >> ~/.ssh/config

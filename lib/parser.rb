@@ -15,7 +15,7 @@ module Skewer
         if type == 'delete'
           case options[:kind]
             when :ec2
-              node = AwsNode.find_by_name(options[:host])
+              node = AWS::Node.find_by_name(options[:host])
             when :rackspace
               node = Rackspace::Node.find_by_ip(options[:host])
             else
