@@ -24,6 +24,7 @@ Scenario: config in local file
   """
   When I run `./bin/skewer provision --cloud stub --role foobar --image ami-deadbeef`
   Then the stdout should contain "Using Puppet Code from /tmp/skewer_test_code"
+  And the exit status should be 0
 
 @announce-stdout
 @announce-stderr

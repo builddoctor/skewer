@@ -3,8 +3,7 @@ module Skewer
 
   class << self
     def logger
-      return @log if @log
-      @log = Logger.new(STDOUT)
+      @log = @log ? @log : Logger.new(STDOUT)
     end
 
     def logger=(logger)
