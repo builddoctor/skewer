@@ -12,14 +12,14 @@ module Skewer
 
     def announce(return_type)
       Skewer.logger.debug "#{self.class} will return #{return_type}" if @debug
-      return return_type
+      return_type
     end
 
     def method_missing(name, *args)
       require 'ersatz/ssh_result.rb'
       Skewer.logger.debug "#{self.class}.#{name} called with #{args.join(',')}" if @debug
       return announce([ErsatzSSHResult.new('foo', 'success', 0)]) if name == :ssh
-      return announce true
+      announce true
     end
   end
 end

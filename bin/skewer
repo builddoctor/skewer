@@ -26,11 +26,11 @@ optparse = OptionParser.new do |opts|
     puts "puppetcode is: " + pc
   end
 
-  opts.on('-m', '--mock') do |m|
+  opts.on('-m', '--mock') do
     options[:mock] = true
   end
 
-  opts.on('--keep') do |k|
+  opts.on('--keep') do
     options[:keep] = true
   end
 
@@ -76,7 +76,7 @@ optparse = OptionParser.new do |opts|
   opts.on('-r', '--role NAME', "puppet role class to call") do |r|
     options[:role] = r
   end
-  opts.on('-n', '--noop', "do a dry run first") do |n|
+  opts.on('-n', '--noop', "do a dry run first") do
     options[:noop] = true
   end
   opts.on('-pc', '--puppetcode') do |pc|
@@ -89,13 +89,13 @@ optparse = OptionParser.new do |opts|
   end
   
   # TODO: Fix this, and update the above for --host/-h
-  opts.on('-q', '--help') do |help|
+  opts.on('-q', '--help') do
     options[:help] = true
   end
 end
 
 optparse.parse!
 
-Fog.mock! if options[:mock] == true
+Fog.mock! if options[:mock]
 
 Skewer::CLI::Parser.new(type, options)

@@ -19,16 +19,15 @@ Bundler::GemHelper.install_tasks
 MetricFu::Configuration.run do |config|
   #define which metrics you want to use
   config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi]
-  #config.graphs   = [:flog, :flay, :stats]
 end
 
 desc "fire up vagrant so we can test the plain ssh update script"
-task :bumsrush do 
+task :vagrant_destroy do
   env = Vagrant::Environment.new
   env.cli("destroy")
 end
 
-task :vagrant do 
+task :vagrant_up do
   env = Vagrant::Environment.new
   env.cli("up")
 end
@@ -56,6 +55,5 @@ RSpec::Core::RakeTask.new("spec:coverage") do |t|
   t.rspec_opts = ["-c"]
 end
 
-task :default => [:clean, :spec, :features]
-task :features => :vagrant
-task :clean => :bumsrush
+task :default => [:clean, :spec]
+task :features => :vagrant_up

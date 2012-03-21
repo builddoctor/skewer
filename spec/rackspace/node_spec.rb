@@ -22,7 +22,7 @@ describe Skewer::Rackspace::Node do
 
   it "should have a delete method" do
 
-    node = stub(node)
+    node = stub('node')
     node.should_receive(:delete).and_return(true)
     Skewer::Rackspace::Node.new(nil, nil, nil,node).node.delete.should == true
 

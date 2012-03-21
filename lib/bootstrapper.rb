@@ -26,7 +26,7 @@ module Skewer
       @node.scp file, '/var/tmp/.'
       result = @node.ssh "sudo bash /var/tmp/#{file_name}"
       puts result.inspect
-      return result
+      result
     end
 
     def install_gems
@@ -35,7 +35,6 @@ module Skewer
       @node.scp File.join(File.expand_path(assets), 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
       result = @node.ssh(command)
-      return result
     end
 
     def add_key_to_agent(executor = Kernel, homedir = ENV['HOME'])
@@ -93,7 +92,7 @@ module Skewer
         end
       else
         FileUtils.touch(lock_file)
-        return true
+        true
       end
     end
 

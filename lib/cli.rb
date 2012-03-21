@@ -21,7 +21,6 @@ module Skewer
 
     def select_node(kind)
       Skewer.logger.debug "Evaluating cloud #{kind}"
-      puts "DEBUG: #{kind.class}"
       image = @options[:image]
       case kind
         when :ec2

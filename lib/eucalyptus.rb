@@ -10,7 +10,6 @@ module Skewer
         :endpoint => 'http://localhost:4567'
       })
       @node = compute.servers.bootstrap()
-      @node
     end
   end
 end

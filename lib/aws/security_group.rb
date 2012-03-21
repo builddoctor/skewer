@@ -8,7 +8,7 @@ module Skewer
       groups = @service.security_groups
       group = groups.select { |group| group.name == name }[0]
 
-      if group.nil? == true
+      if group.nil?
         group = @service.create_security_group(name, desc)
         group = groups.get(name)
       end
@@ -25,7 +25,6 @@ module Skewer
 
         description = port[:description]
         range = port[:range]
-        options = port[:options]
 
         group.revoke_port_range(range)
         group.authorize_port_range(range, {:name => description})

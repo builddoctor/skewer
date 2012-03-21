@@ -13,10 +13,12 @@ describe Skewer::Util do
     util.get_location(Object.new).should == nil
 
     aws = Object.new
-    def aws.dns_name; return "aws-fqdn"; end
+    def aws.dns_name; return "aws-fqdn"
+    end
 
     rackspace = Object.new
-    def rackspace.public_ip_address; return "1.1.1.1"; end
+    def rackspace.public_ip_address; return "1.1.1.1"
+    end
     
     # Positive cases.
     util.get_location(aws).should == 'aws-fqdn'

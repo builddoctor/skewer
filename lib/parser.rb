@@ -9,16 +9,17 @@ module Skewer
     class Parser
       def initialize(type = nil, options = {})
         # base case tests that we have input that we accept.
-        Fog.mock! if options[:mock] == true
+        Fog.mock! if options[:mock]
         validate_options(options, type)
 
         if type == 'delete'
-          node = ''
           case options[:kind]
             when :ec2
               node = AwsNode.find_by_name(options[:host])
             when :rackspace
               node = Rackspace::Node.find_by_ip(options[:host])
+            else
+              raise("#{options[:kind]} not found")
           end
           destroy_node(node, options)
         else

@@ -11,7 +11,7 @@ module Skewer
 
       # Positive case.
       return server.dns_name if server.respond_to? :dns_name
-      return server.public_ip_address if server.respond_to? :public_ip_address
+      server.public_ip_address if server.respond_to? :public_ip_address
     end
   end
 end

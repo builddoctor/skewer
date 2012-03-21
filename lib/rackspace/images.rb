@@ -17,7 +17,7 @@ module Skewer
         name = Integer(name) rescue name
         return name if name.class == Fixnum
         return @supported['ubuntu1004'][:id] if name.class != String
-        raise "An image with the name '#{name}' doesn't exist" if @supported.has_key?(name) == false
+        raise "An image with the name '#{name}' doesn't exist" if !@supported.has_key?(name)
         @supported[name][:id]
       end
     end

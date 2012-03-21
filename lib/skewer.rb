@@ -5,7 +5,6 @@ module Skewer
     def logger
       return @log if @log
       @log = Logger.new(STDOUT)
-      @log
     end
 
     def logger=(logger)
