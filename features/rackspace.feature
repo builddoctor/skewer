@@ -18,6 +18,7 @@ Feature: provisioning a node on Rackspace
     When I run `./bin/skewer provision --cloud rackspace --role foobar --image 112`
     Then the stdout should contain "Evaluating cloud rackspace"
     And the stdout should contain "Launching a Rackspace node"
+    And the exit status should be 0
 
   @announce-stdout
   @announce-stderr
@@ -25,6 +26,7 @@ Feature: provisioning a node on Rackspace
     Given I run `./bin/skewer provision --cloud rackspace --role foobar --image 112 --flavor 3`
     Then the stdout should contain "Evaluating cloud rackspace"
     And the stdout should contain "Launching a Rackspace node"
+    And the exit status should be 0
 
   @announce-stdout
   @announce-stderr
@@ -32,3 +34,4 @@ Feature: provisioning a node on Rackspace
     Given I run `./bin/skewer provision --cloud rackspace --role foobar --image ubuntu1104 --flavor 2`
     Then the stdout should contain "Evaluating cloud rackspace"
     And the stdout should contain "Launching a Rackspace node"
+    And the exit status should be 0
