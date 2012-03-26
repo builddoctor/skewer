@@ -19,12 +19,13 @@ module Skewer
         end
       end
 
-      def self.find_service
+      def self.find_service(region = :usa)
+        region = region == :usa ? "auth.api.rackspacecloud.com" : "lon.auth.api.rackspacecloud.com"
         Fog::Compute.new(
           :provider => 'Rackspace',
           :rackspace_api_key => Fog.credentials[:rackspace_api_key],
           :rackspace_username => Fog.credentials[:rackspace_username],
-          :rackspace_auth_url => "lon.auth.api.rackspacecloud.com")
+          :rackspace_auth_url => region)
       end
 
       def build(connection, flavor, image, name)
