@@ -43,7 +43,7 @@ module Skewer
 
       def find_key
         ssh_key = nil
-        ['id_rsa.pub', 'id_dsa.pub', "#{SkewerConfig.instance.get(:key)}.pub"].each do |key|
+        ['id_rsa.pub', 'id_dsa.pub', "#{SkewerConfig.instance.get(:key_name)}.pub"].each do |key|
           key_path =  File.expand_path(File.join(ENV['HOME'],'.ssh', key))
           if File.exist?(key_path)
             ssh_key = key_path
