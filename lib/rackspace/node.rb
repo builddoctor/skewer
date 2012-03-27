@@ -29,10 +29,7 @@ module Skewer
       end
 
       def build(connection, flavor, image, name)
-        path = File.expand_path '~/.ssh/id_rsa.pub'
-        path = File.expand_path '~/.ssh/id_dsa.pub' if not File.exist? path
-        raise "Couldn't find a public key" if not File.exist? path
-        key = File.open(path, 'rb').read
+        key = find_key()
 
         images = Rackspace::Images.new
         options = {
@@ -44,8 +41,22 @@ module Skewer
         connection.servers.bootstrap(options)
       end
 
+      def find_key
+        ssh_key = nil
+        ['id_rsa.pub', 'id_dsa.pub', "#{SkewerConfig.instance.get(:key)}.pub"].each do |key|
+          key_path =  File.expand_path(File.join(ENV['HOME'],'.ssh', key))
+          if File.exist?(key_path)
+            ssh_key = key_path
+            break
+          end
+        end
+
+        raise "Couldn't find a public key" unless ssh_key
+        File.read(ssh_key)
+      end
+
       def destroy
-        @node.destroy if !@node.nil?
+        @node.destroy unless @node.nil?
       end
 
       def self.find_by_ip(ip_address, service = self.find_service())
