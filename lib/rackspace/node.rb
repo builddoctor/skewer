@@ -9,7 +9,8 @@ module Skewer
 
       # By default, boot an Ubuntu 10.04 LTS (lucid) server.
       def initialize(flavor = 1, image = 112, name = 'my_server', instance = nil)
-        connection = self.class.find_service
+        region = SkewerConfig.get('region')
+        connection = self.class.find_service(region)
 
         # Get our SSH key to attach it to the server.
         if instance
@@ -19,8 +20,8 @@ module Skewer
         end
       end
 
-      def self.find_service(region = :usa)
-        region = region == :usa ? "auth.api.rackspacecloud.com" : "lon.auth.api.rackspacecloud.com"
+      def self.find_service(short_region = 'usa')
+        region = short_region != 'lon' ? "auth.api.rackspacecloud.com" : "lon.auth.api.rackspacecloud.com"
         Fog::Compute.new(
           :provider => 'Rackspace',
           :rackspace_api_key => Fog.credentials[:rackspace_api_key],

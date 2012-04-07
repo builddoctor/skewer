@@ -78,10 +78,12 @@ module Skewer
         Puppet.run(node, @options)
         location = @util.get_location(node)
         Hooks.new(location).run
-        Skewer.logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
+
         Cuke.new(@config.get(:cuke_dir)).run if @config.get(:cuke_dir)
+        Skewer.logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
         Skewer.logger.debug exception
+        raise "Something went wrong, and we killed the node"
       ensure
         destroy
       end

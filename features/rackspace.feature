@@ -15,7 +15,7 @@ Feature: provisioning a node on Rackspace
     "image_id":"112"
     }
     """
-    When I run `./bin/skewer provision --cloud rackspace --role foobar --image 112`
+    When I run `./bin/skewer provision --cloud rackspace --role foobar --image 112 --region lon`
     Then the stdout should contain "Evaluating cloud rackspace"
     And the stdout should contain "Launching a Rackspace node"
     And the exit status should be 0
@@ -23,7 +23,7 @@ Feature: provisioning a node on Rackspace
   @announce-stdout
   @announce-stderr
   Scenario: Build a machine with a specific flavor (RAM size)
-    Given I run `./bin/skewer provision --cloud rackspace --role foobar --image 112 --flavor 3`
+    Given I run `./bin/skewer provision --cloud rackspace --role foobar --image 112 --flavor 3  --region lon`
     Then the stdout should contain "Evaluating cloud rackspace"
     And the stdout should contain "Launching a Rackspace node"
     And the exit status should be 0
@@ -31,7 +31,7 @@ Feature: provisioning a node on Rackspace
   @announce-stdout
   @announce-stderr
   Scenario: Build a machine with a symbolic image ID
-    Given I run `./bin/skewer provision --cloud rackspace --role foobar --image ubuntu1104 --flavor 2`
+    Given I run `./bin/skewer provision --cloud rackspace --role foobar --image ubuntu1104 --flavor 2 --region lon`
     Then the stdout should contain "Evaluating cloud rackspace"
     And the stdout should contain "Launching a Rackspace node"
     And the exit status should be 0
