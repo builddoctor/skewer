@@ -13,6 +13,9 @@ module Skewer
         validate_options(options, type)
 
         if type == 'delete'
+          if options[:region]
+            SkewerConfig.set 'region', options[:region]
+          end
           case options[:kind]
             when :ec2
               node = AWS::Node.find_by_name(options[:host])
