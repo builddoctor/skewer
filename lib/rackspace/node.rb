@@ -1,5 +1,7 @@
 require 'fog'
 require 'rackspace/images'
+require 'rackspace/service'
+require 'config'
 
 module Skewer
   module Rackspace
@@ -13,26 +15,17 @@ module Skewer
         connection = self.class.find_service(region)
 
         # Get our SSH key to attach it to the server.
-        if instance
-          @node = instance
-        else
-          @node = build(connection, flavor, image, name)
-        end
+        instance ? @node = instance : @node = build(connection, flavor, image, name)
       end
 
       def self.find_service(short_region = 'usa')
-        region = short_region != 'lon' ? "auth.api.rackspacecloud.com" : "lon.auth.api.rackspacecloud.com"
-        Fog::Compute.new(
-          :provider => 'Rackspace',
-          :rackspace_api_key => Fog.credentials[:rackspace_api_key],
-          :rackspace_username => Fog.credentials[:rackspace_username],
-          :rackspace_auth_url => region)
+        Skewer::Rackspace::Service.new(short_region).build
       end
 
       def build(connection, flavor, image, name)
         key = find_key()
 
-        images = Rackspace::Images.new
+        images = Skewer::Rackspace::Images.new
         options = {
           :flavor_id  => flavor,
           :image_id   => images.get_id(image),

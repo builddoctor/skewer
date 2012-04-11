@@ -1,10 +1,10 @@
 module Skewer
   module Rackspace
     class Images
-      attr_reader :supported
+      attr_reader :distributions
 
       def initialize
-        @supported = {
+        @distributions = {
           'ubuntu1004' => { :id => 112, :name => "Ubuntu 10.04 LTS"},
           'ubuntu1104' => { :id => 115, :name => "Ubuntu 11.04"},
           'ubuntu1110' => { :id => 119, :name => "Ubuntu 11.10"},
@@ -13,12 +13,23 @@ module Skewer
 
       # If provided a name for an image, give back the ID.
       def get_id(name)
-        return @supported['ubuntu1004'][:id] if name.nil?
+        if name.nil?
+          return @distributions['ubuntu1004'][:id]
+        end
         name = Integer(name) rescue name
-        return name if name.class == Fixnum
-        return @supported['ubuntu1004'][:id] if name.class != String
-        raise "An image with the name '#{name}' doesn't exist" if !@supported.has_key?(name)
-        @supported[name][:id]
+
+        if name.class == Fixnum
+          return name
+        end
+
+        unless name.class == String
+          return @distributions['ubuntu1004'][:id]
+        end
+
+        unless @distributions.has_key?(name)
+          raise "An image with the name '#{name}' doesn't exist"
+        end
+        @distributions[name][:id]
       end
     end
   end

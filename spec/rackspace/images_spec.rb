@@ -12,7 +12,7 @@ describe Skewer::Rackspace::Images do
   end
 
   it "should have a supported images hash associated with the hash" do
-    @images.supported.class.should == Hash
+    @images.distributions.class.should == Hash
   end
 
   it "should provide a default image ID if bad input provided" do

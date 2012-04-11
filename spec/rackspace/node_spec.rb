@@ -21,28 +21,9 @@ describe Skewer::Rackspace::Node do
   end
 
   it "should have a delete method" do
-
     node = stub('node')
     node.should_receive(:delete).and_return(true)
     Skewer::Rackspace::Node.new(nil, nil, nil,node).node.delete.should == true
-
   end
 
-  it "should find a uk service" do
-    Fog.unmock!
-    service = Skewer::Rackspace::Node.find_service('lon')
-    service.class.should == Fog::Compute::Rackspace::Real
-    puts service.inspect
-    service.instance_variable_get(:@rackspace_auth_url).should == 'lon.auth.api.rackspacecloud.com'
-  end
-
-  it "should find a the other service" do
-    Fog.unmock!
-    begin
-      Skewer::Rackspace::Node.find_service('usa')
-    rescue Exception => e
-      puts e.message
-      e.message.should match /auth.api.rackspacecloud.com/
-    end
-  end
 end
