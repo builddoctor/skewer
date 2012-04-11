@@ -26,13 +26,18 @@ module Skewer
         key = find_key()
 
         images = Skewer::Rackspace::Images.new
+        image_id = images.get_id(image)
         options = {
           :flavor_id  => flavor,
-          :image_id   => images.get_id(image),
+          :image_id   => image_id,
           :name       => name,
           :public_key => key
         }
-        connection.servers.bootstrap(options)
+        begin
+          connection.servers.bootstrap(options)
+        rescue Fog::Compute::Rackspace::NotFound
+          raise "Sorry, it looks like there's no such Image Id as #{image_id}"
+        end
       end
 
       def find_key
