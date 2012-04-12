@@ -60,7 +60,7 @@ module Skewer
       # TODO: if there's no role, it should look it up from an external source
       if @mock
         Skewer.logger.debug "Mock: would normally rsync now"
-      else
+        else
         Source.new(source_dir).rsync(@node)
       end
 

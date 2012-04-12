@@ -18,7 +18,7 @@ describe Skewer::Source do
   it "should make a parent directory to shut rsync up" do
     node = mock('node')
     node.should_receive(:dns_name).at_least(3).times.and_return('this.should.not.resolve')
-    node.should_receive(:username).at_least(3).times.and_return('jimmy')
+    node.should_receive(:username).at_least(2).times.and_return('jimmy')
     node.should_receive(:ssh)
     source = Skewer::Source.new('/tmp/')
     lambda { source.rsync(node) }.should raise_exception RuntimeError

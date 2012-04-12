@@ -23,7 +23,6 @@ optparse = OptionParser.new do |opts|
 
   opts.on('-pc', '--puppetcode') do |pc|
     options[:puppet_repo] = pc
-    puts "puppetcode is: " + pc
   end
 
   opts.on('-m', '--mock') do

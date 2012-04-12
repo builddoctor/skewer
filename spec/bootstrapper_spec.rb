@@ -106,7 +106,7 @@ describe Skewer::Bootstrapper do
 
   it "should actually run the source step" do
     node  = stub('node')
-    node.should_receive(:username).at_least(3).times
+    node.should_receive(:username).at_least(2).times
     node.should_receive(:ssh)
     bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
     lambda {

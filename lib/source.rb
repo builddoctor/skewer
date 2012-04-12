@@ -37,7 +37,6 @@ module Skewer
     end
 
     def rsync(node)
-      Skewer.logger.debug rsync_command(node)
       location = @util.get_location(node)
       Skewer.logger.debug "Copying code to #{location} ..."
       create_destination(node)
