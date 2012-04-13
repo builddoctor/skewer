@@ -15,7 +15,7 @@ module Skewer
             :provider => 'Rackspace',
             :rackspace_api_key => Fog.credentials[:rackspace_api_key],
             :rackspace_username => Fog.credentials[:rackspace_username],
-            :rackspace_auth_url => region)
+            :rackspace_auth_url => @region)
       end
 
     end
