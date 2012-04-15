@@ -8,19 +8,16 @@ module Skewer
     class CukeError < RuntimeError; end
     include Skewer
 
-    def initialize(dir = nil)
-      raise "you must provide a valid directory for features to be executed within" if dir.nil? or dir.class != String or  !directory_exists?(dir)
+    def initialize(dir = nil, host = nil)
+      raise "you must provide a valid directory for features to be executed within" unless File.directory?(dir)
       @dir = dir
-    end
-
-    def directory_exists?(dir)
-      File.directory?(dir)
+      @host = host
     end
 
     def run
       Skewer.logger.debug("Running cucumber hook")
       `cd #{@dir}/.. && bundle install` if File.join(@dir, '..', 'Gemfile')
-      result = `cucumber #{@dir}`
+      result = `cucumber #{@dir} SKEWER_HOST=#{@host}`
       parsed = result.match(/failed/)[0] rescue false
       raise CukeError, "One of the cuke features failed!\n\n#{result}" if parsed
       result

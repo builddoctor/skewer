@@ -3,20 +3,9 @@ require 'cuke'
 
 describe Skewer::Cuke do
   it "should only accept valid directories for construction" do
-    lambda {
-      Skewer::Cuke.new(nil)
-    }.should raise_exception(RuntimeError, "you must provide a valid directory for features to be executed within")
-
-    lambda {
-      Skewer::Cuke.new(123)
-    }.should raise_exception(RuntimeError, "you must provide a valid directory for features to be executed within")
 
     lambda {
       Skewer::Cuke.new('')
-    }.should raise_exception(RuntimeError, "you must provide a valid directory for features to be executed within")
-
-    lambda {
-      Skewer::Cuke.new(123)
     }.should raise_exception(RuntimeError, "you must provide a valid directory for features to be executed within")
 
     lambda {

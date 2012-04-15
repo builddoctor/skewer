@@ -79,7 +79,7 @@ module Skewer
         location = @util.get_location(node)
         Hooks.new(location).run
 
-        Cuke.new(@config.get(:cuke_dir)).run if @config.get(:cuke_dir)
+        Cuke.new(@config.get(:cuke_dir), location).run if @config.get(:cuke_dir)
         Skewer.logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
         Skewer.logger.debug exception
