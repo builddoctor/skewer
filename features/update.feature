@@ -7,6 +7,7 @@ Scenario: run the command without args
   When I run `./bin/skewer update`
   Then the exit status should not be 0
 
+@wip
 @announce-stdout @announce-stderr
 Scenario: pass in a hostname user and role on passing puppet code
   Given I have access to the internet
@@ -16,7 +17,7 @@ Scenario: pass in a hostname user and role on passing puppet code
   And the stdout should contain "Using Puppet Code from /tmp/skewer_test_code/"
   And the stdout should contain "Puppet run succeeded"
 
-
+@wip
 @announce-stdout @announce-stderr
 Scenario: pass in a hostname user and role on broken puppet code
   Given I have access to the internet

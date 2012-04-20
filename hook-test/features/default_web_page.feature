@@ -5,5 +5,5 @@ Feature: apache
 
 Scenario: default web page
   Given I visit a page on the root domain
-  Then I should see 'This is the default web page for this server.'
+  Then I should see 'Puppet Run Success'
 
