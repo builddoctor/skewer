@@ -56,4 +56,4 @@ RSpec::Core::RakeTask.new("spec:coverage") do |t|
 end
 
 task :default => [:clean, :spec]
-task :features => :vagrant_up
+#task :features => :vagrant_up

@@ -16,14 +16,14 @@ Feature: Hooks
 
   Scenario: run cucumber on completion
     Given I have puppet code in "/tmp/skewer_test_code"
-    When I run `./bin/skewer provision --cloud ec2 --role apache --image ami-5c9b4935  --key testytesty  --puppetcode /tmp/skewer_test_code  --features hook/features`
+    When I run `./bin/skewer provision --cloud ec2 --role apache --image ami-5c9b4935  --key testytesty  --puppetcode /tmp/skewer_test_code  --features hook-test/features`
     Then the exit status should be 0
     And the stdout should contain "Puppet run succeeded"
 
-@announce-stdout
-@announce-stderr
+#@announce-stdout
+#@announce-stderr
 Scenario: failed cucumber should fail the run
     Given I have puppet code in "/tmp/skewer_test_code"
-    When I run `./bin/skewer provision --cloud stub --role foobar --image ami-5c9b4935  --key testytesty  --puppetcode /tmp/skewer_test_code  --features skewercukes/features`
+    When I run `./bin/skewer provision --cloud stub --role foobar --image ami-5c9b4935  --key testytesty  --puppetcode /tmp/skewer_test_code  --features hook-test/features`
     Then the exit status should not be 0
 
