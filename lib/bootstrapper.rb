@@ -21,10 +21,12 @@ module Skewer
 
     def add_ssh_hostkey
       location = @util.get_location(@node)
-      if self.host_key_exists(location)
+      unless self.host_key_exists(location)
         system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{location} >/dev/null 2>&1"
       else
         Skewer.logger.debug("SSH Host Key exists; not making it again")
+      end
+
     end
 
     def execute(file_name)
