@@ -15,9 +15,16 @@ module Skewer
       @mock = false
     end
 
+    def host_key_exists(host)
+      File.read(ENV['HOME'] + '/.ssh/known_hosts').grep(/#{host}/)
+    end
+
     def add_ssh_hostkey
       location = @util.get_location(@node)
-      system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{location} >/dev/null 2>&1"
+      if self.host_key_exists(location)
+        system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{location} >/dev/null 2>&1"
+      else
+        Skewer.logger.debug("SSH Host Key exists; not making it again")
     end
 
     def execute(file_name)
