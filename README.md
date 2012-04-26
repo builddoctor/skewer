@@ -35,6 +35,12 @@ that you use Vagrant too, but you can't reproduce every feature of a
 cloud VM on a Vagrantbox. There's no substute for 19 inches (of
 rack-mounted hardware).
 
+## Installation
+
+You can install Skewer via RubyGems like so:
+
+    $ gem install skewer
+
 ## Usage
 
 `skewer provision` will provision a new node, and `skewer update` will allow
