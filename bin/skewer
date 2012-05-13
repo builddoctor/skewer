@@ -17,19 +17,19 @@ optparse = OptionParser.new do |opts|
     options[:kind] = c.to_sym
   end
 
-  opts.on('-r', '--role NAME', "puppet role class to call") do |r|
+  opts.on('-r', '--role NAME', "Puppet role class to call") do |r|
     options[:role] = r
   end
 
-  opts.on('-pc', '--puppetcode') do |pc|
+  opts.on('-pc', '--puppetcode', "Location of Puppet code - defaults to ../infrastructure") do |pc|
     options[:puppet_repo] = pc
   end
 
-  opts.on('-m', '--mock') do
+  opts.on('-m', '--mock', "Tells Fog not to actually run anything") do
     options[:mock] = true
   end
 
-  opts.on('--keep') do
+  opts.on('--keep', '') do
     options[:keep] = true
   end
 

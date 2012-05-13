@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "skewer"
 
   s.add_runtime_dependency 'fog', '~> 1.1.2'
+  s.add_runtime_dependency 'gli'
 
   s.add_development_dependency 'aruba'
   s.add_development_dependency 'jeweler'
