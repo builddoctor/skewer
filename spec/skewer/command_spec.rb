@@ -6,7 +6,7 @@ describe "Commands" do
 
   it "should know about config" do
 
-    Skewer::SkewerCommand.new({},{}).config.class.should == Skewer::SkewerConfig
+    Skewer::SkewerCommand.new({},{}).config.should be_a Skewer::SkewerConfig
   end
 
   it "should slurp all the options" do
