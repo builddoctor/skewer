@@ -29,7 +29,7 @@ describe Skewer::CLI::Parser do
 
   it "should barf if it doesnt know how to provision something odd" do
     lambda {
-      parser = Skewer::CLI::Parser.new('provision', {:kind => "FOOBAR", :image => true, :role => true})
+      parser = Skewer::CLI::Parser.new('provision', {:cloud => "FOOBAR", :image => true, :role => true})
     }.should raise_exception(RuntimeError, "I don't know that cloud")
 
   end
@@ -59,7 +59,7 @@ describe Skewer::CLI::Parser do
 
   it "should show the provision usage message if provided 'provision' with the help option" do
     lambda {
-      parser = Skewer::CLI::Parser.new('provision', {:kind => true, :image => true, :role => true, :help => true})
+      parser = Skewer::CLI::Parser.new('provision', {:cloud => true, :image => true, :role => true, :help => true})
     }.should raise_exception(SystemExit, PROVISION_USAGE)
   end
 
@@ -71,13 +71,13 @@ describe Skewer::CLI::Parser do
 
   it "should require --key if cloud is AWS" do
     lambda {
-      parser = Skewer::CLI::Parser.new('provision', {:kind => :ec2})
+      parser = Skewer::CLI::Parser.new('provision', {:cloud => :ec2})
     }.should raise_exception(SystemExit, "A key (--key KEY) must be provided if using EC2")
   end
 
   it "should show the delete usage if provided 'delete' with the help option" do
     lambda {
-      parser = Skewer::CLI::Parser.new('delete', {:host => true, :kind => true, :help => true})
+      parser = Skewer::CLI::Parser.new('delete', {:host => true, :cloud => true, :help => true})
     }.should raise_exception(SystemExit, DELETE_USAGE)
   end
 
@@ -87,7 +87,7 @@ describe Skewer::CLI::Parser do
     }.should raise_exception(SystemExit, DELETE_USAGE)
 
     lambda {
-      parser = Skewer::CLI::Parser.new('delete', {:kind => true})
+      parser = Skewer::CLI::Parser.new('delete', {:cloud => true})
     }.should raise_exception(SystemExit, DELETE_USAGE)
   end
 end

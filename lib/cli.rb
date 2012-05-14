@@ -19,10 +19,10 @@ module Skewer
       @config.set(:logger, Skewer.logger)
     end
 
-    def select_node(kind)
-      Skewer.logger.debug "Evaluating cloud #{kind}"
+    def select_node(cloud)
+      Skewer.logger.debug "Evaluating cloud #{cloud}"
       image = @options[:image]
-      case kind
+      case cloud
         when :ec2
           require 'aws/security_group'
           require 'aws/node'
@@ -63,7 +63,7 @@ module Skewer
     end
 
     def bootstrap
-      node = select_node(@options[:kind])
+      node = select_node(@options[:cloud])
       @node = node
       @bootstrapper = Bootstrapper.new(node, @options)
     end

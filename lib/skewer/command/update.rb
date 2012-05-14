@@ -5,7 +5,7 @@ module Skewer
     class Update < Skewer::SkewerCommand
       def initialize(global_options, options)
         @options = options
-        @options[:kind] = :ersatz
+        @options[:cloud] = :ersatz
         @global_options = global_options
       end
 

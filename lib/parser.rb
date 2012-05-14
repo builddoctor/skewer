@@ -16,13 +16,13 @@ module Skewer
           if options[:region]
             SkewerConfig.set 'region', options[:region]
           end
-          case options[:kind]
+          case options[:cloud]
             when :ec2
               node = AWS::Node.find_by_name(options[:host])
             when :rackspace
               node = Rackspace::Node.find_by_ip(options[:host])
             else
-              raise("#{options[:kind]} not found")
+              raise("#{options[:cloud]} not found")
           end
           destroy_node(node, options)
         else
@@ -42,9 +42,9 @@ module Skewer
       def validate_options(options, type)
         abort(usage) if type.nil? and options.empty?
         abort(usage) unless ['provision', 'update', 'delete'].include? type
-        abort("A key (--key KEY) must be provided if using EC2") if options[:kind] == :ec2 && !options[:key_name]
+        abort("A key (--key KEY) must be provided if using EC2") if options[:cloud] == :ec2 && !options[:key_name]
         if type == 'provision'
-          unless options[:kind] && options[:image] && options[:role] && !options[:help]
+          unless options[:cloud] && options[:image] && options[:role] && !options[:help]
             abort(provision_usage)
           end
         elsif type == 'update'
@@ -52,7 +52,7 @@ module Skewer
             abort(update_usage)
           end
         elsif type == 'delete'
-          unless options[:kind] && options[:host] && !options[:help]
+          unless options[:cloud] && options[:host] && !options[:help]
             abort(delete_usage)
           end
         end
