@@ -8,7 +8,7 @@ require 'hooks'
 
 module Skewer
   # this is responsible for composing all the other components. or should be.
-  class CLI
+  class Dispatcher
     attr_reader :bootstrapper, :node
 
     def initialize(options)

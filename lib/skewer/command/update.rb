@@ -30,7 +30,7 @@ module Skewer
       def execute
         validity, message = valid?
         raise message unless validity
-        Skewer::CLI.bootstrap_and_go(@options)
+        Skewer::Dispatcher.bootstrap_and_go(@options)
       end
 
     end

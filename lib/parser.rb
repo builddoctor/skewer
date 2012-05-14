@@ -5,7 +5,7 @@ require "rackspace/node"
 
 module Skewer
   class CLI
-    # Parses the CLI input and makes sure that it's clean.
+    # Parses the Dispatcher input and makes sure that it's clean.
     class Parser
       def initialize(type = nil, options = {})
         # base case tests that we have input that we accept.
@@ -26,7 +26,7 @@ module Skewer
           end
           destroy_node(node, options)
         else
-          Skewer::CLI.bootstrap_and_go(options)
+          Skewer::Dispatcher.bootstrap_and_go(options)
         end
       end
 
