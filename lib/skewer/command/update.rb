@@ -1,9 +1,11 @@
 require 'skewer/command'
+require 'cli'
 module Skewer
   module Command
     class Update < Skewer::SkewerCommand
       def initialize(global_options, options)
         @options = options
+        @options[:kind] = :ersatz
         @global_options = global_options
       end
 
@@ -28,8 +30,7 @@ module Skewer
       def execute
         validity, message = valid?
         raise message unless validity
-        # do something
-
+        Skewer::CLI.bootstrap_and_go(@options)
       end
 
     end

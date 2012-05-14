@@ -54,8 +54,6 @@ command :update do |c|
 
   c.action do |global_options,options,args|
     require 'skewer/command/update'
-    puts options.inspect
-    puts global_options.inspect
     Skewer::Command::Update.new(global_options, options).execute
   end
 end
