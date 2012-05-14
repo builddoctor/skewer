@@ -13,10 +13,10 @@ module Skewer
         else
           @service = self.class.find_service(options)
           node_options = {
-              :image_id => aws_id,
-              :flavor_id => SkewerConfig.get('flavor_id'),
-              :username => SkewerConfig.get('aws_username'),
-              :groups => group_names
+              :image_id   => aws_id,
+              :flavor_id  => SkewerConfig.get('flavor_id'),
+              :username   => SkewerConfig.get('aws_username'),
+              :groups     => group_names
           }
 
           if options[:key_name]

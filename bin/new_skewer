@@ -1,0 +1,138 @@
+#!/usr/bin/env ruby
+# 1.9 adds realpath to resolve symlinks; 1.8 doesn't
+# have this method, so we add it so we get resolved symlinks
+# and compatibility
+unless File.respond_to? :realpath
+  class File #:nodoc:
+    def self.realpath path
+      return realpath(File.readlink(path)) if symlink?(path)
+      path
+    end
+  end
+end
+$: << File.expand_path(File.dirname(File.realpath(__FILE__)) + '/../lib')
+require 'rubygems'
+require 'gli'
+require 'skewer/version'
+
+include GLI
+
+program_desc 'Runs Puppet on cloud machines, with no PuppetMaster'
+
+version Skewer::VERSION
+
+desc 'Location of your Puppet Codebase'
+switch [:pc,:puppetcode]
+default_value '../infrastructure'
+
+desc 'Hook script to invoke, after the Puppet run success'
+switch [:hk,:hook]
+
+desc 'Cucumber features directory to invoke, after the Puppet run success'
+switch [:features]
+
+desc 'do a dry run first'
+default_value false
+arg_name 'noop'
+flag [:n,:noop]
+
+desc 'mock every fog call'
+default_value false
+arg_name 'fog mock'
+flag [:m,:mock]
+
+desc 'Update the puppet code on a machine that you have already provisioned'
+command :update do |c|
+  c.desc 'Host to update'
+  c.flag [:ho, :host]
+
+  c.desc 'User to run the update as'
+  c.flag [:u,:user]
+
+  c.desc 'Puppet role class to call on the remote machine'
+  c.flag [:r, :role]
+
+  c.action do |global_options,options,args|
+    require 'skewer/command/update'
+    puts options.inspect
+    puts global_options.inspect
+    Skewer::Command::Update.new(global_options, options).execute
+  end
+end
+
+desc 'Instantiate a cloud node, and run Puppet on it'
+command :provision do |c|
+
+
+  c.desc 'Kind of cloud: ec2 or rackspace'
+  c.default_value 'ec2'
+  c.arg_name 'cloud'
+  c.flag [:c,:cloud]
+
+  c.desc 'Retain the cloud instance, for posterity'
+  c.default_value false
+  c.arg_name 'keep'
+  c.flag :keep
+
+  c.desc 'Cloud service image identifier'
+  #c.arg_name 'image'
+  c.switch [:i, :image]
+
+  c.desc 'Cloud region to work in'
+  c.default_value 'us-east-1'
+  c.arg_name 'region'
+  c.flag [:region]
+
+  c.desc 'Security Group to use'
+  c.default_value 'default'
+  c.arg_name 'group'
+  c.flag :group
+
+  c.desc 'Kind of machine to use'
+  c.default_value 'm1.large'
+  c.arg_name 'flavour'
+  c.flag :flavor
+
+  c.desc 'Puppet role class to call on the remote machine'
+  c.switch [:r, :role]
+
+  c.desc 'SSH key to connect with (probably registered with your cloud provider'
+  c.switch [:k, :key]
+
+  c.action do |global_options,options,args|
+  end
+end
+
+desc 'deletes the given host from the provided cloud provider'
+arg_name 'Node hostname or id'
+command :delete do |c|
+  c.desc 'Cloud region to work in'
+  c.default_value 'us-east-1'
+  c.arg_name 'region'
+  c.flag [:region]
+  c.action do |global_options,options,args|
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit GLI.run(ARGV)
