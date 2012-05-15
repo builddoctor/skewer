@@ -32,8 +32,9 @@ task :vagrant_up do
   env.cli("up")
 end
 
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format pretty --tags=~@wip"
+Cucumber::Rake::Task.new(:features, 'skewer') do |t|
+  no_cloud = ENV['CLOUD'] ? '' : '--tags ~@cloud'
+  t.cucumber_opts = "features --format pretty --tags ~@wip #{no_cloud}"
 end
 
 desc "Run all specs"

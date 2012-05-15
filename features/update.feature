@@ -12,7 +12,7 @@ Scenario: run the command without args
 Scenario: pass in a hostname user and role on passing puppet code
   Given I have access to the internet
   And I have puppet code in "/tmp/skewer_test_code"
-  When I run `./bin/skewer update --host default --user vagrant --role foobar --puppetcode /tmp/skewer_test_code/`
+  When I run `./bin/skewer update --host=default --user=vagrant --role=foobar --puppetcode=/tmp/skewer_test_code/`
   Then the exit status should be 0
   And the stdout should contain "Using Puppet Code from /tmp/skewer_test_code/"
   And the stdout should contain "Puppet run succeeded"
@@ -22,7 +22,7 @@ Scenario: pass in a hostname user and role on passing puppet code
 Scenario: pass in a hostname user and role on broken puppet code
   Given I have access to the internet
   And I have puppet code in "/tmp/skewer_test_code"
-  When I run `./bin/skewer update --host default --user vagrant --role foobroken --puppetcode /tmp/skewer_test_code/`
+  When I run `./bin/skewer update --host=default --user=vagrant --role=foobroken --puppetcode=/tmp/skewer_test_code/`
   Then the exit status should not be 0
   And the stdout should contain "Using Puppet Code from /tmp/skewer_test_code/"
   And the stdout should contain "Puppet failed"

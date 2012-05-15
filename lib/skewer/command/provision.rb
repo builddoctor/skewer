@@ -6,6 +6,8 @@ module Skewer
       def initialize(global_options, options)
         @global_options = global_options
         @options = options
+        @universal_options = @options.merge(@global_options)
+        puts @universal_options
       end
 
       def valid?
@@ -19,7 +21,7 @@ module Skewer
       def execute
         validity, message = valid?
         raise message unless validity
-        Skewer::Dispatcher.bootstrap_and_go(@options)
+        Skewer::Dispatcher.bootstrap_and_go(@universal_options)
       end
     end
   end

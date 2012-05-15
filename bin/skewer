@@ -1,100 +1,138 @@
 #!/usr/bin/env ruby
-$: << File.join(File.dirname(__FILE__), '..', 'lib')
+# 1.9 adds realpath to resolve symlinks; 1.8 doesn't
+# have this method, so we add it so we get resolved symlinks
+# and compatibility
+unless File.respond_to? :realpath
+  class File #:nodoc:
+    def self.realpath path
+      return realpath(File.readlink(path)) if symlink?(path)
+      path
+    end
+  end
+end
+$: << File.expand_path(File.dirname(File.realpath(__FILE__)) + '/../lib')
 require 'rubygems'
-require 'bundler'
-require 'optparse'
-require 'parser'
+require 'gli'
+require 'skewer/version'
 
-options = {:cloud => :ersatz}
+include GLI
 
-type = ARGV.shift
+program_desc 'Runs Puppet on cloud machines, with no PuppetMaster'
 
-optparse = OptionParser.new do |opts|
-  #
-  # Provision
-  #
-  opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode', 'rackspace')") do |c|
-    options[:cloud] = c.to_sym
-  end
+version Skewer::VERSION
 
-  opts.on('-r', '--role NAME', "Puppet role class to call") do |r|
-    options[:role] = r
-  end
+desc 'Location of your Puppet Codebase'
+switch [:pc,:puppetcode]
+default_value '../infrastructure'
 
-  opts.on('-pc', '--puppetcode', "Location of Puppet code - defaults to ../infrastructure") do |pc|
-    options[:puppet_repo] = pc
-  end
+desc 'Hook script to invoke, after the Puppet run success'
+flag [:hk,:hook]
 
-  opts.on('-m', '--mock', "Tells Fog not to actually run anything") do
-    options[:mock] = true
-  end
+desc 'Cucumber features directory to invoke, after the Puppet run success'
+flag [:features]
 
-  opts.on('--keep', '') do
-    options[:keep] = true
-  end
+desc 'do a dry run first'
+default_value false
+arg_name 'noop'
+flag [:n,:noop]
 
-  opts.on('-hk', '--hook') do |hook|
-    options[:hook] = hook
-  end
+desc 'mock every fog call'
+default_value false
+flag [:m,:mock]
 
-  # AWS options
-  opts.on('-i', '--image NAME') do |img|
-    options[:image] = img
-  end
-  opts.on('--volume SIZE') do |vol|
-    # EBS group
-    options[:volume] = vol
-  end
-  opts.on('--region NAME') do |region|
-    # AWS region
-    options[:region] = region
-  end
-  opts.on('--key', '--key_name NAME') do |k|
-    # AWS SSH key
-    options[:key_name] = k
-  end
-  opts.on('--group NAME') do |group|
-    # EC2 Security Group
-    options[:group] = group
-  end
-  opts.on('--flavor FLAVOR') do |flavor|
-    # AWS instance size
-    options[:flavor_id] = flavor
-  end
+desc 'Update the puppet code on a machine that you have already provisioned'
+command :update do |c|
+  c.desc 'Host to update'
+  c.flag [:ho, :host]
 
-  #
-  # Updating.
-  #
-  # TODO: This shouldn't be -h for hostname.
-  opts.on('-h', '--host KIND', "Hostname to update") do |c|
-    options[:host] = c
-  end
-  opts.on('-u', '--user KIND', "User to connect with") do |u|
-    options[:user] = u
-  end
-  opts.on('-r', '--role NAME', "puppet role class to call") do |r|
-    options[:role] = r
-  end
-  opts.on('-n', '--noop', "do a dry run first") do
-    options[:noop] = true
-  end
-  opts.on('-pc', '--puppetcode') do |pc|
-    options[:puppet_repo] = pc
-    puts "puppetcode is: " + pc
-  end
+  c.desc 'User to run the update as'
+  c.flag [:u,:user]
 
-  opts.on('--features DIRECTORY') do |dir|
-    options[:cuke_dir] = dir
-  end
-  
-  # TODO: Fix this, and update the above for --host/-h
-  opts.on('-q', '--help') do
-    options[:help] = true
+  c.desc 'Puppet role class to call on the remote machine'
+  c.flag [:r, :role]
+
+  c.action do |global_options,options,args|
+    require 'skewer/command/update'
+    Skewer::Command::Update.new(global_options, options).execute
   end
 end
 
-optparse.parse!
+desc 'Instantiate a cloud node, and run Puppet on it'
+command :provision do |c|
 
-Fog.mock! if options[:mock]
+  c.desc 'Kind of cloud: ec2 or rackspace'
+  c.arg_name 'cloud'
+  c.flag [:c,:cloud]
 
-Skewer::CLI::Parser.new(type, options)
+  c.desc 'Retain the cloud instance, for posterity'
+  c.arg_name 'keep'
+  c.flag :keep
+
+  c.desc 'Cloud service image identifier'
+  c.flag [:i, :image]
+
+  c.desc 'Cloud region to work in'
+  c.arg_name 'region'
+  c.flag [:region]
+
+  c.desc 'Security Group to use'
+  c.arg_name 'group'
+  c.flag :group
+
+  c.desc 'Kind of machine to use'
+  c.arg_name 'flavour'
+  c.flag :flavor
+
+  c.desc 'Puppet role class to call on the remote machine'
+  c.flag [:r, :role]
+
+  c.desc 'SSH key to connect with (probably registered with your cloud provider'
+  c.flag [:k, :key]
+
+  c.action do |global_options,options,args|
+    require 'skewer/command/provision'
+    Skewer::Command::Provision.new(global_options, options).execute
+  end
+end
+
+desc 'deletes the given host from the provided cloud provider'
+arg_name 'Node hostname or id'
+command :delete do |c|
+  c.desc 'Cloud region to work in'
+
+  c.arg_name 'region'
+  c.flag [:region]
+
+  c.desc 'Kind of cloud: ec2 or rackspace'
+
+  c.arg_name 'cloud'
+  c.flag [:c,:cloud]
+
+  c.action do |global_options,options,args|
+    require 'skewer/command/delete'
+    Skewer::Command::Delete.new(global_options, options, args).execute
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit GLI.run(ARGV)

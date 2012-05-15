@@ -11,7 +11,7 @@ Scenario: run the command without args
 @announce-stdout
 @announce-stderr
 Scenario: pass in a cloud image and role
-  When I run `./bin/skewer provision --cloud stub --image foo --role foo`
+  When I run `./bin/skewer provision --cloud=stub --image=foo --role=foo`
   Then the exit status should be 0
 
 @announce-stdout
@@ -22,7 +22,7 @@ Scenario: config in local file
   """
   {"puppet_repo":"/tmp/skewer_test_code"}
   """
-  When I run `./bin/skewer provision --cloud stub --role foobar --image ami-deadbeef`
+  When I run `./bin/skewer provision --cloud=stub --role=foobar --image=ami-deadbeef`
   Then the stdout should contain "Using Puppet Code from /tmp/skewer_test_code"
   And the exit status should be 0
 
@@ -34,5 +34,5 @@ Scenario: generated node file
   """
   {"puppet_repo":"/tmp/skewer_test_code"}
   """
-   When I run `./bin/skewer provision --cloud stub --role foobar --image ami-deadbeef`
+   When I run `./bin/skewer provision --cloud=stub --role=foobar --image=ami-deadbeef`
    Then the file "/tmp/more_skewer_test_code/manifests/nodes.pp" should exist
