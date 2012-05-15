@@ -5,7 +5,7 @@ require 'bundler'
 require 'optparse'
 require 'parser'
 
-options = {:kind => :ersatz}
+options = {:cloud => :ersatz}
 
 type = ARGV.shift
 
@@ -14,7 +14,7 @@ optparse = OptionParser.new do |opts|
   # Provision
   #
   opts.on('-c', '--cloud KIND', "Cloud kind ('ec2', 'linode', 'rackspace')") do |c|
-    options[:kind] = c.to_sym
+    options[:cloud] = c.to_sym
   end
 
   opts.on('-r', '--role NAME', "Puppet role class to call") do |r|
