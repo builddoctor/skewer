@@ -105,10 +105,18 @@ desc 'deletes the given host from the provided cloud provider'
 arg_name 'Node hostname or id'
 command :delete do |c|
   c.desc 'Cloud region to work in'
-  c.default_value 'us-east-1'
+
   c.arg_name 'region'
   c.flag [:region]
+
+  c.desc 'Kind of cloud: ec2 or rackspace'
+
+  c.arg_name 'cloud'
+  c.flag [:c,:cloud]
+
   c.action do |global_options,options,args|
+    require 'skewer/command/delete'
+    Skewer::Command::Delete.new(global_options, options, args).execute
   end
 end
 
