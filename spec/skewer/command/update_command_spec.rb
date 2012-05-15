@@ -23,9 +23,5 @@ describe "Update" do
     Skewer::Command::Update.new({}, {:role => ' ', :user => ' ', :host => ' '}).class.superclass.should be Skewer::SkewerCommand
   end
 
-  it "should delegate to something that is going to do the work" do
-    pending('later')
-  end
-
 
 end

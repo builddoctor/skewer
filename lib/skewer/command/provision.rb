@@ -2,25 +2,18 @@ require 'skewer/command'
 require 'cli'
 module Skewer
   module Command
-    class Update < Skewer::SkewerCommand
+    class Provision < Skewer::SkewerCommand
       def initialize(global_options, options)
-        @options = options
-        @options[:cloud] = :ersatz
         @global_options = global_options
+        @options = options
       end
 
-
-
-
       def valid?
-        unless @options[:user] && @options[:role] && @options[:host]
-          return false, "Sorry, I need a user, role and host for this command"
-        end
+        return [false, "A key (--key KEY) must be provided if using EC2"] if @options[:cloud] == :ec2 && !@options[:key_name]
+        return [false, "I need a cloud, image and role to do this"] unless @options[:cloud] && @options[:image] && @options[:role]
         return is_option_boolean?(:mock) if @global_options[:mock]
         return is_option_boolean?(:noop) if @global_options[:noop]
-        [true, 'All good here']
-
-
+        return [true, "I'm happy'"]
       end
 
       def execute
@@ -28,7 +21,6 @@ module Skewer
         raise message unless validity
         Skewer::Dispatcher.bootstrap_and_go(@options)
       end
-
     end
   end
 end

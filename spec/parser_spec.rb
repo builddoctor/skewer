@@ -33,11 +33,11 @@ describe Skewer::CLI::Parser do
     }.should raise_exception(RuntimeError, "I don't know that cloud")
 
   end
-  it "should barf if it doesn't know how to update something odd" do
-    lambda {
-      parser = Skewer::CLI::Parser.new('update', {:host => "googoo", :user => "shoopidoop"})
-    }.should raise_exception(RuntimeError, "I don't know that cloud")
-  end
+  #it "should barf if it doesn't know how to update something odd" do
+  #  lambda {
+  #    parser = Skewer::CLI::Parser.new('update', {:host => "googoo", :user => "shoopidoop"})
+  #  }.should raise_exception(RuntimeError, "I don't know that cloud")
+  #end
 
   it "should raise a usage exception if using 'provision' without correct options" do
     lambda {

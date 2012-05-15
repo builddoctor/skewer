@@ -61,43 +61,38 @@ end
 desc 'Instantiate a cloud node, and run Puppet on it'
 command :provision do |c|
 
-
   c.desc 'Kind of cloud: ec2 or rackspace'
-  c.default_value 'ec2'
   c.arg_name 'cloud'
   c.flag [:c,:cloud]
 
   c.desc 'Retain the cloud instance, for posterity'
-  c.default_value false
   c.arg_name 'keep'
   c.flag :keep
 
   c.desc 'Cloud service image identifier'
-  #c.arg_name 'image'
-  c.switch [:i, :image]
+  c.flag [:i, :image]
 
   c.desc 'Cloud region to work in'
-  c.default_value 'us-east-1'
   c.arg_name 'region'
   c.flag [:region]
 
   c.desc 'Security Group to use'
-  c.default_value 'default'
   c.arg_name 'group'
   c.flag :group
 
   c.desc 'Kind of machine to use'
-  c.default_value 'm1.large'
   c.arg_name 'flavour'
   c.flag :flavor
 
   c.desc 'Puppet role class to call on the remote machine'
-  c.switch [:r, :role]
+  c.flag [:r, :role]
 
   c.desc 'SSH key to connect with (probably registered with your cloud provider'
-  c.switch [:k, :key]
+  c.flag [:k, :key]
 
   c.action do |global_options,options,args|
+    require 'skewer/command/provision'
+    Skewer::Command::Provision.new(global_options, options).execute
   end
 end
 

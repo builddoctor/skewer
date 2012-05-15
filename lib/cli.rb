@@ -22,7 +22,7 @@ module Skewer
     def select_node(cloud)
       Skewer.logger.debug "Evaluating cloud #{cloud}"
       image = @options[:image]
-      case cloud
+      case cloud.to_sym
         when :ec2
           require 'aws/security_group'
           require 'aws/node'
