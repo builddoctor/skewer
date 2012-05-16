@@ -30,6 +30,6 @@ describe Skewer::Cuke do
     cuke = Skewer::Cuke.new('./spec/support/features')
     lambda {
       cuke.run
-    }.should raise_exception(Skewer::Cuke::CukeError)
+    }.should raise_exception()
   end
 end

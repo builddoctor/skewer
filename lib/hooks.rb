@@ -2,6 +2,7 @@ module Skewer
   require 'config'
 
   class Hooks
+    "responsible for calling post-run hooks"
     attr_writer :command
 
     def initialize(host_name)

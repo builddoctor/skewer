@@ -5,7 +5,7 @@ module Skewer
   # will map against to check if the node has been successfully
   # built.
   class Cuke
-    class CukeError < RuntimeError; end
+    "responsible for calling cucumber post-run"
     include Skewer
 
     def initialize(dir = nil, host = nil)
@@ -19,7 +19,7 @@ module Skewer
       `cd #{@dir}/.. && bundle install` if File.join(@dir, '..', 'Gemfile')
       result = `cucumber #{@dir} SKEWER_HOST=#{@host}`
       parsed = result.match(/failed/)[0] rescue false
-      raise CukeError, "One of the cuke features failed!\n\n#{result}" if parsed
+      raise  "One of the Cucumber features failed!\n\n#{result}" if parsed
       result
     end
   end
