@@ -5,7 +5,7 @@ module Skewer
   # will map against to check if the node has been successfully
   # built.
   class Cuke
-    "responsible for calling cucumber post-run"
+    #"responsible for calling cucumber post-run"
     include Skewer
 
     def initialize(dir = nil, host = nil)

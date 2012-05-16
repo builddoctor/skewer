@@ -3,6 +3,7 @@ require 'cli'
 module Skewer
   module Command
     class Provision < Skewer::SkewerCommand
+      #Implements 'skewer provision'
       def initialize(global_options, options)
         @global_options = global_options
         @options = options

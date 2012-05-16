@@ -1,6 +1,7 @@
 module Skewer
   module Rackspace
     class Images
+      #"Responsible for locating Rackspace images"
       attr_reader :distributions
 
       def initialize

@@ -1,5 +1,6 @@
 module Skewer
   module Rackspace
+    #"Responsible for finding the Rackspace service"
     class Service
       def initialize(short_region_name)
         @region = region(short_region_name)
