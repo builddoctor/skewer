@@ -9,13 +9,14 @@ require 'hooks'
 module Skewer
   # this is responsible for composing all the other components. or should be.
   class Dispatcher
+    include Skewer
     attr_reader :bootstrapper, :node
 
     def initialize(options)
       @options = options
       @config = SkewerConfig.instance
       @config.slurp_options(options)
-      @util = Util.new
+      #@util = Util.new
       @config.set(:logger, Skewer.logger)
     end
 
@@ -76,7 +77,7 @@ module Skewer
         node.wait_for { ready? }
         @bootstrapper.go
         Puppet.run(node, @options)
-        location = @util.get_location(node)
+        location = get_location(node)
         Hooks.new(location).run
 
         Cuke.new(@config.get(:cuke_dir), location).run if @config.get(:cuke_dir)

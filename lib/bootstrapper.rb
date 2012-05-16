@@ -5,13 +5,14 @@ require 'skewer'
 module Skewer
   # puts all of puppet's dependencies on
   class Bootstrapper
+    include Skewer
     MAX_CACHE = 3600
     attr_writer :mock
 
     def initialize(node,options)
       @node = node
       @options = options
-      @util = Util.new
+      #@util = Util.new
       @mock = false
     end
 
@@ -20,7 +21,7 @@ module Skewer
     end
 
     def add_ssh_hostkey
-      location = @util.get_location(@node)
+      location = get_location(@node)
       unless self.host_key_exists(location)
         system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{location} >/dev/null 2>&1"
       else
@@ -76,7 +77,7 @@ module Skewer
     end
 
     def lock_file
-      File.join('/tmp', 'skewer-' + Util.new.get_location(@node))
+      File.join('/tmp', 'skewer-' + get_location(@node))
     end
 
     def lock_file_expired?(lock_file)

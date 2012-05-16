@@ -1,6 +1,6 @@
 module Skewer
+  # the real Command objects inherit from this
   class SkewerCommand
-    #"the real Command objects inherit from this"
     require 'config'
     attr_reader :config
 

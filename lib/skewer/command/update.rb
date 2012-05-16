@@ -2,8 +2,9 @@ require 'skewer/command'
 require 'cli'
 module Skewer
   module Command
+    # Implements skewer update
     class Update < Skewer::SkewerCommand
-      #"Implements 'skewer update'"
+
       def initialize(global_options, options)
         @options = options
         @options[:cloud] = :ersatz

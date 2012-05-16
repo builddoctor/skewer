@@ -1,8 +1,9 @@
 require 'skewer/command'
 module Skewer
   module Command
+    # Implements skewer delete
     class Delete < Skewer::SkewerCommand
-      #"Implements 'skewer delete'"
+
       def initialize(global_options, options, args)
         @global_options = global_options
         @options = options

@@ -1,27 +1,39 @@
+#require 'util'
 require 'rspec'
-require 'fog'
+require File.join(File.dirname(__FILE__), '..', 'lib', 'util.rb')
 
-require 'util'
+class Testy
+  include Skewer
 
-describe Skewer::Util do
-  it "should have a way to get the location" do
-    util = Skewer::Util.new
+  def location(arg)
+    get_location(arg)
+  end
+end
 
-    # Negative cases.
-    util.get_location().should == nil
-    util.get_location(nil).should == nil
-    util.get_location(Object.new).should == nil
+class Rackspace
+  def public_ip_address
+    '1.1.1.1'
+  end
+end
 
-    aws = Object.new
-    def aws.dns_name; return "aws-fqdn"
-    end
+describe "utils" do
+  before(:all) do
+    @testy = Testy.new
+  end
 
-    rackspace = Object.new
-    def rackspace.public_ip_address; return "1.1.1.1"
-    end
-    
-    # Positive cases.
-    util.get_location(aws).should == 'aws-fqdn'
-    util.get_location(rackspace).should == '1.1.1.1'
+  it "should cope with garbage" do
+    @testy.location(nil).should == nil
+    @testy.location(Object.new).should == nil
+  end
+
+  it "should deal with AWS nodes" do
+    aws = mock('aws')
+    aws.should_receive(:dns_name).and_return('aws-fqdn')
+    @testy.location(aws).should == 'aws-fqdn'
+  end
+
+  it "should deal with rackspace nodes" do
+    rackspace = Rackspace.new
+    @testy.get_location(rackspace).should == '1.1.1.1'
   end
 end
