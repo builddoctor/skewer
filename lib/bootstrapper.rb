@@ -1,5 +1,4 @@
 require 'config'
-require 'util'
 require 'skewer'
 
 module Skewer
@@ -25,7 +24,7 @@ module Skewer
       unless self.host_key_exists(location)
         system "ssh -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' no_such_user@#{location} >/dev/null 2>&1"
       else
-        Skewer.logger.debug("SSH Host Key exists; not making it again")
+        logger.debug("SSH Host Key exists; not making it again")
       end
 
     end
@@ -40,7 +39,7 @@ module Skewer
     end
 
     def install_gems
-      Skewer.logger.debug "Installing Gems"
+      logger.debug "Installing Gems"
       assets = File.join(File.dirname(__FILE__), '..', 'assets')
       @node.scp File.join(File.expand_path(assets), 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
@@ -51,7 +50,7 @@ module Skewer
       config = SkewerConfig.instance
       key_name = config.get('key_name')
       key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
-      Skewer.logger.debug "****Looking for #{key_path}"
+      logger.debug "****Looking for #{key_path}"
       if File.exists?(key_path)
         executor.system("ssh-add #{key_path}")
       end
@@ -62,14 +61,14 @@ module Skewer
       require 'puppet_node'
       config = SkewerConfig.instance
       source_dir = config.get(:puppet_repo)
-      Skewer.logger.debug "Using Puppet Code from #{source_dir}"
+      logger.debug "Using Puppet Code from #{source_dir}"
       role = @options[:role]
       if role
         PuppetNode.new({:default => role.to_sym}).render
       end
       # TODO: if there's no role, it should look it up from an external source
       if @mock
-        Skewer.logger.debug "Mock: would normally rsync now"
+        logger.debug "Mock: would normally rsync now"
         else
         Source.new(source_dir).rsync(@node)
       end

@@ -65,4 +65,11 @@ describe Skewer::SkewerConfig do
     config = Skewer::SkewerConfig.instance
     config.region.should == 'us-east-1'
   end
+
+  it "should support some old options" do
+    config = Skewer::SkewerConfig.instance
+    config.get(:puppet_repo).should == '../infrastructure'
+    config.slurp_options({:puppetcode => '../foo'})
+    config.get(:puppet_repo).should == '../foo'
+  end
 end

@@ -3,6 +3,7 @@ module Skewer
 
   # responsible for calling post-run hooks
   class Hooks
+    include Skewer
 
     attr_writer :command
 
@@ -14,7 +15,7 @@ module Skewer
     def run
       return_code = false
       unless @command.nil?
-        Skewer.logger.debug "Running hooks ..."
+        logger.debug "Running hooks ..."
         `#{@command}  #{@host_name}`
         return_code = $? == 0 ? true : false
       end

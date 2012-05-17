@@ -1,6 +1,6 @@
 #require 'util'
 require 'rspec'
-require File.join(File.dirname(__FILE__), '..', 'lib', 'util.rb')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'skewer.rb')
 
 class Testy
   include Skewer

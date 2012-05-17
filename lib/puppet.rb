@@ -4,6 +4,7 @@ module Skewer
   require 'puppet_runtime_error'
   # responsible for executing puppet
   class Puppet
+    include Skewer
     def arguments
       [
        "--modulepath modules",
@@ -37,10 +38,10 @@ module Skewer
       command = command_string(node.username, options)
       result = node.ssh(command)[0]
       if result.status != 0
-        Skewer.logger.debug result.stdout
+        logger.debug result.stdout
         raise PuppetRuntimeError, "Puppet failed"
       else
-        Skewer.logger.debug "Puppet run succeeded"
+        logger.info "Puppet run succeeded"
       end
       result
     end

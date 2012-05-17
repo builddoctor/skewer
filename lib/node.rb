@@ -34,9 +34,9 @@ module Skewer
     def ssh(commands)
       results = @ssh.run(commands)
       if results.is_a?(Array)
-        results.each {|result| Skewer.logger.debug result.stdout }
+        results.each {|result| logger.debug result.stdout }
       else
-        Skewer.logger.debug results.stdout
+        logger.debug results.stdout
       end
     end
   end

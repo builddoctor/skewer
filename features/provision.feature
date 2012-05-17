@@ -22,7 +22,7 @@ Scenario: config in local file
   """
   {"puppet_repo":"/tmp/skewer_test_code"}
   """
-  When I run `./bin/skewer provision --cloud=stub --role=foobar --image=ami-deadbeef`
+  And I run `./bin/skewer provision --cloud=stub --role=foobar --image=ami-deadbeef`
   Then the stdout should contain "Using Puppet Code from /tmp/skewer_test_code"
   And the exit status should be 0
 

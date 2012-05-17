@@ -15,7 +15,7 @@ module Skewer
     end
 
     def run
-      Skewer.logger.debug("Running cucumber hook")
+      logger.debug("Running cucumber hook")
       `cd #{@dir}/.. && bundle install` if File.join(@dir, '..', 'Gemfile')
       result = `cucumber #{@dir} SKEWER_HOST=#{@host}`
       parsed = result.match(/failed/)[0] rescue false

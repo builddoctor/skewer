@@ -3,7 +3,6 @@ require 'fog'
 
 require 'skewer'
 require 'bootstrapper'
-require 'util'
 require 'hooks'
 
 module Skewer
@@ -16,38 +15,36 @@ module Skewer
       @options = options
       @config = SkewerConfig.instance
       @config.slurp_options(options)
-      #@util = Util.new
-      @config.set(:logger, Skewer.logger)
     end
 
     def select_node(cloud)
-      Skewer.logger.debug "Evaluating cloud #{cloud}"
+      logger.debug "Evaluating cloud #{cloud}"
       image = @options[:image]
       case cloud.to_sym
         when :ec2
           require 'aws/security_group'
           require 'aws/node'
           require 'aws/service'
-          Skewer.logger.debug 'Launching an EC2 node'
+          logger.debug 'Launching an EC2 node'
           aws_group = @options[:group]
           group = aws_group ? aws_group : 'default'
           node = AWS::Node.new(image, [group]).node
         when :rackspace
           require 'rackspace/node'
-          Skewer.logger.debug 'Launching a Rackspace node'
+          logger.debug 'Launching a Rackspace node'
           node = Rackspace::Node.new(@config.get('flavor_id'), image, 'default').node
         when :linode
           raise "not implemented"
         when :eucalyptus
-          Skewer.logger.debug 'Using the EC2 API'
+          logger.debug 'Using the EC2 API'
           require 'eucalyptus'
           node = Eucalyptus.new
         when :vagrant
-          Skewer.logger.debug 'Launching a local vagrant node'
+          logger.debug 'Launching a local vagrant node'
           require 'ersatz/ersatz_node.rb'
           node = ErsatzNode.new('default', 'vagrant')
         when :stub
-          Skewer.logger.debug "Launching stubbed node for testing"
+          logger.debug "Launching stubbed node for testing"
           require 'stub_node'
           node = StubNode.new
         when :ersatz
@@ -81,9 +78,9 @@ module Skewer
         Hooks.new(location).run
 
         Cuke.new(@config.get(:cuke_dir), location).run if @config.get(:cuke_dir)
-        Skewer.logger.debug "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
+        logger.info "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
-        Skewer.logger.debug exception
+        logger.debug exception
         raise "Something went wrong, and we killed the node"
       ensure
         destroy

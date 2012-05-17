@@ -22,8 +22,7 @@ program_desc 'Runs Puppet on cloud machines, with no PuppetMaster'
 version Skewer::VERSION
 
 desc 'Location of your Puppet Codebase'
-switch [:pc,:puppetcode]
-default_value '../infrastructure'
+flag [:pc,:puppetcode]
 
 desc 'Hook script to invoke, after the Puppet run success'
 flag [:hk,:hook]
@@ -52,6 +51,8 @@ command :update do |c|
   c.flag [:r, :role]
 
   c.action do |global_options,options,args|
+    puts global_options.inspect
+    puts options.inspect
     require 'skewer/command/update'
     Skewer::Command::Update.new(global_options, options).execute
   end

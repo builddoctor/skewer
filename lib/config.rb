@@ -4,6 +4,7 @@ module Skewer
   # responsible for all configuration, once I move all the options in
   class SkewerConfig
     include Singleton
+    include Skewer
     attr_accessor :aws_service, :puppet_repo, :region, :flavor_id, :aws_username, :flavor_id
 
     def initialize
@@ -19,11 +20,11 @@ module Skewer
     end
 
     def read_config_file(config_file)
+      logger.debug "Looking for #{config_file}"
       if File.exists?(config_file)
-        Skewer.logger.debug "reading #{config_file}"
+        logger.debug "Reading #{config_file}"
         config = File.read(config_file)
         parse(config)
-        Skewer.logger.debug self.inspect
       end
     end
 
@@ -35,7 +36,10 @@ module Skewer
     def parse(config)
       require 'json'
       configz = JSON.parse(config)
-      configz.each { |key,value| set(key,value) }
+      configz.each do |key,value|
+        puts("Setting #{key}, #{value} from config")
+        set(key,value)
+      end
     end
 
     def set(attribute, value)
@@ -58,9 +62,13 @@ module Skewer
       self.instance.get(key)
     end
 
+    def translate_key(key)
+      key == :puppetcode ?  :puppet_repo :  key
+    end
+
     def slurp_options(options)
       options.each_pair do |key, value|
-        self.set(key, value)
+        self.set(self.translate_key(key), value) unless value.nil?
       end
     end
   end
