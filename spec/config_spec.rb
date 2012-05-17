@@ -72,4 +72,10 @@ describe Skewer::SkewerConfig do
     config.slurp_options({:puppetcode => '../foo'})
     config.get(:puppet_repo).should == '../foo'
   end
+
+  it "should return an option if you don't have an accessor" do
+    config = Skewer::SkewerConfig.instance
+    config.set('pint', 'Doom Bar')
+    config.pint.should == 'Doom Bar'
+  end
 end

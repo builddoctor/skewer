@@ -1,11 +1,11 @@
 require 'singleton'
+require 'skewer'
 
 module Skewer
   # responsible for all configuration, once I move all the options in
   class SkewerConfig
     include Singleton
     include Skewer
-    attr_accessor :aws_service, :puppet_repo, :region, :flavor_id, :aws_username, :flavor_id
 
     def initialize
       reset
@@ -70,6 +70,10 @@ module Skewer
       options.each_pair do |key, value|
         self.set(self.translate_key(key), value) unless value.nil?
       end
+    end
+
+    def method_missing(sym, *args, &block)
+      get(sym)
     end
   end
 end
