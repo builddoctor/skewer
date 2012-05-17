@@ -9,12 +9,12 @@ module Skewer
         @options = options
         @args = args
         @host = args[0]
-
-        puts self.inspect
+        @cloud = @options[:cloud]
+        @region = @options[:region]
       end
 
       def valid?
-        unless @options[:cloud]
+        unless @cloud
           return [false, 'I need a cloud to delete a node from']
         end
         unless @args.length == 1
@@ -30,19 +30,25 @@ module Skewer
       def execute
         validity, message = valid?
         raise message unless validity
-        if @options[:region]
-          SkewerConfig.set 'region', @options[:region]
+
+        if @region
+          SkewerConfig.set 'region', @region
         end
-        case @options[:cloud].to_sym
+
+        find_node().destroy
+      end
+
+      def find_node
+        case @cloud.to_sym
           when :ec2
             require 'aws/node'
             node = AWS::Node.find_by_name(@host)
           when :rackspace
             node = Rackspace::Node.find_by_ip(@host)
           else
-            raise("I don't know about cloud '#{@options[:cloud]}''")
+            raise("I don't know about cloud '#{@cloud}''")
         end
-        node.destroy
+        node
       end
     end
   end

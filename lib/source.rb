@@ -8,6 +8,7 @@ module Skewer
       #@util = Util.new
       raise "I can't see the path #{path}" unless File.exists?(path)
       @path = path.sub(/\/$/, '')
+      @logger = Skewer.logger
     end
 
     def excludes
@@ -29,7 +30,7 @@ module Skewer
     end
 
     def mock_rsync(command)
-      Skewer.logger.debug "MOCK: #{command}"
+      @logger.debug "MOCK: #{command}"
     end
 
     def real_rsync(node, command)
@@ -39,16 +40,11 @@ module Skewer
 
     def rsync(node)
       location = get_location(node)
-      Skewer.logger.debug "Copying code to #{location} ..."
+      @logger.debug "Copying code to #{location} ..."
       create_destination(node)
       command = self.rsync_command(node)
-
-      if node.class.to_s =~ /StubNode/
-        mock_rsync(command)
-      else
-        real_rsync(node, command)
-      end
-      Skewer.logger.debug " Done."
+      node.class.to_s =~ /StubNode/ ? mock_rsync(command) : real_rsync(node, command)
+      @logger.debug " Done."
     end
   end
 end
