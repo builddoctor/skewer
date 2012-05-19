@@ -5,6 +5,7 @@ module Skewer
   module AWS
     # Build out an AWS node using Fog.
     class Node
+      include Skewer
       attr_reader :node
 
       def initialize(aws_id, group_names, options = {})
@@ -14,8 +15,8 @@ module Skewer
           @service = self.class.find_service(options)
           node_options = {
               :image_id   => aws_id,
-              :flavor_id  => SkewerConfig.get('flavor_id'),
-              :username   => SkewerConfig.get('aws_username'),
+              :flavor_id  => config.get('flavor_id'),
+              :username   => config.get('aws_username'),
               :groups     => group_names
           }
 
@@ -23,8 +24,8 @@ module Skewer
             node_options[:key_name] = options[:key_name]
           end
 
-          if SkewerConfig.instance.get('key_name')
-            node_options[:key_name] = SkewerConfig.get('key_name')
+          if config.get('key_name')
+            node_options[:key_name] = config.get('key_name')
           end
 
           @node = @service.servers.bootstrap(node_options)

@@ -1,12 +1,11 @@
 module Skewer
   # the real Command objects inherit from this
+  require 'skewer'
   class SkewerCommand
-    require 'config'
-    attr_reader :config
+    include Skewer
 
     def initialize(global, local)
-      @config = SkewerConfig.instance
-      @config.slurp_options(global.merge(local))
+      config.slurp_options(global.merge(local))
     end
 
     def is_option_boolean?(option)

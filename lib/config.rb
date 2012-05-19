@@ -4,7 +4,6 @@ require 'skewer'
 module Skewer
   # responsible for all configuration, once I move all the options in
   class SkewerConfig
-    include Singleton
     include Skewer
 
     def initialize
@@ -46,11 +45,6 @@ module Skewer
       self.instance_variable_set "@#{attribute}", value
     end
 
-    def self.set(key,value)
-      instance = self.instance
-      instance.set(key,value)
-    end
-
     def get(attribute)
       if attribute.class == Symbol
         attribute = attribute.to_s
@@ -58,9 +52,6 @@ module Skewer
       self.instance_variable_get "@" + attribute
     end
 
-    def self.get(key)
-      self.instance.get(key)
-    end
 
     def translate_key(key)
       key == :puppetcode ?  :puppet_repo :  key

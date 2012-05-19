@@ -1,11 +1,11 @@
 module Skewer
   # responsible for creating a node definition
   class PuppetNode
+    include Skewer
     attr_accessor :nodes, :puppet_repo
 
     def initialize(nodes = { :default =>:noop})
       @nodes = nodes
-      config = SkewerConfig.instance
       @puppet_repo = config.get(:puppet_repo)
     end
 

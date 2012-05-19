@@ -11,7 +11,6 @@ module Skewer
     def initialize(node,options)
       @node = node
       @options = options
-      #@util = Util.new
       @mock = false
     end
 
@@ -47,7 +46,6 @@ module Skewer
     end
 
     def add_key_to_agent(executor = Kernel, homedir = ENV['HOME'])
-      config = SkewerConfig.instance
       key_name = config.get('key_name')
       key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
       logger.debug "****Looking for #{key_path}"
@@ -59,7 +57,6 @@ module Skewer
     def sync_source()
       require 'source'
       require 'puppet_node'
-      config = SkewerConfig.instance
       source_dir = config.get(:puppet_repo)
       logger.debug "Using Puppet Code from #{source_dir}"
       role = @options[:role]

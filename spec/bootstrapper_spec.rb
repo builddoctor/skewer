@@ -1,6 +1,6 @@
 require 'bootstrapper'
 require 'source'
-require 'config'
+require 'conf_helper'
 
 describe Skewer::Bootstrapper do
   it "should barf if the file doesn't exist" do
@@ -30,11 +30,11 @@ describe Skewer::Bootstrapper do
     node.should_receive(:username).at_least(1).times
     node.should_receive(:dns_name).at_least(1).times
     node.should_receive(:ssh).at_least(1).times
-    Skewer::SkewerConfig.instance.set(:puppet_repo, 'target')
+    ConfHelper.new.conf.set(:puppet_repo, 'target')
     lambda {
       Skewer::Bootstrapper.new(node, {:role => 'foo'}).sync_source
     }.should raise_exception RuntimeError
-    Skewer::SkewerConfig.instance.set(:puppet_repo, '../infrastructure')
+    ConfHelper.new.conf.set(:puppet_repo, '../infrastructure')
     File.exist?('target/manifests/nodes.pp').should == true
     FileUtils
   end
@@ -45,7 +45,7 @@ describe Skewer::Bootstrapper do
     kernel.should_receive(:system).and_return(true)
     faux_homedir = 'tmp/foo/.ssh'
 
-    config = Skewer::SkewerConfig.instance
+    config = ConfHelper.new.conf
 
     config.set(:key_name, 'my_great_test_key' )
     FileUtils.mkdir_p(faux_homedir)
@@ -53,7 +53,7 @@ describe Skewer::Bootstrapper do
 
     bootstrapper = Skewer::Bootstrapper.new(node, {})
     bootstrapper.add_key_to_agent(kernel, 'tmp/foo')
-    Skewer::SkewerConfig.set(:key_name, nil)
+    ConfHelper.new.conf.set(:key_name, nil)
 
 
   end

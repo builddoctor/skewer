@@ -1,17 +1,18 @@
 require 'fog'
 require 'rackspace/images'
 require 'rackspace/service'
-require 'config'
+require 'skewer'
 
 module Skewer
   module Rackspace
     # Build out a Rackspace node using Fog.
     class Node
+      include Skewer
       attr_reader :node
 
       # By default, boot an Ubuntu 10.04 LTS (lucid) server.
       def initialize(flavor = 1, image = 112, name = 'my_server', instance = nil)
-        region = SkewerConfig.get('region')
+        region = config.get('region')
         connection = self.class.find_service(region)
 
         # Get our SSH key to attach it to the server.
@@ -42,7 +43,7 @@ module Skewer
 
       def find_key
         ssh_key = nil
-        ['id_rsa.pub', 'id_dsa.pub', "#{SkewerConfig.instance.get(:key_name)}.pub"].each do |key|
+        ['id_rsa.pub', 'id_dsa.pub', "#{config.get(:key_name)}.pub"].each do |key|
           key_path =  File.expand_path(File.join(ENV['HOME'],'.ssh', key))
           if File.exist?(key_path)
             ssh_key = key_path

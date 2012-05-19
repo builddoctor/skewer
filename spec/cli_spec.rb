@@ -1,9 +1,10 @@
 require 'cli'
+require 'conf_helper'
 
 describe Skewer::Dispatcher do
   before(:each) do
-    config = Skewer::SkewerConfig.instance
-    config.reset
+    @config = ConfHelper.new.conf
+    @config.reset
   end
 
   Fog.mock!
@@ -36,36 +37,33 @@ describe Skewer::Dispatcher do
   end
 
   it "should be able to parse the options as they're given" do
-    config = Skewer::SkewerConfig.instance
-    config.get(:region).should == 'us-east-1'
+
+    @config.get(:region).should == 'us-east-1'
     cli = Skewer::Dispatcher.new({:cloud => :nil, :region => 'eu-west-1'})
-    config.get(:region).should == 'eu-west-1'
+    @config.get(:region).should == 'eu-west-1'
   end
 
   it "should be able to pass the region through to the AWS service" do
-    config = Skewer::SkewerConfig.instance
-    config.get(:region).should == 'us-east-1'
+    @config.get(:region).should == 'us-east-1'
     cli = Skewer::Dispatcher.new({:cloud => :nil, :region => 'eu-west-1'})
-    config.get(:region).should == 'eu-west-1'
+    @config.get(:region).should == 'eu-west-1'
     lambda {
       cli.select_node(:ec2)
     }.should raise_exception Fog::Errors::MockNotImplemented
   end
 
   it "should be able to pass the flavor_id through to the AWS service" do
-    config = Skewer::SkewerConfig.instance
-    config.get(:flavor_id).should == 'm1.large'
+    @config.get(:flavor_id).should == 'm1.large'
     cli = Skewer::Dispatcher.new({:cloud => :nil, :flavor_id => 'm1.small'})
-    config.get(:flavor_id).should == 'm1.small'
+    @config.get(:flavor_id).should == 'm1.small'
     lambda {
       cli.select_node(:ec2)
     }.should raise_exception Fog::Errors::MockNotImplemented
   end
 
   it "should be able to provide a cuke directory" do
-    config = Skewer::SkewerConfig.instance
-    config.get(:cuke_dir).should == nil
-    cli = Skewer::Dispatcher.new({:cloud => :nil, :cuke_dir => 'spec'})
-    config.get(:cuke_dir).should == 'spec'
+    @config.get(:cuke_dir).should == nil
+    Skewer::Dispatcher.new({:cloud => :nil, :cuke_dir => 'spec'})
+    @config.get(:cuke_dir).should == 'spec'
   end
 end

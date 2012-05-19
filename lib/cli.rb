@@ -13,8 +13,7 @@ module Skewer
 
     def initialize(options)
       @options = options
-      @config = SkewerConfig.instance
-      @config.slurp_options(options)
+      config.slurp_options(options)
     end
 
     def select_node(cloud)
@@ -32,7 +31,7 @@ module Skewer
         when :rackspace
           require 'rackspace/node'
           logger.debug 'Launching a Rackspace node'
-          node = Rackspace::Node.new(@config.get('flavor_id'), image, 'default').node
+          node = Rackspace::Node.new(config.get('flavor_id'), image, 'default').node
         when :linode
           raise "not implemented"
         when :eucalyptus
@@ -49,7 +48,7 @@ module Skewer
           node = StubNode.new
         when :ersatz
           require 'ersatz/ersatz_node.rb'
-          node = ErsatzNode.new(@config.get('host'), @config.get('user'))
+          node = ErsatzNode.new(config.get('host'), config.get('user'))
         else
           raise "I don't know that cloud"
       end
@@ -77,7 +76,7 @@ module Skewer
         location = get_location(node)
         Hooks.new(location).run
 
-        Cuke.new(@config.get(:cuke_dir), location).run if @config.get(:cuke_dir)
+        Cuke.new(@config.get(:cuke_dir), location).run if config.get(:cuke_dir)
         logger.info "Node ready\n open http://#{location} or \n ssh -l #{node.username} #{location}"
       rescue Exception => exception
         logger.debug exception

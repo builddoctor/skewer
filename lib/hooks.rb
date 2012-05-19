@@ -8,7 +8,7 @@ module Skewer
     attr_writer :command
 
     def initialize(host_name)
-      @command = SkewerConfig.instance.get('hook')
+      @command = config.get('hook')
       @host_name = host_name
     end
 
