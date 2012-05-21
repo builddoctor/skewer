@@ -31,11 +31,11 @@ describe Skewer::SkewerConfig do
 
   it "should be able to swallow options" do
      config = Skewer::SkewerConfig.new
-     options = {'rodent' => 'bunnyrabbit', 'canine' => 'dingo' }
+     options = {:rodent => 'bunnyrabbit', :canine => 'dingo' }
      config.slurp_options(options)
-     config.get('rodent').should == 'bunnyrabbit'
-     config.get('canine').should == 'dingo'
-     config.get('region').should == 'us-east-1'
+     config.get(:rodent).should == 'bunnyrabbit'
+     config.get(:canine).should == 'dingo'
+     config.get(:region).should == 'us-east-1'
   end
 
   it "should take the region as a parameter" do
@@ -65,7 +65,7 @@ describe Skewer::SkewerConfig do
 
   it "should return an option if you don't have an accessor" do
     config = Skewer::SkewerConfig.new
-    config.set('pint', 'Doom Bar')
+    config.set(:pint, 'Doom Bar')
     config.pint.should == 'Doom Bar'
   end
 end

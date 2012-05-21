@@ -15,18 +15,14 @@ module Skewer
           @service = self.class.find_service(options)
           node_options = {
               :image_id   => aws_id,
-              :flavor_id  => config.get('flavor_id'),
-              :username   => config.get('aws_username'),
+              :flavor_id  => config.get(:flavor_id),
+              :username   => config.get(:aws_username),
               :groups     => group_names
           }
 
-          if options[:key_name]
-            node_options[:key_name] = options[:key_name]
-          end
+          node_options[:key_name] = options[:key_name] if options[:key_name]
 
-          if config.get('key_name')
-            node_options[:key_name] = config.get('key_name')
-          end
+          node_options[:key_name] = config.get(:key_name) if config.get(:key_name)
 
           @node = @service.servers.bootstrap(node_options)
         end

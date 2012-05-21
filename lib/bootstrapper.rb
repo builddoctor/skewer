@@ -46,7 +46,7 @@ module Skewer
     end
 
     def add_key_to_agent(executor = Kernel, homedir = ENV['HOME'])
-      key_name = config.get('key_name')
+      key_name = config.get(:key_name)
       key_path = File.join(homedir, '.ssh', "#{key_name}.pem")
       logger.debug "****Looking for #{key_path}"
       if File.exists?(key_path)

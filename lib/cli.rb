@@ -31,7 +31,7 @@ module Skewer
         when :rackspace
           require 'rackspace/node'
           logger.debug 'Launching a Rackspace node'
-          node = Rackspace::Node.new(config.get('flavor_id'), image, 'default').node
+          node = Rackspace::Node.new(config.get(:flavor_id), image, 'default').node
         when :linode
           raise "not implemented"
         when :eucalyptus
@@ -48,7 +48,7 @@ module Skewer
           node = StubNode.new
         when :ersatz
           require 'ersatz/ersatz_node.rb'
-          node = ErsatzNode.new(config.get('host'), config.get('user'))
+          node = ErsatzNode.new(config.get(:host), config.get(:user))
         else
           raise "I don't know that cloud"
       end

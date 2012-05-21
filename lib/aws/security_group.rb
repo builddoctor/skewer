@@ -6,7 +6,7 @@ module Skewer
       attr_reader :service, :group
 
       def initialize(name, desc, ports)
-        @service ||= config.get 'aws_service'
+        @service ||= config.get :aws_service
         groups = @service.security_groups
         group = groups.select { |group| group.name == name }[0]
 

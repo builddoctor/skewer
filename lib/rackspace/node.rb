@@ -12,7 +12,7 @@ module Skewer
 
       # By default, boot an Ubuntu 10.04 LTS (lucid) server.
       def initialize(flavor = 1, image = 112, name = 'my_server', instance = nil)
-        region = config.get('region')
+        region = config.get(:region)
         connection = self.class.find_service(region)
 
         # Get our SSH key to attach it to the server.

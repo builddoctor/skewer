@@ -18,7 +18,7 @@ describe Skewer::AWS::Node do
   end
 
   it "should get the SSH key via config" do
-    ConfHelper.new.conf.set('key_name', 'FRONT_DOOR')
+    ConfHelper.new.conf.set(:key_name, 'FRONT_DOOR')
     begin
       Skewer::AWS::Node.new('ami-123456', ['default']).inspect
     rescue Fog::Compute::AWS::NotFound => e

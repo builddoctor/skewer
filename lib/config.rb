@@ -7,15 +7,17 @@ module Skewer
     include Skewer
 
     def initialize
+      @configs = {}
       reset
       read_config_files
+
     end
 
     def reset
-      @puppet_repo = '../infrastructure'
-      @region = 'us-east-1'
-      @flavor_id = 'm1.large'
-      @aws_username = 'ubuntu'
+      @configs[:puppet_repo] = '../infrastructure'
+      @configs[:region] = 'us-east-1'
+      @configs[:flavor_id] = 'm1.large'
+      @configs[:aws_username] = 'ubuntu'
     end
 
     def read_config_file(config_file)
@@ -37,19 +39,23 @@ module Skewer
       configz = JSON.parse(config)
       configz.each do |key,value|
         puts("Setting #{key}, #{value} from config")
-        set(key,value)
+        set(key.to_sym, value)
       end
     end
 
     def set(attribute, value)
-      self.instance_variable_set "@#{attribute}", value
+      validate_key(attribute)
+       @configs[attribute] = value
+    end
+
+    def validate_key(attribute)
+      unless attribute.class == Symbol
+        raise ArgumentError(self.class.to_s + ' now expects a symbol')
+      end
     end
 
     def get(attribute)
-      if attribute.class == Symbol
-        attribute = attribute.to_s
-      end
-      self.instance_variable_get "@" + attribute
+      @configs[attribute]
     end
 
 
@@ -64,6 +70,7 @@ module Skewer
     end
 
     def method_missing(sym, *args, &block)
+      puts @configs.inspect
       get(sym)
     end
   end
