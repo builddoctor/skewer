@@ -1,9 +1,9 @@
 require 'rubygems'
 require 'fog'
 
-require 'skewer'
-require 'bootstrapper'
-require 'hooks'
+require 'skewer/skewer'
+require 'skewer/bootstrapper'
+require 'skewer/hooks'
 
 module Skewer
   # this is responsible for composing all the other components. or should be.
@@ -66,8 +66,8 @@ module Skewer
     end
 
     def go
-      require 'puppet'
-      require 'cuke'
+      require 'skewer/puppet'
+      require 'skewer/cuke'
       begin
         node = @node
         node.wait_for { ready? }

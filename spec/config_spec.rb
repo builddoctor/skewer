@@ -1,5 +1,5 @@
 require 'rspec'
-require 'config'
+require 'skewer/config'
 
 describe Skewer::SkewerConfig do
 

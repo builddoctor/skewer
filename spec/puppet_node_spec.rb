@@ -1,4 +1,4 @@
-require 'puppet_node'
+require 'skewer/puppet_node'
 
 
 #$: << File.join(File.dirname(__FILE__), '..','lib')

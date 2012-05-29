@@ -1,4 +1,4 @@
-require 'config'
+require 'skewer/config'
 require 'skewer'
 
 module Skewer
@@ -29,7 +29,7 @@ module Skewer
     end
 
     def execute(file_name)
-      file = File.join(File.dirname(__FILE__), '..', 'assets', file_name)
+      file = File.join(File.dirname(__FILE__), '..', '..', 'assets', file_name)
       raise "#{file} does not exist" unless File.exists? file
       @node.scp file, '/var/tmp/.'
       result = @node.ssh "sudo bash /var/tmp/#{file_name}"
@@ -39,10 +39,19 @@ module Skewer
 
     def install_gems
       logger.debug "Installing Gems"
-      assets = File.join(File.dirname(__FILE__), '..', 'assets')
+      assets = File.join(File.dirname(__FILE__), '..', '..', 'assets')
+
+      # that would be a method
+      @node.scp File.join(File.expand_path(assets), 'rubygems.sh'), '/var/tmp'
+      command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
+      result = @node.ssh(command)
+      logger.debug result
+
+      # so would that
       @node.scp File.join(File.expand_path(assets), 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
       result = @node.ssh(command)
+      logger.debug result
     end
 
     def add_key_to_agent(executor = Kernel, homedir = ENV['HOME'])
@@ -55,8 +64,8 @@ module Skewer
     end
 
     def sync_source()
-      require 'source'
-      require 'puppet_node'
+      require 'skewer/source'
+      require 'skewer/puppet_node'
       source_dir = config.get(:puppet_repo)
       logger.debug "Using Puppet Code from #{source_dir}"
       role = @options[:role]

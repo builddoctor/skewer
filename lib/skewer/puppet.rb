@@ -1,7 +1,7 @@
 require 'skewer'
 
 module Skewer
-  require 'puppet_runtime_error'
+  require 'skewer/puppet_runtime_error'
   # responsible for executing puppet
   class Puppet
     include Skewer

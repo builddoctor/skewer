@@ -1,4 +1,4 @@
-require 'lib/puppet'
+require 'skewer/puppet'
 
 describe Skewer::Puppet do
 

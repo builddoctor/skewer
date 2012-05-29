@@ -1,4 +1,4 @@
-require 'source'
+require 'skewer/source'
 
 describe Skewer::Source do
   it "should have a source directory that exists" do

@@ -1,5 +1,5 @@
 module Skewer
-  require 'config'
+  require 'skewer/config'
 
   # responsible for calling post-run hooks
   class Hooks

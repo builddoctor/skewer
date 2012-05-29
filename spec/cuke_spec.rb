@@ -1,5 +1,5 @@
 require 'rspec'
-require 'cuke'
+require 'skewer/cuke'
 
 describe Skewer::Cuke do
   it "should only accept valid directories for construction" do

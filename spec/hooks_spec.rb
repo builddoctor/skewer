@@ -1,5 +1,5 @@
 require "rspec"
-require 'hooks'
+require 'skewer/hooks'
 
 describe "Hooks" do
 

@@ -1,5 +1,5 @@
-require 'bootstrapper'
-require 'source'
+require 'skewer/bootstrapper'
+require 'skewer/source'
 require 'conf_helper'
 
 describe Skewer::Bootstrapper do

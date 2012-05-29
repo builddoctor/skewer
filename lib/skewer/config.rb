@@ -1,4 +1,3 @@
-require 'singleton'
 require 'skewer'
 
 module Skewer

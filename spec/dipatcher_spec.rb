@@ -1,4 +1,4 @@
-require 'dispatcher'
+require 'skewer/dispatcher'
 require 'conf_helper'
 
 describe Skewer::Dispatcher do

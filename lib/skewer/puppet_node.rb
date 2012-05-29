@@ -12,7 +12,7 @@ module Skewer
     def to_s
       require 'erb'
       lib_dir = File.dirname(__FILE__)
-      template = ERB.new(File.read(File.join(lib_dir, 'node.erb')))
+      template = ERB.new(File.read(File.join(lib_dir, '..',  'node.erb')))
       template.result(binding)
     end
 

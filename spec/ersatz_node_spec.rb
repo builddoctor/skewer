@@ -1,4 +1,4 @@
-require 'lib/ersatz/ersatz_node.rb'
+require 'skewer/ersatz/ersatz_node.rb'
 
 describe Skewer::ErsatzNode do 
   it "should have attributes" do 
