@@ -5,7 +5,6 @@ module Skewer
   class Source
     include Skewer
     def initialize(path = nil)
-      #@util = Util.new
       raise "I can't see the path #{path}" unless File.exists?(path)
       @path = path.sub(/\/$/, '')
 
