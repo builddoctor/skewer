@@ -42,6 +42,10 @@ describe Skewer::Puppet do
     result.stub!('stderr').and_return('failure on stderr')
     node.should_receive(:username).and_return('danmadams')
     node.should_receive(:ssh).and_return([result])
-    lambda { @puppet.run(node, {})  }.should raise_exception Skewer::PuppetRuntimeError
+    begin
+      @puppet.run(node, {})
+    rescue Exception => e
+     e.message.should == 'Puppet failed'
+    end
   end
 end

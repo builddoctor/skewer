@@ -16,7 +16,7 @@ module Skewer
     end
 
     def method_missing(name, *args)
-      require 'ersatz/ssh_result.rb'
+      require 'skewer/ersatz/ssh_result.rb'
       logger.debug "#{self.class}.#{name} called with #{args.join(',')}"
       return announce([ErsatzSSHResult.new('foo', 'success', 0)]) if name == :ssh
       announce true

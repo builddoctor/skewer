@@ -1,7 +1,6 @@
 require 'skewer'
 
 module Skewer
-  require 'skewer/puppet_runtime_error'
   # responsible for executing puppet
   class Puppet
     include Skewer
@@ -39,7 +38,7 @@ module Skewer
       result = node.ssh(command)[0]
       if result.status != 0
         logger.debug result.stdout
-        raise PuppetRuntimeError, "Puppet failed"
+        raise  "Puppet failed"
       else
         logger.info "Puppet run succeeded"
       end

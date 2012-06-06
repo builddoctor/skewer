@@ -44,7 +44,7 @@ module Skewer
           node = ErsatzNode.new('default', 'vagrant')
         when :stub
           logger.debug "Launching stubbed node for testing"
-          require 'stub_node'
+          require 'skewer/stub_node'
           node = StubNode.new
         when :ersatz
           require 'skewer/ersatz/ersatz_node.rb'
