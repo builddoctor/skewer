@@ -1,4 +1,5 @@
 require 'skewer'
+require 'skewer/strategy/bundler'
 
 module Skewer
   # responsible for executing puppet
@@ -12,7 +13,7 @@ module Skewer
     end
 
     def bundle
-      "/var/lib/gems/1.8/bin/bundle"
+      Skewer::Strategy::Bundler.new(nil).executable()
     end
 
     def command_string(username, options)

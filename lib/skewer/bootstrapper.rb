@@ -12,6 +12,7 @@ module Skewer
       @node = node
       @options = options
       @mock = false
+      @install_strategy = Skewer::Strategy::Bundler.new(@node)
     end
 
     def host_key_exists(host)
@@ -26,31 +27,6 @@ module Skewer
         logger.debug("SSH Host Key exists; not making it again")
       end
 
-    end
-
-    def execute(file_name)
-      file = File.join(File.dirname(__FILE__), '..', '..', 'assets', file_name)
-      raise "#{file} does not exist" unless File.exists? file
-      @node.scp file, '/var/tmp/.'
-      result = @node.ssh "sudo bash /var/tmp/#{file_name}"
-      puts result.inspect
-      result
-    end
-
-    def install_gems
-      logger.debug "Installing Gems"
-      assets = File.join(File.dirname(__FILE__), '..', '..', 'assets')
-
-      # Stupid method name
-      #@node.scp File.join(File.expand_path(assets), 'rubygems.sh'), '/var/tmp'
-      #command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
-      #result = @node.ssh(command)
-      #logger.debug result
-
-      @node.scp File.join(File.expand_path(assets), 'Gemfile'), 'infrastructure'
-      command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
-      result = @node.ssh(command)
-      logger.debug result
     end
 
     def add_key_to_agent(executor = Kernel, homedir = ENV['HOME'])
@@ -112,15 +88,15 @@ module Skewer
 
     def prepare_node
       add_ssh_hostkey
-      execute('rubygems.sh')
+      install_rubygems()
       add_key_to_agent
     end
 
     def go
       i_should_run = should_i_run?
-      prepare_node() if i_should_run
+      @install_strategy.install if i_should_run
       sync_source
-      install_gems if i_should_run
+      @install_strategy.preflight if i_should_run
     end
   end
 end

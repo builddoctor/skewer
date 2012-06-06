@@ -5,8 +5,8 @@ describe Skewer::Puppet do
   before(:each) do
     @puppet = Skewer::Puppet.new
     @root = File.expand_path File.join(File.dirname(__FILE__), "..")
-    @prefix = "cd infrastructure && /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp --color false"
-    @sudo_prefix = "cd infrastructure && sudo /var/lib/gems/1.8/bin/bundle exec puppet apply manifests/site.pp --color false"
+    @prefix = "cd infrastructure && /usr/local/bin/bundle exec puppet apply manifests/site.pp --color false"
+    @sudo_prefix = "cd infrastructure && sudo /usr/local/bin/bundle exec puppet apply manifests/site.pp --color false"
   end
 
   it "should sudo when connecting as root" do
