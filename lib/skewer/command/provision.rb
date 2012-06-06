@@ -1,5 +1,5 @@
 require 'skewer/command'
-require 'dispatcher'
+require 'skewer/dispatcher'
 module Skewer
   module Command
     #Implements skewer provision

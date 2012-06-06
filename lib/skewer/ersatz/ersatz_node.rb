@@ -1,4 +1,4 @@
-require 'ersatz/ssh_result.rb'
+require 'skewer/ersatz/ssh_result.rb'
 
 module Skewer
   # fakes a fog node

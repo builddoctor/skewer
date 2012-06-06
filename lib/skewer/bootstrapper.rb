@@ -41,13 +41,12 @@ module Skewer
       logger.debug "Installing Gems"
       assets = File.join(File.dirname(__FILE__), '..', '..', 'assets')
 
-      # that would be a method
-      @node.scp File.join(File.expand_path(assets), 'rubygems.sh'), '/var/tmp'
-      command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
-      result = @node.ssh(command)
-      logger.debug result
+      # Stupid method name
+      #@node.scp File.join(File.expand_path(assets), 'rubygems.sh'), '/var/tmp'
+      #command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
+      #result = @node.ssh(command)
+      #logger.debug result
 
-      # so would that
       @node.scp File.join(File.expand_path(assets), 'Gemfile'), 'infrastructure'
       command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
       result = @node.ssh(command)

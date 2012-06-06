@@ -1,4 +1,4 @@
-require 'ersatz/ssh_result'
+require 'skewer/ersatz/ssh_result'
 
 describe Skewer::ErsatzSSHResult do
   it "should build out an SSH object" do

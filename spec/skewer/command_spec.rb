@@ -1,6 +1,6 @@
 require "rspec"
 require 'skewer/command'
-require 'config'
+require 'skewer/config'
 
 describe "Commands" do
 

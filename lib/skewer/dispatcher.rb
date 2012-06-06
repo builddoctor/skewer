@@ -36,18 +36,18 @@ module Skewer
           raise "not implemented"
         when :eucalyptus
           logger.debug 'Using the EC2 API'
-          require 'eucalyptus'
+          require 'skewer/eucalyptus'
           node = Eucalyptus.new
         when :vagrant
           logger.debug 'Launching a local vagrant node'
-          require 'ersatz/ersatz_node.rb'
+          require 'skewer/ersatz/ersatz_node.rb'
           node = ErsatzNode.new('default', 'vagrant')
         when :stub
           logger.debug "Launching stubbed node for testing"
           require 'stub_node'
           node = StubNode.new
         when :ersatz
-          require 'ersatz/ersatz_node.rb'
+          require 'skewer/ersatz/ersatz_node.rb'
           node = ErsatzNode.new(config.get(:host), config.get(:user))
         else
           raise "I don't know that cloud"
