@@ -1,4 +1,5 @@
 require 'skewer/config'
+require 'skewer/strategy/bundler'
 require 'skewer'
 
 module Skewer
@@ -8,11 +9,11 @@ module Skewer
     MAX_CACHE = 3600
     attr_writer :mock
 
-    def initialize(node,options)
+    def initialize(node,installer,options)
       @node = node
       @options = options
       @mock = false
-      @install_strategy = Skewer::Strategy::Bundler.new(@node)
+      @installer = installer
     end
 
     def host_key_exists(host)
@@ -94,9 +95,9 @@ module Skewer
 
     def go
       i_should_run = should_i_run?
-      @install_strategy.install if i_should_run
+      @installer.install if i_should_run
       sync_source
-      @install_strategy.preflight if i_should_run
+      @installer.preflight if i_should_run
     end
   end
 end

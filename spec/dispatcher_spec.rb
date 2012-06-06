@@ -66,4 +66,20 @@ describe Skewer::Dispatcher do
     Skewer::Dispatcher.new({:cloud => :nil, :cuke_dir => 'spec'})
     @config.get(:cuke_dir).should == 'spec'
   end
+
+  it "should give a debian strategy if we ask for debian in the config" do
+    Skewer::Dispatcher.new({}).select_strategy(:debian).should be_a Skewer::Strategy::DebianPackage
+  end
+
+  it "should give a bundler strategy if we ask for bundler in the config" do
+      Skewer::Dispatcher.new({}).select_strategy(:bundler).should be_a Skewer::Strategy::Bundler
+  end
+
+  it "should barf if we ask for something unsupported" do
+    begin
+      Skewer::Dispatcher.new({}).select_strategy(:ebuild)
+    rescue Exception => e
+      e.message.should == "I don't know about that strategy - sorry"
+    end
+  end
 end

@@ -30,6 +30,10 @@ flag [:hk,:hook]
 desc 'Cucumber features directory to invoke, after the Puppet run success'
 flag [:features]
 
+desc 'Strategy for deploying Puppet'
+default_value :bundler
+flag [:strategy]
+
 desc 'do a dry run first'
 default_value false
 arg_name 'noop'

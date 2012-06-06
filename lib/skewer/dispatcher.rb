@@ -16,6 +16,19 @@ module Skewer
       config.slurp_options(options)
     end
 
+    def select_strategy(option)
+      require 'skewer/strategy/bundler'
+      require 'skewer/strategy/debian_package'
+      if option == :bundler
+        Skewer::Strategy::Bundler.new(@node)
+      elsif option == :debian
+        Skewer::Strategy::DebianPackage.new(@node)
+      else
+        raise "I don't know about that strategy - sorry"
+      end
+    end
+
+
     def select_node(cloud)
       logger.debug "Evaluating cloud #{cloud}"
       image = @options[:image]
@@ -62,7 +75,8 @@ module Skewer
     def bootstrap
       node = select_node(@options[:cloud])
       @node = node
-      @bootstrapper = Bootstrapper.new(node, @options)
+      @installer = select_strategy(config.get(:strategy))
+      @bootstrapper = Bootstrapper.new(node, @installer, @options)
     end
 
     def go
@@ -72,7 +86,7 @@ module Skewer
         node = @node
         node.wait_for { ready? }
         @bootstrapper.go
-        Puppet.run(node, @options)
+        Puppet.run(node, @installer, @options)
         location = get_location(node)
         Hooks.new(location).run
 

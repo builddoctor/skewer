@@ -15,7 +15,7 @@ describe Skewer::Bootstrapper do
     node.should_receive(:ssh).at_least(1).times
     ConfHelper.new.conf.set(:puppet_repo, 'target')
     lambda {
-      Skewer::Bootstrapper.new(node, {:role => 'foo'}).sync_source
+      Skewer::Bootstrapper.new(node, nil,{:role => 'foo'}).sync_source
     }.should raise_exception RuntimeError
     ConfHelper.new.conf.set(:puppet_repo, '../infrastructure')
     File.exist?('target/manifests/nodes.pp').should == true
@@ -34,7 +34,7 @@ describe Skewer::Bootstrapper do
     FileUtils.mkdir_p(faux_homedir)
     FileUtils.touch("#{faux_homedir}/my_great_test_key.pem")
 
-    bootstrapper = Skewer::Bootstrapper.new(node, {})
+    bootstrapper = Skewer::Bootstrapper.new(node,nil, {})
     bootstrapper.add_key_to_agent(kernel, 'tmp/foo')
     ConfHelper.new.conf.set(:key_name, nil)
 
@@ -45,7 +45,7 @@ describe Skewer::Bootstrapper do
     node  = stub('node')
     node.should_receive(:dns_name).at_least(1).times.and_return('foo.bar.com')
 
-    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper = Skewer::Bootstrapper.new(node,nil, {:role => 'foo'})
     bootstrapper.destroy_lock_file
 
     bootstrapper.should_i_run?.should == true
@@ -58,7 +58,7 @@ describe Skewer::Bootstrapper do
     node  = stub('node')
     node.should_receive(:dns_name).at_least(1).times.and_return('foo.bar.com')
 
-    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper = Skewer::Bootstrapper.new(node, nil,{:role => 'foo'})
     bootstrapper.destroy_lock_file
 
     bootstrapper.should_i_run?.should == true
@@ -71,7 +71,7 @@ describe Skewer::Bootstrapper do
     node.should_receive(:scp).at_least(1).times
     node.should_receive(:ssh).at_least(1).times
     node.should_receive(:dns_name).at_least(1).times.and_return('foo.bar.com')
-    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper = Skewer::Bootstrapper.new(node, Skewer::Strategy::Bundler.new(node), {:role => 'foo'})
     bootstrapper.destroy_lock_file
     bootstrapper.mock = true
     bootstrapper.go
@@ -82,7 +82,7 @@ describe Skewer::Bootstrapper do
   it "should allow mocking out of the source step" do
     node  = stub('node')
     node.should_not_receive(:username)
-    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper = Skewer::Bootstrapper.new(node,nil, {:role => 'foo'})
     bootstrapper.mock = true
     bootstrapper.sync_source
   end
@@ -91,7 +91,7 @@ describe Skewer::Bootstrapper do
     node  = stub('node')
     node.should_receive(:username).at_least(2).times
     node.should_receive(:ssh)
-    bootstrapper = Skewer::Bootstrapper.new(node, {:role => 'foo'})
+    bootstrapper = Skewer::Bootstrapper.new(node, nil, {:role => 'foo'})
     lambda {
       bootstrapper.sync_source
     }.should  raise_exception RuntimeError

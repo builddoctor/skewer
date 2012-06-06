@@ -2,9 +2,11 @@ module Skewer
   require 'logger'
   require 'skewer/config'
 
+
   def logger
     @log ||= Logger.new(STDOUT)
   end
+
 
   # Get the location (dns name, or IP) for a given Fog server. Cloud
   # provider agnostic.

@@ -3,7 +3,9 @@ require 'skewer/puppet'
 describe Skewer::Puppet do
 
   before(:each) do
-    @puppet = Skewer::Puppet.new
+    installer = stub('installer')
+    installer.should_receive(:executable).and_return('/usr/local/bin/bundle exec')
+    @puppet = Skewer::Puppet.new(installer)
     @root = File.expand_path File.join(File.dirname(__FILE__), "..")
     @prefix = "cd infrastructure && /usr/local/bin/bundle exec puppet apply manifests/site.pp --color false"
     @sudo_prefix = "cd infrastructure && sudo /usr/local/bin/bundle exec puppet apply manifests/site.pp --color false"
@@ -23,14 +25,6 @@ describe Skewer::Puppet do
 
   it "should pass noop when if you pass the option" do
     @puppet.command_string('root', {:noop => true}).should == "#{@prefix} --modulepath modules --vardir /var/lib/puppet --noop"
-  end
-
-  it "should have args for our custom modulepath" do
-    @puppet.arguments.should match(/modulepath/)
-  end
-
-  it "should not have args for external node configuration" do
-    @puppet.arguments.should_not match(/external_nodes/)
   end
 
   it "should blow up if something fails" do 
