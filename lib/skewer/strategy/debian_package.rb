@@ -1,8 +1,10 @@
 module Skewer
   module Strategy
     class DebianPackage
+      include Skewer
       def initialize(node)
         @node = node
+        logger.debug "Deploying Puppet via Debian"
       end
 
       def install_command

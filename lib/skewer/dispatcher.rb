@@ -19,9 +19,9 @@ module Skewer
     def select_strategy(option)
       require 'skewer/strategy/bundler'
       require 'skewer/strategy/debian_package'
-      if option == :bundler
+      if option.to_sym == :bundler
         Skewer::Strategy::Bundler.new(@node)
-      elsif option == :debian
+      elsif option.to_sym == :debian
         Skewer::Strategy::DebianPackage.new(@node)
       else
         raise "I don't know about that strategy - sorry"

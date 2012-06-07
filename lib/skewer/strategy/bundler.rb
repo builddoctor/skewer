@@ -6,6 +6,7 @@ module Skewer
       def initialize(node)
         @node = node
         @asset_dir = File.join(File.dirname(__FILE__), '..','..', '..', 'assets')
+        logger.debug "Deploying Puppet via Bundler"
       end
 
       def install
