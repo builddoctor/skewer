@@ -17,9 +17,16 @@ describe "Provision Puppet with Bundler" do
   end
 
   it "should install rubygems on the remote machine" do
-      node = mock('node')
-      node.should_receive(:scp).with(File.expand_path("./lib/../assets/Gemfile"), "infrastructure")
-      node.should_receive(:ssh).with('. /etc/profile.d/rubygems.sh && cd infrastructure && bundle install')
-      Skewer::Strategy::Bundler.new(node).install_gems
-    end
+    node = mock('node')
+    node.should_receive(:scp).with(File.expand_path("./lib/../assets/Gemfile"), "infrastructure")
+    node.should_receive(:ssh).with('. /etc/profile.d/rubygems.sh && cd infrastructure && bundle install')
+    Skewer::Strategy::Bundler.new(node).install_gems
+  end
+
+  it "should default to using bundler from /usr/local" do
+    pending('Hard to test things that hit the FS')
+    require 'skewer'
+    node = mock('node')
+    Skewer::Strategy::Bundler.new(node).locate_bundler('/usr/local/bin/bundle').should == '/usr/local/bin/bundle exec'
+  end
 end

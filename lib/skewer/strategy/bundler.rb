@@ -1,11 +1,12 @@
 module Skewer
   module Strategy
     class Bundler
+      BUNDLER_PATH = ['/var/lib/gems/1.8/bin/bundle', '/usr/local/bin/bundle', '/usr/bin/bundle']
       include Skewer
 
       def initialize(node)
         @node = node
-        @asset_dir = File.join(File.dirname(__FILE__), '..','..', '..', 'assets')
+        @asset_dir = File.join(File.dirname(__FILE__), '..', '..', '..', 'assets')
         logger.debug "Deploying Puppet via Bundler"
       end
 
@@ -13,8 +14,17 @@ module Skewer
         self.install_rubygems
       end
 
+      def locate_bundler(bundle = '/usr/local/bin/bundle')
+        bundles = (BUNDLER_PATH + bundle.to_a)
+
+        if bundles.length > 0
+          bundle = bundles.select {| bndl| File.exists?(bndl) }.last
+        end
+        "#{bundle} exec"
+      end
+
       def executable
-        "/usr/local/bin/bundle"
+        locate_bundler()
       end
 
       def execute(file_name)
@@ -32,8 +42,6 @@ module Skewer
 
       def install_gems
         logger.debug "Installing Gems"
-
-
         @node.scp File.join(File.expand_path(@asset_dir), 'Gemfile'), 'infrastructure'
         command = ". /etc/profile.d/rubygems.sh && cd infrastructure && bundle install"
         result = @node.ssh(command)
