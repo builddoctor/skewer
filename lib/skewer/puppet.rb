@@ -18,6 +18,8 @@ module Skewer
     end
 
     def command_string(username, options)
+      manifest = config.manifestpath
+      logger.debug "Using manifest #{manifest}"
       @command_line = "cd infrastructure"
       if username == 'root'
         @command_line << " &&"
@@ -26,7 +28,7 @@ module Skewer
       end
       @command_line << " #{@installer.executable}"
       @command_line << " puppet apply"
-      @command_line << " manifests/site.pp"
+      @command_line << " #{manifest}"
       @command_line << " --color false"
       @command_line << " #{arguments}"
       if options[:noop]

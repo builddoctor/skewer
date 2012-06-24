@@ -43,6 +43,9 @@ desc 'mock every fog call'
 default_value false
 flag [:m,:mock]
 
+desc 'Location of manifest'
+flag [:mp,:manifestpath]
+
 desc 'Update the puppet code on a machine that you have already provisioned'
 command :update do |c|
   c.desc 'Host to update'

@@ -9,14 +9,14 @@ module Skewer
       @configs = {}
       reset
       read_config_files
-
     end
 
     def reset
-      @configs[:puppet_repo] = '../infrastructure'
-      @configs[:region] = 'us-east-1'
-      @configs[:flavor_id] = 'm1.large'
-      @configs[:aws_username] = 'ubuntu'
+      @configs[:puppet_repo]   = '../infrastructure'
+      @configs[:region]        = 'us-east-1'
+      @configs[:flavor_id]     = 'm1.large'
+      @configs[:aws_username]  = 'ubuntu'
+      @configs[:manifestpath] = 'manifests/site.pp'
     end
 
     def read_config_file(config_file)

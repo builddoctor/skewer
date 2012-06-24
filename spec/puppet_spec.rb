@@ -1,5 +1,13 @@
 require 'skewer/puppet'
 
+class ConfigProxy
+  # TODO: work out why rspec tests can't load the skewer module'
+  include Skewer
+  def set(var, val)
+    config.set(var, val)
+  end
+end
+
 describe Skewer::Puppet do
 
   before(:each) do
@@ -25,6 +33,14 @@ describe Skewer::Puppet do
 
   it "should pass noop when if you pass the option" do
     @puppet.command_string('root', {:noop => true}).should == "#{@prefix} --modulepath modules --vardir /var/lib/puppet --noop"
+  end
+
+  it "should have a variable puppet manifest path" do
+    require 'skewer/skewer'
+    ConfigProxy.new.set :manifestpath, 'my_great_manifests/main.pp'
+    prefix = "cd infrastructure && /usr/local/bin/bundle exec puppet apply my_great_manifests/main.pp --color false"
+    @puppet.command_string('root', {}).should == "#{prefix} --modulepath modules --vardir /var/lib/puppet"
+
   end
 
   it "should blow up if something fails" do 
