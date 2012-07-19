@@ -26,6 +26,8 @@ flag [:pc,:puppetcode]
 
 desc 'Hook script to invoke, after the Puppet run success'
 flag [:hk,:hook]
+arg_name :hook
+default_value nil
 
 desc 'Cucumber features directory to invoke, after the Puppet run success'
 flag [:features]
