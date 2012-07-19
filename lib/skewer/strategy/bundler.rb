@@ -15,12 +15,14 @@ module Skewer
       end
 
       def locate_bundler(bundle = '/usr/local/bin/bundle')
-        bundles = (BUNDLER_PATH + bundle.to_a)
-
-        if bundles.length > 0
-          bundle = bundles.select {| bndl| File.exists?(bndl) }.last
-        end
-        "#{bundle} exec"
+        #TODO: make this work on the remote environment
+        #bundles = (BUNDLER_PATH + bundle.to_a)
+        #
+        #if bundles.length > 0
+        #  bundle = bundles.select {| bndl| File.exists?(bndl) }.first
+        #end
+        #"#{bundle} exec"
+        "/usr/local/bin/bundle exec"
       end
 
       def executable
